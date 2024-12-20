@@ -5,14 +5,15 @@ import styles from './AdminDocuments.module.css';
 const AdminDocuments = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const categories = ['All', 'Legal', 'Business', 'Personal', 'Education'];
+  const categories = ['All', 'Family Law', 'Real Estate Documents', 'Intellectual Property', 'Legal Letters', 'Litigation and Dispute Resolution'];
   const templates = [
-    { id: 1, name: 'Contract Template', category: 'Legal' },
-    { id: 2, name: 'Invoice Template', category: 'Business' },
-    { id: 3, name: 'Resume Template', category: 'Personal' },
-    { id: 4, name: 'Assignment Template', category: 'Education' },
-    { id: 5, name: 'Will Template', category: 'Legal' },
-  ];
+    { id: 1, name: 'Divorce Paper', category: 'Family Law' },
+    { id: 2, name: 'Purchase Agreement', category: 'Real Estate Documents' },
+    { id: 3, name: 'Copyright Assignment', category: 'Intellectual Property' },
+    { id: 4, name: 'Demand Letter', category: 'Legal Letters' },
+    { id: 5, name: 'Settlement Agreement', category: 'Litigation and Dispute Resolution' },
+    { id: 6, name: 'Adoption Paper', category: 'Family Law' },
+  ]; 
 
   const filteredTemplates = selectedCategory === 'All'
     ? templates
