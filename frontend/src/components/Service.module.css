@@ -1,0 +1,147 @@
+/* Container for all services */
+.servicesContainer {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap; /* Allows cards to wrap to the next row */
+    gap: 45px; /* Space between the cards */
+    max-width: 100%; /* Ensure it takes full width */
+}
+
+/* Header should remain full width */
+header {
+    width: 100%;
+}
+
+/* Main content container */
+.mainContent {
+    width: 80%; /* Make content 80% width */
+    margin: 0 auto; /* Center the content */
+    padding: 20px;
+}
+
+/* Heading */
+h2 {
+    margin-left: 80px;
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Each service card */
+.serviceCard {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin-left: 80px; /* Add left margin of 80px */
+    flex: 1 1 calc(50% - 80px); /* 50% width minus the 80px margin */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: calc(45% - 80px); /* Ensure two cards fit in a row with 80px margin on both sides */
+}
+
+/* Heading inside service card */
+h3 {
+    display: flex;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* Ratings section */
+.ratings {
+    display: flex;
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.stars {
+    color: #f05a24; /* Red for star ratings */
+    margin-right: 10px;
+}
+
+/* Price and detail button section */
+.priceDetail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Price details */
+.price p {
+    margin: 0;
+}
+
+.price p:last-child {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #f05a24;
+}
+
+/* Button */
+.detailBtn {
+    background-color: #f05a24;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.detailBtn:hover {
+    background-color: #d9440f;
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 1024px) {
+    .mainContent {
+        width: 90%; /* On tablets, make content width 90% */
+    }
+
+    .serviceCard {
+        margin-left: 0; /* Remove left margin for smaller screens */
+        margin-right: 0; /* Remove right margin for smaller screens */
+        flex: 1 1 calc(50% - 20px); /* Keep 2 cards per row */
+        max-width: calc(50% - 20px); /* Ensure no overflow */
+    }
+
+    h2 {
+        margin-left: 0; /* Remove margin for smaller screens */
+    }
+}
+
+/* Responsive for mobile screens */
+@media (max-width: 768px) {
+    .mainContent {
+        width: 100%; /* On smaller screens, make content width 100% */
+    }
+
+    /* Stack service cards vertically */
+    .serviceCard {
+        flex: 1 1 100%; /* On smaller screens, cards take full width */
+        max-width: 100%; /* Ensure no overflow */
+        margin-left: 0; /* Remove left margin for small screens */
+        margin-right: 0; /* Remove right margin for small screens */
+    }
+
+    h2 {
+        margin-left: 0; /* Remove margin for smaller screens */
+    }
+
+    .priceDetail {
+        flex-direction: column; /* Stack price and button vertically */
+        align-items: flex-start; /* Align items to the left */
+    }
+
+    .detailBtn {
+        width: 100%; /* Make the button full width */
+        margin-top: 10px; /* Space between price and button */
+    }
+}

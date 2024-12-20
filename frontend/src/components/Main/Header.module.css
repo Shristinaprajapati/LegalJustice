@@ -1,0 +1,248 @@
+/* Header Styles */
+.header {
+    background-color: rgba(26, 26, 26, 0.5);
+    backdrop-filter: blur(0px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .scrolled {
+    background-color: #f8f9fa;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .logo img {
+    width: 185px;
+    height: 44px;
+    object-fit: contain;
+  }
+  
+  .navLinks {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .navLinks li a {
+    text-decoration: none;
+    font-size: 1.09rem;
+    color: #ffffff;
+    font-weight: 500;
+    padding: 8px 15px;
+    transition: color 0.3s ease;
+  }
+  
+  .navLinks li a:hover {
+    color: #ffffff;
+  }
+  
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+  }
+  
+  .bar {
+    width: 25px;
+    height: 3px;
+    background-color: #ffffff;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+  }
+  
+  /* Auth buttons: Login and Sign Up */
+  .authButtons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .loginBtn,
+  .signupBtn {
+    padding: 9px 30px;
+    border: 1px solid #fbfbfb;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .loginBtn {
+    border-radius: 3.125rem;
+    border: 2px solid #ffffff;
+    color: white;
+    background-color: transparent;
+  }
+  
+  .signupBtn {
+    border-radius: 3.125rem;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+  }
+  
+  .loginBtn:hover {
+    background-color: #0056b3;
+    color: white;
+  }
+  
+  .signupBtn:hover {
+    background-color: #0056b3;
+    color: white;
+  }
+  
+  /* Media Queries for Header Responsiveness */
+  @media (max-width: 768px) {
+    .navLinks {
+      display: none;
+    }
+  
+    .navOpen .navLinks {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      background-color: #fff;
+      padding: 20px 0;
+      gap: 20px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+      z-index: 999;
+    }
+  
+    .authButtons {
+      display: none;
+    }
+  
+    .hamburger {
+      display: flex;
+    }
+  
+    .navOpen {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      background-color: #1e3050;
+      top: 60px;
+      left: 0;
+      right: 0;
+      z-index: 999;
+    }
+  
+    .navOpen .navLinks {
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      padding: 20px 0;
+    }
+  }
+
+ /* Profile Section for Logged-In Users */
+.profileSection {
+  margin-left: 120px;
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  position: relative;
+  cursor: pointer;
+}
+
+.profileAvatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.profileAvatar img:hover {
+  transform: scale(1.1);
+  border-color: #0056b3; /* Highlight on hover */
+}
+
+.profileDropdown {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
+  width: 250px;
+  z-index: 1000;
+  display: none; /* Initially hidden */
+  animation: fadeIn 0.3s ease-out;
+}
+
+.profileDropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.profileDropdown ul li {
+  padding: 10px 0;
+  color: #333333;
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 1px solid #f1f1f1;
+  cursor: pointer;
+}
+
+.profileDropdown ul li:last-child {
+  border-bottom: none;
+}
+
+.profileDropdown ul li:hover {
+  background-color: #f8f9fa;
+  color: #0056b3; /* Highlight text on hover */
+}
+
+.profileDropdown .logout {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+/* Show the dropdown when active (triggered by JS) */
+.profileSection.active .profileDropdown {
+  display: block;
+}
+
+/* Dropdown Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .profileSection {
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .profileDropdown {
+    top: 50px;
+    right: 10px;
+    width: 200px;
+    padding: 10px 15px;
+  }
+
+  .profileDropdown ul li {
+    font-size: 13px;
+    padding: 8px 0;
+  }
+}

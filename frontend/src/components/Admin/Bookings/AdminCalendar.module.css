@@ -1,0 +1,37 @@
+.highlight {
+  background-color: red !important;
+  color: white;
+}
+
+.detailsContainer {
+  margin-top: 20px;
+}
+
+.bookingList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.bookingItem {
+  background-color: #f9f9f9;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column; /* Arrange items vertically */
+}
+
+.bookingItem p {
+  margin: 5px 0;
+  display: block; /* Ensure each item takes a full line */
+}
+
+.bookingItem strong {
+  display: inline-block;
+  margin-right: 5px; /* Add spacing between the label and value */
+}
+
+.bookingItem p span {
+  margin-left: 5px; /* Add spacing between label and value for inline text */
+}
