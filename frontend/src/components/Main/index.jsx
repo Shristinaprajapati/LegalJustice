@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Routes, Route } from 'react-router-dom';
+import {Routes, Route } from 'react-router-dom';
 import ParallaxSection from '../ParallaxSection.jsx';
 import ScrollableFrame from '../ScrollableFrame.jsx';
 import Service from '../Service.jsx';

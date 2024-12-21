@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import styles from './Login.module.css'; 
-import axios from 'axios';  // Add axios for sending API requests
+import React, {useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styles from "./Login.module.css";
+import axios from "axios";
+import ReCAPTCHA from "react-google-recaptcha";
 
-
+const SITE_KEY = "6Lc5D6IqAAAAAMu0jayEUodrDJOuDInq1lAMKLNw";
 
 const Login = () => {
+  const [recaptchaValue, setRecaptchaValue] = useState(""); // State for reCAPTCHA value
   const [data, setData] = useState({
     email: "",
     password: "",
   });
 
-  const [error, setError] = useState("");  // State to manage error messages
+  const [error, setError] = useState(""); // State for error messages
   const navigate = useNavigate();
 
   // Handle input change
@@ -21,26 +23,31 @@ const Login = () => {
 
   // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission behavior
+    e.preventDefault(); // Prevent default form submission
     try {
       const url = "http://localhost:8080/api/auth"; 
-      const { data: res } = await axios.post(url, data);  // Post request to authenticate user
-      
-      // Save token and email in local storage 
-      localStorage.setItem('token', res.data);
-      localStorage.setItem('email', data.email);
-      
-      // Check if the user is an admin and navigate accordingly
+      const payload = {
+        ...data,
+        recaptchaValue, // Include the reCAPTCHA value
+      };
+
+      const { data: res } = await axios.post(url, payload); // Send payload with reCAPTCHA
+
+      // Save token and email in local storage
+      localStorage.setItem("token", res.data);
+      localStorage.setItem("email", data.email);
+
+      // Navigate based on user role
       if (res.isAdmin) {
-        navigate("/admin/AdminDashboard"); // Navigate to admin panel
+        navigate("/admin/AdminDashboard");
       } else {
-        navigate("/");  // Navigate to regular user dashboard
+        navigate("/");
       }
 
-      console.log(res.message); // Log success message (optional)
+      console.log(res.message); // Optional success message log
     } catch (error) {
       if (error.response && error.response.status >= 400 && error.response.status <= 500) {
-        setError(error.response.data.message);  
+        setError(error.response.data.message); // Display backend error message
       }
     }
   };
@@ -49,8 +56,8 @@ const Login = () => {
     <div className={styles.loginContainer}>
       <div className={styles.loginForm}>
         <h2>Login</h2>
-        
-        {/* Display error message if exists */}
+
+        {/* Display error message */}
         {error && <div className={styles.errorMessage}>{error}</div>}
 
         <form onSubmit={handleSubmit}>
@@ -78,16 +85,21 @@ const Login = () => {
             />
           </div>
 
-          <br></br>
+          <br />
           <Link to="/forgot-password" style={{ alignSelf: "flex-start" }}>
-            <p style={{ padding: "0 15px" }}>Forgot Password ?</p>
+            <p style={{ padding: "0 15px" }}>Forgot Password?</p>
           </Link>
-          <br></br>
+          <br />
 
+          <div className="captcha mt-2">
+            <ReCAPTCHA
+              sitekey={SITE_KEY}
+              onChange={(value) => setRecaptchaValue(value)} // Set reCAPTCHA value
+            />
+          </div>
           <button type="submit">Login</button>
         </form>
       </div>
-
       <div className={styles.loginImage}></div>
     </div>
   );
