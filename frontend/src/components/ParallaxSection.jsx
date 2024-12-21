@@ -7,9 +7,10 @@ const ParallaxSection = () => {
   return (
     <div className={styles.parallax}>
       <div className={styles.parallaxContent}>
-        <h1>
-          Dedicated Legal Support for Every Step of Your Journey
-        </h1>
+      <h1 style={{ color: 'white' }}>
+        Dedicated Legal Support for Every Step of Your Journey
+      </h1>
+
         <p style={{ fontSize: '16px' }}>
           At Legal Justice, we offer friendly and helpful legal support for all your needs. Our team is here to guide you through every step, making sure your rights are protected and your goals are met.
         </p>
