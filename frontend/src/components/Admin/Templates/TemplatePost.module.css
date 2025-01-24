@@ -1,0 +1,82 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Sidebar container */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: #2c3e50;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Sidebar menu items */
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    margin: 20px 0;
+  }
+  
+  .sidebar a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    display: block;
+    padding: 10px 0;
+  }
+  
+  /* Content container */
+  .content {
+    margin-left: 250px; /* Shift the content by 250px to the left */
+    padding: 20px;
+    width: calc(100% - 250px); /* Ensure the content takes up the remaining space */
+    transition: margin-left 0.3s ease; /* Smooth transition when sidebar toggles */
+  }
+  
+  /* Document card container */
+  .document-card {
+    background-color: #f9f9f9;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .document-card p {
+    margin: 10px 0;
+  }
+  
+  .document-card h2 {
+    margin-bottom: 10px;
+  }
+  
+  /* Styling for the main heading */
+  h1 {
+    color: #34495e;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* For responsive design */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 200px;
+    }
+  
+    .content {
+      margin-left: 200px; /* Adjust for smaller screen */
+      width: calc(100% - 200px); /* Ensure the content takes up the remaining space */
+    }
+  }
+  

@@ -14,11 +14,11 @@ const bookingSchema = new mongoose.Schema({
   },
   date: { 
     type: Date, 
-    required: true 
+    required: false 
   },
   timeSlot: { 
     type: String, 
-    required: true 
+    required: false
   },
   status: { 
     type: String, 

@@ -144,4 +144,34 @@ h3 {
         width: 100%; /* Make the button full width */
         margin-top: 10px; /* Space between price and button */
     }
+
+
+    /* Service.module.css */
+.bookNowBtn {
+    background-color: #4CAF50; /* Green for booking */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .getDocumentBtn {
+    background-color: #f44336; /* Red for getting document */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  /* Optionally, hover effects */
+  .bookNowBtn:hover {
+    background-color: #45a049;
+  }
+  
+  .getDocumentBtn:hover {
+    background-color: #da190b;
+  }
+  
 }

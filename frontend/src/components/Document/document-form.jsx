@@ -1,55 +1,87 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import axios from 'axios';
 
-const DocumentForm = () => {
+const ClientForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
-    address: "",
-    dateOfBirth: "",
-    documentType: "template1", // Example for selecting a template
+    agreementDate: '',
+    disclosingParty: '',
+    receivingParty: '',
+    effectiveDate: '',
+    expirationDate: '',
+    disclosingPartySignature: '',
+    receivingPartySignature: '',
   });
-  const [successMessage, setSuccessMessage] = useState("");
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post("http://localhost:8080/api/documents", formData);
-      setSuccessMessage(response.data.message || "Document generated successfully!");
-    } catch (err) {
-      console.error(err.response?.data || "Error generating document");
+      // Assuming backend returns the generated HTML document
+      console.log(response.data.document);
+      alert('Document generated successfully!');
+    } catch (error) {
+      console.error('Error generating document:', error);
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <label>
-        Name:
-        <input type="text" name="name" value={formData.name} onChange={handleInputChange} required />
-      </label>
-      <label>
-        Address:
-        <input type="text" name="address" value={formData.address} onChange={handleInputChange} required />
-      </label>
-      <label>
-        Date of Birth:
-        <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleInputChange} required />
-      </label>
-      <label>
-        Document Type:
-        <select name="documentType" value={formData.documentType} onChange={handleInputChange}>
-          <option value="template1">Template 1</option>
-          <option value="template2">Template 2</option>
-        </select>
-      </label>
+      <input
+        type="date"
+        name="agreementDate"
+        value={formData.agreementDate}
+        onChange={handleChange}
+        placeholder="Agreement Date"
+      />
+      <input
+        type="text"
+        name="disclosingParty"
+        value={formData.disclosingParty}
+        onChange={handleChange}
+        placeholder="Disclosing Party"
+      />
+      <input
+        type="text"
+        name="receivingParty"
+        value={formData.receivingParty}
+        onChange={handleChange}
+        placeholder="Receiving Party"
+      />
+      <input
+        type="date"
+        name="effectiveDate"
+        value={formData.effectiveDate}
+        onChange={handleChange}
+        placeholder="Effective Date"
+      />
+      <input
+        type="date"
+        name="expirationDate"
+        value={formData.expirationDate}
+        onChange={handleChange}
+        placeholder="Expiration Date"
+      />
+      <input
+        type="text"
+        name="disclosingPartySignature"
+        value={formData.disclosingPartySignature}
+        onChange={handleChange}
+        placeholder="Disclosing Party Signature"
+      />
+      <input
+        type="text"
+        name="receivingPartySignature"
+        value={formData.receivingPartySignature}
+        onChange={handleChange}
+        placeholder="Receiving Party Signature"
+      />
       <button type="submit">Generate Document</button>
-      {successMessage && <p>{successMessage}</p>}
     </form>
   );
 };
 
-export default DocumentForm;
+export default ClientForm;

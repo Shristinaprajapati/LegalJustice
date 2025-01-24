@@ -14,8 +14,15 @@ router.get("/", async (req, res) => {
 
 // Add a new service
 router.post("/", async (req, res) => {
-  const { title, description, price } = req.body;
-  const service = new Service({ title, description, price });
+  const { title, description, price, category } = req.body;
+
+  // Ensure category is either 'consulting' or 'documentation'
+  if (!category || !['consulting', 'documentation'].includes(category)) {
+    return res.status(400).json({ message: "Invalid category. Must be 'consulting' or 'documentation'." });
+  }
+
+  const service = new Service({ title, description, price, category });
+
   try {
     const newService = await service.save();
     res.status(201).json(newService);
@@ -27,7 +34,10 @@ router.post("/", async (req, res) => {
 // Delete a service
 router.delete("/:id", async (req, res) => {
   try {
-    await Service.findByIdAndDelete(req.params.id);
+    const service = await Service.findByIdAndDelete(req.params.id);
+    if (!service) {
+      return res.status(404).json({ message: "Service not found" });
+    }
     res.json({ message: "Service deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });

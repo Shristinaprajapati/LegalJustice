@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 import Main from './components/Main/index.jsx'; 
 import Login from './components/Login'; 
 import SignUp from './components/SignUp'; 
@@ -8,12 +10,16 @@ import EmailVerify from "./components/EmailVerify";
 import ForgotPassword from "./components/ForgotPassword";
 import PasswordReset from "./components/PasswordReset";
 import ResetPassword from "./components/password-reset";
+import PracticeArea from "./components/Main/PracticeArea/practiceArea";
+import Resetpassword from "./components/ResetPassword";
 
 
 import AdminPanel from "./components/Admin/AdminDashboard";
 import Bookings from "./components/Admin/Bookings/booking.jsx";
 import Services from "./components/Admin/Services/services.jsx";
 import Document from "./components/Admin/Templates/AdminDocument.jsx";
+import Documentpaper from "./components/Admin/Document/document.jsx";
+import TemplatePost from "./components/Admin/Templates/TemplatePost.jsx";
 
 
 function App() {
@@ -29,14 +35,20 @@ function App() {
 			  <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
 			  <Route path="/forgot-password" element={<ForgotPassword />} />
 		  	<Route path="/password-reset/:id/:token" element={<PasswordReset />} />
+        <Route path="/reset-password" element={<Resetpassword />} />
         <Route path="/service" element={<Service />} />
         <Route path="/password-reset/:id/:token" element={<ResetPassword />} />
+        <Route path="/practice-areas" element={<PracticeArea />} />
+
+      
 
 
         <Route path="/admin/AdminDashboard" element={<AdminPanel />} />
         <Route path ="/booking" element={<Bookings/>}/>
         <Route path ="/services" element={<Services/>}/>
         <Route path ="/document" element={<Document/>}/>
+        <Route path ="/documentpaper" element={<Documentpaper/>}/>
+        <Route path ="/admin/templates/post" element={<TemplatePost/>}/>
         
       </Routes>
     </Router>

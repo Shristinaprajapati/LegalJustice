@@ -16,24 +16,31 @@ router.get('/', async (req, res) => {
     }
 
     // Format the response to match the frontend structure
-    const bookingsWithDetails = bookings.map((booking) => ({
-      _id: booking._id,
-      serviceId: {
-        _id: booking.serviceId._id,
-        title: booking.serviceId.title,
-      },
-      clientId: {
+    const bookingsWithDetails = bookings.map((booking) => {
+      // Safely check for null values before accessing properties
+      const client = booking.clientId ? {
         _id: booking.clientId._id,
         name: booking.clientId.name,
         email: booking.clientId.email,
-      },
-      date: booking.date,
-      timeSlot: booking.timeSlot,
-      status: booking.status,
-      createdAt: booking.createdAt,
-      updatedAt: booking.updatedAt,
-      __v: booking.__v,
-    }));
+      } : null;
+
+      const service = booking.serviceId ? {
+        _id: booking.serviceId._id,
+        title: booking.serviceId.title,
+      } : null;
+
+      return {
+        _id: booking._id,
+        serviceId: service, // May be null
+        clientId: client, // May be null
+        date: booking.date,
+        timeSlot: booking.timeSlot,
+        status: booking.status,
+        createdAt: booking.createdAt,
+        updatedAt: booking.updatedAt,
+        __v: booking.__v,
+      };
+    });
 
     res.status(200).json({
       message: 'Bookings fetched successfully',
@@ -45,24 +52,33 @@ router.get('/', async (req, res) => {
   }
 });
 
+
 // Create a booking (POST)
 router.post('/', async (req, res) => {
   try {
-    const { serviceId, clientId, date, timeSlot } = req.body;
+    const { serviceId, clientId, date, timeSlot, category } = req.body;
 
-    // Validate required fields
-    if (!serviceId || !clientId || !date || !timeSlot) {
-      return res.status(400).json({ message: 'Missing required fields' });
+    // Validate required fields for any booking
+    if (!serviceId || !clientId) {
+      return res.status(400).json({ message: 'Missing required fields: serviceId or clientId' });
     }
 
-    // Create a new booking
-    const newBooking = new Booking({
+    // If it's a consulting booking, validate date and timeSlot
+    if (category === "consulting" && (!date || !timeSlot)) {
+      return res.status(400).json({ message: 'Missing required fields for consulting booking: date or timeSlot' });
+    }
+
+    // Prepare booking data based on category
+    const bookingData = {
       serviceId,
       clientId,
-      date,
-      timeSlot,
-      status: 'Pending', // Default status
-    });
+      date: category === "consulting" ? date : undefined, // Include date only for consulting
+      timeSlot: category === "consulting" ? timeSlot : undefined, // Include timeSlot only for consulting
+      status: 'Pending', // Default status for new bookings
+    };
+
+    // Create a new booking
+    const newBooking = new Booking(bookingData);
 
     // Save the booking to the database
     await newBooking.save();
@@ -73,6 +89,7 @@ router.post('/', async (req, res) => {
     res.status(500).json({ message: 'Error creating booking', error: err.message });
   }
 });
+
 
 // Update booking status (PATCH)
 router.patch('/:id', async (req, res) => {

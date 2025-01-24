@@ -7,91 +7,72 @@ const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
 const bcrypt = require("bcrypt");
 
-// send password link
+// Send OTP for password reset
 router.post("/", async (req, res) => {
-    try {
-        const emailSchema = Joi.object({
-            email: Joi.string().email().required().label("Email"),
-        });
-        const { error } = emailSchema.validate(req.body);
-        if (error)
-            return res.status(400).send({ message: error.details[0].message });
+	try {
+		const emailSchema = Joi.object({
+			email: Joi.string().email().required(),
+		});
+		const { error } = emailSchema.validate(req.body);
+		if (error) return res.status(400).send({ message: error.details[0].message });
 
-        let user = await User.findOne({ email: req.body.email });
-        if (!user)
-            return res
-                .status(409)
-                .send({ message: "User with given email does not exist!" });
+		const user = await User.findOne({ email: req.body.email });
+		if (!user) return res.status(404).send({ message: "User not found" });
 
-        let token = await Token.findOne({ userId: user._id });
-        if (!token) {
-            token = await new Token({
-                userId: user._id,
-                token: crypto.randomBytes(32).toString("hex"),
-            }).save();
-        }
-        
-        const url = `${process.env.BASE_URL}/api/password-reset/${user._id}/${token.token}`;
-        await sendEmail(user.email, "Password Reset", url);
+		const otp = Math.floor(100000 + Math.random() * 900000).toString();
+		const token = await Token.findOneAndUpdate(
+			{ userId: user._id },
+			{ token: otp, expiresAt: Date.now() + 10 * 60 * 1000 },
+			{ upsert: true, new: true }
+		);
 
-        res
-            .status(200)
-            .send({ message: "Password reset link sent to your email account" });
-    } catch (error) {
-        res.status(500).send({ message: "Internal Server Error" });
-    }
+		const emailContent = `
+			<p>Your OTP for resetting your password is:</p>
+			<h3>${otp}</h3>
+			<p>This OTP will expire in 10 minutes.</p>
+		`;
+
+		await sendEmail(user.email, "Password Reset OTP", emailContent);
+		res.status(200).send({ message: "OTP sent to your email", userId: user._id });
+	} catch (error) {
+		res.status(500).send({ message: "Internal Server Error" });
+	}
 });
 
-// verify password reset link
-router.get("/:id/:token", async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        if (!user) return res.status(400).send({ message: "Invalid link" });
+// Verify OTP
+router.post("/verify-otp", async (req, res) => {
+	try {
+		const { userId, otp } = req.body;
+		const token = await Token.findOne({ userId, token: otp });
+		if (!token) return res.status(400).send({ message: "Invalid OTP" });
 
-        const token = await Token.findOne({
-            userId: user._id,
-            token: req.params.token,
-        });
-        if (!token) return res.status(400).send({ message: "Invalid link" });
+		if (Date.now() > token.expiresAt) {
+			await Token.deleteOne({ userId });
+			return res.status(400).send({ message: "OTP expired" });
+		}
 
-        // Send a response with a flag indicating the link is valid
-        res.status(200).send({ message: "Valid link", redirectToForm: true });
-    } catch (error) {
-        res.status(500).send({ message: "Internal Server Error" });
-    }
+		res.status(200).send({ message: "OTP verified" });
+	} catch (error) {
+		res.status(500).send({ message: "Internal Server Error" });
+	}
 });
 
+// Reset Password
+router.post("/reset-password", async (req, res) => {
+	try {
+		const { userId, password } = req.body;
+		const user = await User.findById(userId);
+		if (!user) return res.status(404).send({ message: "User not found" });
 
-// Set new password
-router.post("/:id/:token", async (req, res) => {
-    try {
-        const passwordSchema = Joi.object({
-            password: passwordComplexity().required().label("Password"),
-        });
-        const { error } = passwordSchema.validate(req.body);
-        if (error)
-            return res.status(400).send({ message: error.details[0].message });
+		const salt = await bcrypt.genSalt(10);
+		user.password = await bcrypt.hash(password, salt);
+		await user.save();
 
-        const user = await User.findById(req.params.id);
-        if (!user) return res.status(400).send({ message: "Invalid link" });
-
-        const token = await Token.findOne({
-            userId: user._id,
-            token: req.params.token,
-        });
-        if (!token) return res.status(400).send({ message: "Invalid link" });
-
-        const salt = await bcrypt.genSalt(Number(process.env.SALT));
-        const hashPassword = await bcrypt.hash(req.body.password, salt);
-
-        user.password = hashPassword;
-        await user.save();
-        await token.remove();
-
-        res.status(200).send({ message: "Password reset successfully" });
-    } catch (error) {
-        res.status(500).send({ message: "Internal Server Error" });
-    }
+		await Token.deleteOne({ userId });
+		res.status(200).send({ message: "Password reset successfully" });
+	} catch (error) {
+		res.status(500).send({ message: "Internal Server Error" });
+	}
 });
 
 module.exports = router;

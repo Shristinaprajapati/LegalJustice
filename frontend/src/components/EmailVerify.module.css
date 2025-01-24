@@ -1,20 +1,64 @@
+/* General container styles */
 .container {
-	width: 100vw;
-	height: 100vh;
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	flex-direction: column;
-}
-
-.green_btn {
-	border: none;
-	outline: none;
-	padding: 12px 0;
-	background-color: #3bb19b;
-	border-radius: 20px;
-	width: 180px;
+	min-height: 100vh;
+	background: linear-gradient(135deg, #4caf50, #81c784);
+	color: #ffffff;
+	font-family: "Arial", sans-serif;
+	text-align: center;
+	padding: 20px;
+  }
+  
+  /* Success message */
+  h1 {
+	font-size: 2.5rem;
+	margin-bottom: 20px;
+	font-weight: 600;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Button styles */
+  .green_btn {
+	display: inline-block;
+	padding: 12px 24px;
+	font-size: 1.2rem;
 	font-weight: bold;
-	font-size: 14px;
+	color: #4caf50;
+	background-color: #ffffff;
+	border: none;
+	border-radius: 8px;
 	cursor: pointer;
-}
+	transition: all 0.3s ease;
+	text-transform: uppercase;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .green_btn:hover {
+	background-color: #f1f1f1;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* 404 Not Found message */
+  h1:nth-child(2) {
+	font-size: 3rem;
+	color: #ffffff;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+	margin-top: 20px;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+	h1 {
+	  font-size: 2rem;
+	}
+  
+	.green_btn {
+	  font-size: 1rem;
+	  padding: 10px 20px;
+	}
+  }
+  

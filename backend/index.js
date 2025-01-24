@@ -9,7 +9,7 @@ const passwordResetRoutes = require("./routes/passwordReset");
 const serviceRoutes = require("./routes/service");
 const bookingRoutes = require('./routes/bookings');
 const profileRoute = require('./routes/profile');
-
+const templatesRouter = require("./routes/templates");
 
 
 // database connection
@@ -26,6 +26,7 @@ app.use("/api/password-reset", passwordResetRoutes);
 app.use("/api/services", serviceRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/check-email', profileRoute);
+app.use("/api/templates", templatesRouter);
 
 
 const port = process.env.PORT || 8080;

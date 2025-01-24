@@ -1,41 +1,50 @@
-/* Container for all services */
+/* Services Container */
 .servicesContainer {
   width: 80%;
   margin: 0 auto;
   display: flex;
-  flex-wrap: wrap; /* Allows cards to wrap to next row */
-  gap: 45px; /* Space between the cards */
+  flex-wrap: wrap; /* Allows cards to wrap to the next row */
+  gap: 30px; /* Space between the cards */
+  padding: 40px 0; /* Added padding for vertical spacing */
 }
 
+/* Section Heading */
 h2 {
-  display: flex;
   width: 100%;
   margin-bottom: 20px;
   color: #333;
+  font-size: 2rem;
+  font-weight: bold;
 }
 
-/* Each service card */
+/* Service Card */
 .serviceCard {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 20px;
-  flex: 1 1 calc(50% - 20px); /* 50% width minus the gap size */
+  flex: 1 1 calc(50% - 30px); /* 50% width minus the gap size */
+  max-width: 48%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  max-width: 48%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.serviceCard:hover {
+  transform: scale(1.02); /* Slight scaling on hover */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Service Card Title */
 h3 {
-  display: flex;
   margin-top: 0;
   margin-bottom: 0.5rem;
   font-size: 1.2rem;
   color: #333;
 }
 
-/* Ratings section */
+/* Ratings Section */
 .ratings {
   display: flex;
   font-size: 0.9rem;
@@ -44,11 +53,11 @@ h3 {
 }
 
 .stars {
-  color: #f05a24; /* Red for star ratings */
+  color: #f05a24; /* Star ratings color */
   margin-right: 10px;
 }
 
-/* Price and detail button section */
+/* Price and Detail Button Section */
 .priceDetail {
   display: flex;
   justify-content: space-between;
@@ -56,7 +65,6 @@ h3 {
   margin-top: 20px;
 }
 
-/* Price details */
 .price p {
   margin: 0;
 }
@@ -67,7 +75,6 @@ h3 {
   color: #f05a24;
 }
 
-/* Button */
 .detailBtn {
   background-color: #f05a24;
   color: white;
@@ -76,16 +83,180 @@ h3 {
   border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
 .detailBtn:hover {
   background-color: #d9440f;
 }
 
-/* Responsive for smaller screens */
+/* Manage Cases Section */
+.manageCasesSection {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1c1c1c; /* Dark background color */
+  color: #ffffff; /* White text */
+  padding: 90px 80px;
+  border-radius: 8px;
+}
+
+.content {
+  flex: 1;
+  max-width: 40%;
+}
+
+.content h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.content p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: #d0d0d0; /* Light gray for paragraph text */
+}
+
+.talkToUsBtn {
+  padding: 10px 20px;
+  background-color: transparent;
+  border: 1px solid #007BFF; /* Blue border */
+  border-radius: 50px;
+  color: #007BFF; /* Blue text */
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.talkToUsBtn:hover {
+  background-color: #007BFF; /* Blue background on hover */
+  color: #ffffff; /* White text on hover */
+}
+
+.image {
+  flex: 1;
+  max-width: 50%;
+  display: flex;
+  justify-content: center;
+}
+
+.image img {
+  border-radius: 8px; /* Rounded corners for the image */
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+
+
+/* Partner Section */
+.partnerSection {
+  display: flex;
+  flex-direction: column; /* Stack heading then row */
+  padding: 60px 80px;
+  gap: 40px; /* Space between rows */
+}
+
+.partnerContent {
+  display: flex;
+  flex-direction: row; /* Image and text in one row */
+  gap: 40px; /* Space between image and text */
+  align-items: center; /* Align items vertically in the center */
+}
+
+.partnerImage {
+  flex: 1; /* Image takes 50% of the space */
+}
+
+.partnerImage img {
+  border-radius: 8px; /* Rounded corners */
+  max-width: 70%; /* Full width */
+  height: auto;
+  object-fit: cover;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.partnerText {
+  
+  flex: 1.5; /* Text takes 50% of the space */
+  
+}
+.partnerText{
+  margin-top: 80px;
+  
+}
+
+
+
+.partnerText p {
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 100%;
+  margin-bottom: 30px;
+  color: #424242; /* Light gray for paragraph text */
+  margin-left: 0; /* Reset margin-left for paragraph text */
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .manageCasesSection,
+  .partnerSection {
+    padding: 60px 5%;
+  }
+
+  .manageCasesSection .content,
+  .partnerContent {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .manageCasesSection .image,
+  .partnerImage {
+    margin-top: 20px;
+  }
+}
+
 @media (max-width: 768px) {
+  .servicesContainer {
+    gap: 20px;
+  }
+
   .serviceCard {
-      flex: 1 1 100%; /* On smaller screens, cards take full width */
-      max-width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .manageCasesSection,
+  .partnerSection {
+    padding: 40px 5%;
+  }
+
+  .manageCasesSection h1,
+  .partnerContent h2 {
+    font-size: 2rem;
+  }
+
+  .manageCasesSection p,
+  .partnerContent p {
+    font-size: 1rem;
+  }
+
+  .talkToUsBtn {
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .manageCasesSection h1,
+  .partnerContent h2 {
+    font-size: 1.8rem;
+  }
+
+  .manageCasesSection p,
+  .partnerContent p {
+    font-size: 0.95rem;
   }
 }

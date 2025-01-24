@@ -9,6 +9,7 @@ const AdminServices = () => {
     title: '',
     description: '',
     price: '',
+    category: '', // Use category instead of type
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -40,7 +41,7 @@ const AdminServices = () => {
     try {
       const response = await axios.post('http://localhost:8080/api/services', newService);
       setServices([...services, response.data]);
-      setNewService({ title: '', description: '', price: '' }); // Reset form
+      setNewService({ title: '', description: '', price: '', category: '' }); // Reset form
     } catch (err) {
       setError('Failed to add service');
     }
@@ -90,6 +91,28 @@ const AdminServices = () => {
             value={newService.price}
             onChange={handleInputChange}
           />
+          <div className={styles.serviceType}>
+            <label>
+              <input
+                type="radio"
+                name="category" // Changed to category
+                value="consulting"
+                checked={newService.category === 'consulting'}
+                onChange={handleInputChange}
+              />
+              Consulting Service
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="category" // Changed to category
+                value="documentation"
+                checked={newService.category === 'documentation'}
+                onChange={handleInputChange}
+              />
+              Documentation Service
+            </label>
+          </div>
           <button onClick={handleAddService}>Add Service</button>
         </div>
 
@@ -102,6 +125,7 @@ const AdminServices = () => {
                 <th>Title</th>
                 <th>Description</th>
                 <th>Price (Rs.)</th>
+                <th>Category</th> {/* Changed to Category */}
                 <th>Actions</th>
               </tr>
             </thead>
@@ -111,6 +135,7 @@ const AdminServices = () => {
                   <td>{service.title}</td>
                   <td>{service.description}</td>
                   <td>{service.price}</td>
+                  <td>{service.category}</td> {/* Display the category */}
                   <td>
                     <button onClick={() => handleDeleteService(service._id)}>Delete</button>
                   </td>

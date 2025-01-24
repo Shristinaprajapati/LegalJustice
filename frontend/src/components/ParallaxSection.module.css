@@ -75,6 +75,7 @@
   margin: 0 3rem; /* Space between logos */
 }
 
+
 @keyframes scroll {
   0% {
     transform: translateX(100%); /* Start off-screen to the right */

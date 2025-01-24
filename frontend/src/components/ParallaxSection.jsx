@@ -41,6 +41,8 @@ const ParallaxSection = () => {
           {/* Add more logos as needed */}
         </div>
       </div>
+      
+      
     </div>
   );
 };

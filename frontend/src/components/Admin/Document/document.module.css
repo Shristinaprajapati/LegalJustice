@@ -1,0 +1,88 @@
+/* General Styling */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+/* Navbar Section */
+.navbar {
+  background-color: #202020;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px; /* Reduced padding for better alignment */
+  height: 90px;
+  border-bottom: 1px solid #ddd;
+  
+}
+
+/* Logo Styling */
+.navbar img {
+  height: 40px; /* Adjust logo size */
+  margin-right: 20px;
+}
+
+/* Input Box */
+.inputBox {
+  display: flex;
+  align-items: center;
+  background-color: #eaeaea;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 38px;
+}
+
+.inputBox input {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  padding: 10px;
+  outline: none;
+  font-size: 16px;
+ 
+}
+
+.inputBox input::placeholder {
+  color: #aaa;
+  font-size: 14px;
+}
+
+/* Right Section */
+.right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Button Styling */
+.btnBlue {
+  padding: 10px 20px;
+  background-color: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btnBlue:hover {
+  background-color: #2563eb;
+}
+
+/* Jodit Editor
+.jodit-wysiwyg {
+  min-height: calc(100vh - 250px) !important;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  padding: 10px;
+} */
