@@ -19,6 +19,7 @@
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
+    "express-validator": "^7.2.1",
     "file-type": "^16.5.4",
     "fs": "^0.0.1-security",
     "joi-password-complexity": "^5.2.0",

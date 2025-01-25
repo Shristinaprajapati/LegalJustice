@@ -1,15 +1,11 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const TemplateSchema = new mongoose.Schema(
-  {
-    name: { type: String, required: true },
-    category: { type: String, required: true },
-    fileData: { type: Buffer, required: true }, // Store the .docx file as binary data
-    placeholders: { type: [String], default: [] }, // Explicitly define as an array of strings
-  },
-  { timestamps: true } // Adds createdAt and updatedAt fields
-);
+const templateSchema = new mongoose.Schema({
+  name: { type: String, required: true }, // Template Name
+  content: { type: String, required: true }, // Template HTML content with placeholders
+  category: { type: String, required: true }, // Category of the template
+}, { timestamps: true });
 
-const Template = mongoose.model("Template", TemplateSchema);
+const Template = mongoose.model('Template', templateSchema);
 
 module.exports = Template;

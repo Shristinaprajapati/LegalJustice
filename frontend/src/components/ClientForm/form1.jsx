@@ -1,88 +1,104 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import axios from 'axios';
 
-const LegalForm = () => {
-  const [formData, setFormData] = useState({
-    partyA: "",
-    partyB: "",
-    date: "",
-    terms: "",
-  });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+const DivorceAgreementForm = () => {
+  const [spouse1, setSpouse1] = useState('');
+  const [spouse2, setSpouse2] = useState('');
+  const [children, setChildren] = useState('');
+  const [propertyDivision, setPropertyDivision] = useState('');
+  const [alimony, setAlimony] = useState('');
+  const [documentUrl, setDocumentUrl] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
+  
     try {
-      const response = await axios.post("http://localhost:8080/api/submitForm", formData);
-      alert("Form submitted successfully.");
+      const response = await axios.post('http://localhost:8080/api/divorseagreement/generate-divorce-agreement', {
+        spouse1,
+        spouse2,
+        children,
+        propertyDivision,
+        alimony,
+      });
+  
+      setDocumentUrl(response.data.documentUrl);
+      setLoading(false);
+      alert('Divorce Agreement generated successfully!');
     } catch (error) {
-      console.error(error);
-      alert("Error submitting form.");
+      console.error('Error generating agreement:', error);
+      setLoading(false);
+      alert('Failed to generate Divorce Agreement');
     }
   };
+  
 
   return (
-    <div className="legal-form-container">
-      <h1>Fill Out the Legal Document</h1>
+    <div>
+      <h2>Divorce Agreement Form</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="partyA">Party A:</label>
+          <label>Spouse 1 Name:</label>
           <input
             type="text"
-            id="partyA"
-            name="partyA"
-            value={formData.partyA}
-            onChange={handleChange}
-            placeholder="Enter Party A Name"
+            value={spouse1}
+            onChange={(e) => setSpouse1(e.target.value)}
             required
           />
         </div>
         <div>
-          <label htmlFor="partyB">Party B:</label>
+          <label>Spouse 2 Name:</label>
           <input
             type="text"
-            id="partyB"
-            name="partyB"
-            value={formData.partyB}
-            onChange={handleChange}
-            placeholder="Enter Party B Name"
+            value={spouse2}
+            onChange={(e) => setSpouse2(e.target.value)}
             required
           />
         </div>
         <div>
-          <label htmlFor="date">Effective Date:</label>
+          <label>Children's Names:</label>
           <input
-            type="date"
-            id="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
+            type="text"
+            value={children}
+            onChange={(e) => setChildren(e.target.value)}
             required
           />
         </div>
         <div>
-          <label htmlFor="terms">Terms:</label>
-          <textarea
-            id="terms"
-            name="terms"
-            value={formData.terms}
-            onChange={handleChange}
-            placeholder="Enter the terms of the contract"
+          <label>Property Division Details:</label>
+          <input
+            type="text"
+            value={propertyDivision}
+            onChange={(e) => setPropertyDivision(e.target.value)}
             required
           />
         </div>
-        <button type="submit">Submit</button>
+        <div>
+          <label>Alimony Details:</label>
+          <input
+            type="text"
+            value={alimony}
+            onChange={(e) => setAlimony(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Generating...' : 'Generate Agreement'}
+        </button>
       </form>
+
+      {documentUrl && (
+        <div>
+          <h3>Your Divorce Agreement</h3>
+          <p>
+            The document has been generated successfully. You can download it from the following link:
+            <a href={documentUrl} target="_blank" rel="noopener noreferrer">Download Document</a>
+          </p>
+        </div>
+      )}
     </div>
   );
 };
 
-export default LegalForm;
+export default DivorceAgreementForm;

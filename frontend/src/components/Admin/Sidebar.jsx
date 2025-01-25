@@ -1,13 +1,47 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaTachometerAlt, FaServicestack, FaBook, FaFileAlt, FaMoneyBillAlt, FaSignOutAlt } from 'react-icons/fa';
+import ReactDOMServer from 'react-dom/server';
+import axios from 'axios';
+import DivorceAgreementTemplate from './htmlTemplates/ClientCards.jsx';
+import RealEstateAgreementTemplate from './htmlTemplates/RealEstateAgreementTemplate.jsx';
 import styles from './Sidebar.module.css';
 
 const Sidebar = () => {
   const [showTemplatesDropdown, setShowTemplatesDropdown] = useState(false);
 
-  const toggleDropdown = () => {
+  const toggleDropdown = async () => {
+    // Toggle the dropdown visibility
     setShowTemplatesDropdown(prev => !prev);
+
+    // Call the API to store templates only if the dropdown is being opened
+    if (!showTemplatesDropdown) {
+      try {
+        console.log('Storing templates...');
+
+        // Render templates to static HTML
+        const divorceTemplateHtml = ReactDOMServer.renderToStaticMarkup(<DivorceAgreementTemplate />);
+        const realEstateTemplateHtml = ReactDOMServer.renderToStaticMarkup(<RealEstateAgreementTemplate />);
+
+        // API call to store Divorce Agreement Template
+        await axios.post('http://localhost:8080/api/store-template', {
+          name: 'Divorce Agreement Template',
+          content: divorceTemplateHtml,
+          category: 'Family Law',
+        });
+
+        // API call to store Real Estate Agreement Template
+        await axios.post('http://localhost:8080/api/store-template', {
+          name: 'Real Estate Agreement Template',
+          content: realEstateTemplateHtml,
+          category: 'Real Estate Documents',
+        });
+
+        console.log('Templates stored successfully!');
+      } catch (error) {
+        console.error('Error storing templates:', error);
+      }
+    }
   };
 
   return (

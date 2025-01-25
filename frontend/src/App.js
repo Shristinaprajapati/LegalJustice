@@ -22,6 +22,17 @@ import Documentpaper from "./components/Admin/Document/document.jsx";
 import TemplatePost from "./components/Admin/Templates/TemplatePost.jsx";
 
 
+import FormOne from "./components/ClientForm/form1.jsx";
+import TemplateOne from "./components/Admin/htmlTemplates/template1.jsx";
+
+import DivorseFrom from "./components/Admin/htmlTemplates/DivorseAgreementForm.jsx";
+import DivorseTemplate from "./components/Admin/htmlTemplates/ClientCards.jsx";
+
+
+import Divorse from "./components/Admin/htmlTemplates/DivorceTemplate.jsx";
+
+
+
 function App() {
   const user = localStorage.getItem("token");
   return (
@@ -41,14 +52,20 @@ function App() {
         <Route path="/practice-areas" element={<PracticeArea />} />
 
       
-
-
         <Route path="/admin/AdminDashboard" element={<AdminPanel />} />
         <Route path ="/booking" element={<Bookings/>}/>
         <Route path ="/services" element={<Services/>}/>
         <Route path ="/document" element={<Document/>}/>
         <Route path ="/documentpaper" element={<Documentpaper/>}/>
         <Route path ="/admin/templates/post" element={<TemplatePost/>}/>
+
+        <Route path ="/clientform/form1" element={<FormOne/>}/>
+        <Route path ="/templateOne" element={<TemplateOne/>}/>
+
+        <Route path ="/divorsefrom" element={<DivorseFrom/>}/>
+        <Route path ="/divorsetemplate" element={<DivorseTemplate/>}/>
+        <Route path ="/divorseaa" element={<Divorse/>}/>
+
         
       </Routes>
     </Router>

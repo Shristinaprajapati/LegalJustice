@@ -146,7 +146,7 @@ const Service = () => {
                 GET DOCUMENT
               </button>
             </div>
-          </div>
+          </div>  
         ))
       )}
 
