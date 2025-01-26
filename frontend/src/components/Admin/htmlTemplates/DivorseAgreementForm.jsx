@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import styles from './DivorseAgreementForm.module.css';
 
 const DivorceAgreementForm = ({ submitForm }) => {
   const navigate = useNavigate();
@@ -12,9 +13,36 @@ const DivorceAgreementForm = ({ submitForm }) => {
     children: '',
     propertyDivision: '',
     alimony: '',
+    spouse1Address: '',
+    spouse2Address: '',
+    marriageDate: '',
+    marriageLocation: '',
+    child1Name: '',
+    child1DOB: '',
+    child2Name: '',
+    child2DOB: '',
+    custodyArrangement: '',
+    visitationSchedule: '',
+    childSupport: '',
+    realPropertyDivision: '',
+    vehicleDivision: '',
+    bankAccountDivision: '',
+    retirementAccountDivision: '',
+    personalPropertyDivision: '',
+    alimonyAmount: '',
+    alimonyDuration: '',
+    alimonyStartDate: '',
+    spouse1Name: '',
+    spouse1Debts: '',
+    spouse2Name: '',
+    spouse2Debts: '',
+    jurisdiction: '',
+    spouse1SignatureDate: '',
+    spouse2SignatureDate: '',
+    witnessSignatureDate: '',
+    notarySignatureDate: '',
   });
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -23,38 +51,29 @@ const DivorceAgreementForm = ({ submitForm }) => {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent page refresh
+    e.preventDefault();
     try {
       if (submitForm) {
-        // Call the external submission handler if provided
         await submitForm(formData);
       } else {
-        // Default form submission using Axios
         const response = await axios.post(
-          'http://localhost:8080/api/divorse-agreement',
+          'http://localhost:8080/api/divorse-agreement/',
           formData
         );
 
         console.log('Success:', response.data.message);
-
-        // Navigate to the template page and pass the clientId in state
         navigate('/divorce-agreement-template', { state: { clientId: formData.clientId } });
       }
     } catch (error) {
-      console.error(
-        'Error submitting form:',
-        error.response?.data || error.message
-      );
+      console.error('Error submitting form:', error.response?.data || error.message);
     }
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-      <h1>Divorce Agreement Form</h1>
-      <form onSubmit={handleSubmit}>
-        {/* Render form fields dynamically */}
+    <div className={styles.container}>
+      <h1 className={styles.heading}>Divorce Agreement Form</h1>
+      <form onSubmit={handleSubmit} className={styles.form}>
         {[
           'clientName',
           'clientId',
@@ -63,39 +82,52 @@ const DivorceAgreementForm = ({ submitForm }) => {
           'children',
           'propertyDivision',
           'alimony',
+          'spouse1Address',
+          'spouse2Address',
+          'marriageDate',
+          'marriageLocation',
+          'child1Name',
+          'child1DOB',
+          'child2Name',
+          'child2DOB',
+          'custodyArrangement',
+          'visitationSchedule',
+          'childSupport',
+          'realPropertyDivision',
+          'vehicleDivision',
+          'bankAccountDivision',
+          'retirementAccountDivision',
+          'personalPropertyDivision',
+          'alimonyAmount',
+          'alimonyDuration',
+          'alimonyStartDate',
+          'spouse1Name',
+          'spouse1Debts',
+          'spouse2Name',
+          'spouse2Debts',
+          'jurisdiction',
+          'spouse1SignatureDate',
+          'spouse2SignatureDate',
+          'witnessSignatureDate',
+          'notarySignatureDate',
         ].map((field) => (
-          <div key={field} style={{ marginBottom: '10px' }}>
-            <label>
-              {field
-                .charAt(0)
-                .toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1') + ':'}
-              <input
-                type="text"
-                name={field}
-                value={formData[field]}
-                onChange={handleChange}
-                placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1')}`}
-                style={{
-                  marginLeft: '10px',
-                  padding: '5px',
-                  width: '300px',
-                }}
-              />
+          <div key={field} className={styles.field}>
+            <label className={styles.label}>
+              {field.charAt(0).toUpperCase() +
+                field.slice(1).replace(/([A-Z])/g, ' $1')}
+              :
             </label>
+            <input
+              type={field.toLowerCase().includes('date') ? 'date' : 'text'}
+              name={field}
+              value={formData[field]}
+              onChange={handleChange}
+              placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1')}`}
+              className={styles.input}
+            />
           </div>
         ))}
-        <button
-          type="submit"
-          style={{
-            marginTop: '10px',
-            padding: '10px 20px',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer',
-          }}
-        >
+        <button type="submit" className={styles.submitButton}>
           Submit
         </button>
       </form>

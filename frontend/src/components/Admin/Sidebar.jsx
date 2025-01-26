@@ -76,7 +76,7 @@ const Sidebar = () => {
           </button>
           {showTemplatesDropdown && (
             <ul className={styles.dropdownMenu}>
-              <li><Link to="/admin/templates/post" className={styles.link}>Post</Link></li>
+              <li><Link to="/divorsetemplate" className={styles.link}>Post</Link></li>
               <li><Link to="/document" className={styles.link}>Documents</Link></li>
             </ul>
           )}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DivorceTemplate from "./DivorceTemplate"; 
+import Sidebar from '../Sidebar';
 
 const ClientCards = () => {
   const [clients, setClients] = useState([]);
@@ -22,35 +23,32 @@ const ClientCards = () => {
     fetchClients();
   }, []);
 
-  // Fetch agreement data for a specific client
-  const fetchAgreementData = async (clientId) => {
+  // Handle button click, pass the entire client object
+  const handleCreateDocument = (clientId) => {
     setLoading(true);
     setError(null);
-  
-    try {
-      const response = await axios.get(`http://localhost:8080/api/divorse-agreement/${clientId}`);
-      setSelectedClient((prev) => ({
-        ...prev,
-        agreementData: response.data.data, // Attach fetched data to the selected client
-      }));
-    } catch (err) {
-      setError("Failed to fetch agreement data.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  // Handle button click, pass the entire client object
-  const handleCreateDocument = (client) => {
-    setSelectedClient(client);
-    fetchAgreementData(client.clientId); // Fetch agreement data using client ID
+    // Fetch agreement data for the selected client
+    const fetchAgreementData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/divorse-agreement/${clientId}`);
+        setSelectedClient(response.data.data); // Set the full client data, including the agreement data
+      } catch (err) {
+        setError("Failed to fetch agreement data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAgreementData();
   };
 
   return (
     <div>
+      <Sidebar/>
       <h1>Clients</h1>
 
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", marginLeft: "250px" }}>
         {clients.map((client) => (
           <div
             key={client._id}
@@ -65,7 +63,7 @@ const ClientCards = () => {
             <h3>{client.clientName}</h3>
             <p>Client ID: {client.clientId}</p>
             <button
-              onClick={() => handleCreateDocument(client)}
+              onClick={() => handleCreateDocument(client.clientId)} // Pass the client ID to fetch agreement data
               style={{
                 padding: "10px 20px",
                 backgroundColor: "#4CAF50",
@@ -81,54 +79,8 @@ const ClientCards = () => {
         ))}
       </div>
 
-      {/* Display the selected client details */}
-      {/* {selectedClient && (
-        <div
-          style={{
-            marginTop: "20px",
-            padding: "20px",
-            fontFamily: "Arial, sans-serif",
-            border: "1px solid #ccc",
-            borderRadius: "10px",
-            backgroundColor: "#f9f9f9",
-            maxWidth: "600px",
-            margin: "20px auto",
-          }}
-        >
-          <h3>Selected Client Details</h3>
-          <pre
-            style={{
-              backgroundColor: "#f4f4f4",
-              padding: "10px",
-              borderRadius: "5px",
-              overflowX: "auto",
-            }}
-          >
-            {JSON.stringify(selectedClient, null, 2)}
-          </pre>
-          {loading && <div>Loading agreement data...</div>}
-          {error && <div style={{ color: "red" }}>{error}</div>}
-
-          {selectedClient.agreementData && (
-            <>
-              <h3>Agreement Data</h3>
-              <pre
-                style={{
-                  backgroundColor: "#f4f4f4",
-                  padding: "10px",
-                  borderRadius: "5px",
-                  overflowX: "auto",
-                }}
-              >
-                {JSON.stringify(selectedClient.agreementData, null, 2)}
-              </pre>
-            </>
-          )}
-        </div>
-      )} */}
-
       {/* Pass selected client data as props to DivorceTemplate */}
-      {selectedClient && selectedClient.agreementData && (
+      {selectedClient && (
         <DivorceTemplate
           clientName={selectedClient.clientName}
           clientId={selectedClient.clientId}
@@ -137,6 +89,23 @@ const ClientCards = () => {
           children={selectedClient.children}
           propertyDivision={selectedClient.propertyDivision}
           alimony={selectedClient.alimony}
+          spouse1Address={selectedClient.spouse1Address}
+          spouse2Address={selectedClient.spouse2Address}
+          marriageDate={selectedClient.marriageDate}
+          marriageLocation={selectedClient.marriageLocation}
+          child1Name={selectedClient.child1Name}
+          child1DOB={selectedClient.child1DOB}
+          child2Name={selectedClient.child2Name}
+          child2DOB={selectedClient.child2DOB}
+          custodyArrangement={selectedClient.custodyArrangement}
+          visitationSchedule={selectedClient.visitationSchedule}
+          childSupport={selectedClient.childSupport}
+          realPropertyDivision={selectedClient.realPropertyDivision}
+          vehicleDivision={selectedClient.vehicleDivision}
+          bankAccountDivision={selectedClient.bankAccountDivision}
+          retirementAccountDivision={selectedClient.retirementAccountDivision}
+          personalPropertyDivision={selectedClient.personalPropertyDivision}
+          alimonyAmount={selectedClient.alimonyAmount}
         />
       )}
     </div>

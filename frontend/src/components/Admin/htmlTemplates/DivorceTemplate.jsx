@@ -271,6 +271,7 @@ const DivorceAgreement = ({
           borderRadius: "10px",
           backgroundColor: "#f9f9f9",
           boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
+          marginLeft: "250px"
         }}
       >
         <JoditEditor
