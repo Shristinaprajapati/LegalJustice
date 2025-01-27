@@ -71,6 +71,9 @@ const ResetPassword = () => {
         <button type="submit" className={styles.green_btn}>
           Reset Password
         </button>
+
+        <a href="/login">Login from here</a>
+
       </form>
     </div>
   );

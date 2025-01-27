@@ -87,7 +87,7 @@ const Login = () => {
 
           <br />
           <Link to="/forgot-password" style={{ alignSelf: "flex-start" }}>
-            <p style={{ padding: "0 15px" }}>Forgot Password?</p>
+            <p>Forgot Password?</p>
           </Link>
           <br />
 

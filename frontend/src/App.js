@@ -22,7 +22,7 @@ import Documentpaper from "./components/Admin/Document/document.jsx";
 import TemplatePost from "./components/Admin/Templates/TemplatePost.jsx";
 
 
-import FormOne from "./components/ClientForm/form1.jsx";
+
 import TemplateOne from "./components/Admin/htmlTemplates/template1.jsx";
 
 import DivorseFrom from "./components/Admin/htmlTemplates/DivorseAgreementForm.jsx";
@@ -59,7 +59,6 @@ function App() {
         <Route path ="/documentpaper" element={<Documentpaper/>}/>
         <Route path ="/admin/templates/post" element={<TemplatePost/>}/>
 
-        <Route path ="/clientform/form1" element={<FormOne/>}/>
         <Route path ="/templateOne" element={<TemplateOne/>}/>
 
         <Route path ="/divorsefrom" element={<DivorseFrom/>}/>
