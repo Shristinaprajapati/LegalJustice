@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./Service.module.css";
-import Header from "./Main/Header.jsx";
 import PopupForm from "./PopupForm.jsx";
 import { FaGavel, FaFileContract, FaBalanceScale, FaBriefcase } from "react-icons/fa";
 
@@ -10,7 +9,7 @@ const serviceIcons = {
   documentation: <FaFileContract className={styles.serviceIcon} />,
 };
 
-const Service = () => {
+const ServiceComponent = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -69,7 +68,6 @@ const Service = () => {
 
   return (
     <>
-      <Header />
       <div className={styles.servicesContainer}>
         <h2 className={styles.sectionTitle}>Consulting Services</h2>
         <div className={styles.servicesGrid}>
@@ -78,7 +76,7 @@ const Service = () => {
           ) : (
             services.filter(service => service.category === "consulting").map(service => (
               <div className={styles.serviceCard} key={service._id}>
-                {serviceIcons[service.category] || <FaBriefcase className={styles.serviceIcon} />} {/* Default icon */}
+                {serviceIcons[service.category] || <FaBriefcase className={styles.serviceIcon} />} 
                 <h3 className={styles.serviceTitle}>{service.title}</h3>
                 <p className={styles.serviceDescription}>{service.description}</p>
                 <p className={styles.price}>Rs. {service.price}</p>
@@ -95,7 +93,7 @@ const Service = () => {
           ) : (
             services.filter(service => service.category === "documentation").map(service => (
               <div className={styles.serviceCard} key={service._id}>
-                {serviceIcons[service.category] || <FaBalanceScale className={styles.serviceIcon} />} {/* Default icon */}
+                {serviceIcons[service.category] || <FaBalanceScale className={styles.serviceIcon} />} 
                 <h3 className={styles.serviceTitle}>{service.title}</h3>
                 <p className={styles.serviceDescription}>{service.description}</p>
                 <p className={styles.price}>Rs. {service.price}</p>
@@ -116,4 +114,4 @@ const Service = () => {
   );
 };
 
-export default Service;
+export default ServiceComponent;

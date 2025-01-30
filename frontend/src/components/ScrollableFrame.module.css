@@ -1,205 +1,117 @@
-/* Services Container */
-.servicesContainer {
-  width: 80%;
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap; /* Allows cards to wrap to the next row */
-  gap: 30px; /* Space between the cards */
-  padding: 40px 0; /* Added padding for vertical spacing */
-}
-
-/* Section Heading */
-h2 {
-  width: 100%;
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-/* Service Card */
-.serviceCard {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  padding: 20px;
-  flex: 1 1 calc(50% - 30px); /* 50% width minus the gap size */
-  max-width: 48%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.serviceCard:hover {
-  transform: scale(1.02); /* Slight scaling on hover */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-/* Service Card Title */
-h3 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-size: 1.2rem;
-  color: #333;
-}
-
-/* Ratings Section */
-.ratings {
-  display: flex;
-  font-size: 0.9rem;
-  color: #999;
-  margin-bottom: 10px;
-}
-
-.stars {
-  color: #f05a24; /* Star ratings color */
-  margin-right: 10px;
-}
-
-/* Price and Detail Button Section */
-.priceDetail {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.price p {
-  margin: 0;
-}
-
-.price p:last-child {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #f05a24;
-}
-
-.detailBtn {
-  background-color: #f05a24;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-.detailBtn:hover {
-  background-color: #d9440f;
-}
+/* ScrollableFrame.module.css */
 
 /* Manage Cases Section */
 .manageCasesSection {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  background-color: #1c1c1c; /* Dark background color */
-  color: #ffffff; /* White text */
+  justify-content: flex-start; /* Align to the left */
+  background-color: #1c1c1c;
+  color: #ffffff;
   padding: 90px 80px;
   border-radius: 8px;
 }
 
-.content {
+.manageCasesSection .content {
   flex: 1;
   max-width: 40%;
+  text-align: left; /* Align text to the left */
 }
 
-.content h1 {
+.manageCasesSection .heading {
   font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 20px;
   color: #ffffff;
+  text-align: left; /* Align text to the left */
 }
 
-.content p {
+.manageCasesSection .paragraph {
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 30px;
-  color: #d0d0d0; /* Light gray for paragraph text */
+  color: #d0d0d0;
+  text-align: left; /* Align text to the left */
 }
 
-.talkToUsBtn {
+.manageCasesSection .talkToUsBtn {
+  max-width: 24%;
   padding: 10px 20px;
   background-color: transparent;
-  border: 1px solid #007BFF; /* Blue border */
+  border: 1px solid #007BFF;
   border-radius: 50px;
-  color: #007BFF; /* Blue text */
+  color: #007BFF;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-align: left; /* Align text to the left */
 }
 
-.talkToUsBtn:hover {
-  background-color: #007BFF; /* Blue background on hover */
-  color: #ffffff; /* White text on hover */
+.manageCasesSection .talkToUsBtn:hover {
+  background-color: #007BFF;
+  color: #ffffff;
 }
 
-.image {
+.manageCasesSection .image {
   flex: 1;
   max-width: 50%;
   display: flex;
   justify-content: center;
 }
 
-.image img {
-  border-radius: 8px; /* Rounded corners for the image */
-  max-width: 100%;
+.manageCasesSection .image img {
+  margin-left: 10rem;
+  border-radius: 8px;
+  max-width: 80%;
   height: auto;
   object-fit: cover;
 }
-
-
 
 /* Partner Section */
 .partnerSection {
   display: flex;
-  flex-direction: column; /* Stack heading then row */
+  flex-direction: column;
   padding: 60px 80px;
-  gap: 40px; /* Space between rows */
+  gap: 40px;
+  text-align: left; /* Align text to the left */
 }
 
-.partnerContent {
+.partnerSection .partnerContent {
   display: flex;
-  flex-direction: row; /* Image and text in one row */
-  gap: 40px; /* Space between image and text */
-  align-items: center; /* Align items vertically in the center */
+  flex-direction: row;
+  gap: 40px;
+  align-items: center;
 }
 
-.partnerImage {
-  flex: 1; /* Image takes 50% of the space */
+.partnerSection .partnerImage {
+  flex: 1;
 }
 
-.partnerImage img {
-  border-radius: 8px; /* Rounded corners */
-  max-width: 70%; /* Full width */
+.partnerSection .partnerImage img {
+  border-radius: 8px;
+  max-width: 70%;
   height: auto;
   object-fit: cover;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.partnerText {
-  
-  flex: 1.5; /* Text takes 50% of the space */
-  
-}
-.partnerText{
-  margin-top: 80px;
-  
+.partnerSection .partnerText {
+  flex: 1.5;
 }
 
+.partnerSection .subheading {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-left: 0;
+  margin-bottom: 50px;
+  text-align: left; /* Align text to the left */
+}
 
-
-.partnerText p {
+.partnerSection .paragraph {
   font-size: 1rem;
   line-height: 1.6;
-  max-width: 100%;
-  margin-bottom: 30px;
-  color: #424242; /* Light gray for paragraph text */
-  margin-left: 0; /* Reset margin-left for paragraph text */
+  color: #424242;
+  text-align: left; /* Align text to the left */
 }
-
 
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
@@ -209,54 +121,41 @@ h3 {
   }
 
   .manageCasesSection .content,
-  .partnerContent {
+  .partnerSection .partnerContent {
     max-width: 100%;
-    text-align: center;
-  }
-
-  .manageCasesSection .image,
-  .partnerImage {
-    margin-top: 20px;
+    text-align: left; /* Align text to the left */
   }
 }
 
 @media (max-width: 768px) {
-  .servicesContainer {
-    gap: 20px;
-  }
-
-  .serviceCard {
-    flex: 1 1 100%;
-  }
-
   .manageCasesSection,
   .partnerSection {
     padding: 40px 5%;
   }
 
-  .manageCasesSection h1,
-  .partnerContent h2 {
+  .manageCasesSection .heading,
+  .partnerSection .subheading {
     font-size: 2rem;
   }
 
-  .manageCasesSection p,
-  .partnerContent p {
+  .manageCasesSection .paragraph,
+  .partnerSection .paragraph {
     font-size: 1rem;
   }
 
-  .talkToUsBtn {
+  .manageCasesSection .talkToUsBtn {
     padding: 10px 20px;
   }
 }
 
 @media (max-width: 480px) {
-  .manageCasesSection h1,
-  .partnerContent h2 {
+  .manageCasesSection .heading,
+  .partnerSection .subheading {
     font-size: 1.8rem;
   }
 
-  .manageCasesSection p,
-  .partnerContent p {
+  .manageCasesSection .paragraph,
+  .partnerSection .paragraph {
     font-size: 0.95rem;
   }
 }

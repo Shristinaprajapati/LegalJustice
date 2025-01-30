@@ -1,14 +1,9 @@
-/* src/components/ParallaxSection.module.css */
-
 .parallax {
   position: relative;
   height: 770px; /* Ensure the parent has a height */
   overflow: hidden; /* Hide overflow */
   top: -100px;
 }
-
-
-
 
 .parallax:before {
   content: '';
@@ -17,7 +12,7 @@
   left: 0;
   width: 100%;
   height: 100%; /* Fill the parent height */
-  background-image: url('/public/Images/hero1.png'); /* Corrected path */
+  background-image: url('/public/Images/hero1.png'); 
   background-color: #1A1A1A; /* Fallback color */
   background-attachment: fixed; /* Parallax effect */
   background-position: center;
@@ -33,35 +28,36 @@
   top: 48%;
   left: 0;
   transform: translateY(-50%); /* Center vertically */
-  color: white;
-  text-align: left;
+  color: white; /* Ensure text color is white */
+  text-align: left; /* Align text to the left */
   padding: 1rem;
   margin-left: 5rem; /* 80px in rem */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  /* overflow-y: scroll; /* Enable vertical scrolling */
-  /* scrollbar-width: none; /* For Firefox */
   box-sizing: border-box; /* Ensures padding and border are included in the size */
 }
 
 .parallaxContent h1 {
   font-size: 2.5rem;
-  margin-bottom: 2.125rem; 
+  margin-bottom: 2.125rem;
+  color: white; /* Make the heading white */
+  text-align: left; /* Align heading to the left */
 }
 
 .parallaxContent p {
-  color: #FFF; 
-  font-family: 'Inter', sans-serif; 
-  font-size: 1rem; 
-  font-style: normal; 
-  font-weight: 400; 
-  line-height: 1.5rem; 
+  color: #FFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem;
   margin-bottom: 2.125rem; /* Space below the paragraph */
+  text-align: left; /* Align paragraph to the left */
 }
 
 .logoSection {
   overflow: hidden; /* Hide overflow */
   white-space: nowrap; /* Prevent line breaks */
-  width: 100%; 
+  width: 100%;
   margin-top: 39.125rem;
 }
 
@@ -74,7 +70,6 @@
   height: 4rem; /* Adjust height as needed */
   margin: 0 3rem; /* Space between logos */
 }
-
 
 @keyframes scroll {
   0% {
@@ -90,19 +85,18 @@
   font-size: 1rem;
   width: 11.8125rem; /* Width in rem */
   height: 2.9375rem; /* Height in rem */
-  padding: 0.2875rem 3.0rem; /* Padding in rem */
+  padding: 0.2875rem 3rem; /* Padding in rem */
   justify-content: center;
   align-items: center;
   gap: 0.625rem; /* Gap in rem */
   border-radius: 3.125rem; /* Border radius in rem */
   border: 2px solid #BDD1F5; /* Border color */
-  background-color: transparent; /* Background color, you can change it if needed */
-  color: #BDD1F5; /* Text color, adjust as needed */
+  background-color: transparent; /* Background color */
+  color: #BDD1F5; /* Text color */
   cursor: pointer; /* Change cursor on hover */
   transition: background-color 0.3s; /* Transition for hover effect */
 }
 
-/* Optional: Add hover effect */
 .contactButton:hover {
   background-color: rgba(189, 209, 245, 0.2); /* Slight background change on hover */
 }

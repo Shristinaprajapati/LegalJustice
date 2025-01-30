@@ -1,27 +1,11 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
-}
-
-.App {
-  text-align: center;
-}
-
 /* Parallax Section */
-.parallax {
+.parallaxSection {
   position: relative;
   height: 600px;
   overflow: hidden;
 }
 
-.parallax:before {
+.parallaxSection:before {
   content: '';
   position: absolute;
   top: 0;
@@ -52,32 +36,6 @@ body {
 
 .parallaxContent p {
   font-size: 1.5rem;
-}
-
-/* Services Section */
-.servicesSection {
-  padding: 40px 20px;
-}
-
-.servicesSection h2 {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-}
-
-.servicesList {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-
-.serviceItem {
-  flex: 1;
-  max-width: 300px;
-  margin: 10px;
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Practice Areas Section */
@@ -128,7 +86,6 @@ body {
 
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
-  .serviceItem,
   .practiceAreaItem {
     max-width: 90%;
   }
