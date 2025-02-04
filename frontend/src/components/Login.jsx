@@ -82,6 +82,9 @@ const Login = () => {
             Login
           </button>
         </form>
+        <div className={styles.signupLinkContainer}>
+          <p className={styles.paragraph}>Don't have an account? <Link to="/signup" className={styles.signupLink}>Sign Up</Link></p>
+        </div>
       </div>
       <div className={styles.loginImage}></div>
     </div>

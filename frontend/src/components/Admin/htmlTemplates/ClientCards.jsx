@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DivorceTemplate from "./DivorceTemplate"; 
 import Sidebar from '../Sidebar';
+import styles from './ClientCards.module.css'
 
 const ClientCards = () => {
   const [clients, setClients] = useState([]);
@@ -56,34 +57,18 @@ const ClientCards = () => {
   
 
   return (
-    <div>
-      <Sidebar/>
-      <h1>Clients</h1>
+    <div className={styles.maindiv}>
+      <Sidebar />
+      <h1 className={styles.heading}>Clients</h1>
 
-      <div style={{ display: "flex", flexWrap: "wrap", marginLeft: "250px" }}>
+      <div className={styles.clientCardsContainer}>
         {clients.map((client) => (
-          <div
-            key={client._id}
-            style={{
-              border: "1px solid #ccc",
-              borderRadius: "10px",
-              padding: "20px",
-              margin: "10px",
-              width: "250px",
-            }}
-          >
+          <div key={client._id} className={styles.clientCard}>
             <h3>{client.clientName}</h3>
-            <p>Client ID: {client.clientId}</p>
+            <p className={styles.clientIdStyle}>Client ID: {client.clientId}</p>
             <button
               onClick={() => handleCreateDocument(client.clientId)} // Pass the client ID to fetch agreement data
-              style={{
-                padding: "10px 20px",
-                backgroundColor: "#4CAF50",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-                cursor: "pointer",
-              }}
+              className={styles.createDocumentButton}
             >
               Create Document
             </button>
@@ -92,10 +77,8 @@ const ClientCards = () => {
       </div>
 
       {/* Show loading spinner while fetching agreement data */}
-      {loading && <p>Loading agreement data...</p>}
-
-      {/* Display error message if any */}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {loading && <p className={styles.loadingMessage}>Loading agreement data...</p>}
+      {error && <p className={styles.errorMessage}>{error}</p>}
 
       {/* Pass selected client data as props to DivorceTemplate */}
       {selectedClient && (

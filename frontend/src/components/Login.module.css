@@ -98,7 +98,7 @@
 }
 
 .loginButton:hover {
-  background-color: #1e40af;
+  background-color: #2563eb;
   transform: translateY(-1px);
 }
 
@@ -124,3 +124,27 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
   }
 }
+
+.signupLinkContainer {
+  text-align: center;
+  margin-top: -40px;
+  
+}
+
+.paragraph {
+  font-size: 14px;
+  color: #333;
+  font-style: normal;
+}
+
+.signupLink {
+  color: #1e40af;
+  text-decoration: none;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.signupLink:hover {
+  text-decoration: underline;
+}
+
