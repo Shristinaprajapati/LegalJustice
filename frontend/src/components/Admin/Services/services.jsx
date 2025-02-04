@@ -78,12 +78,14 @@ const AdminServices = () => {
             value={newService.title}
             onChange={handleInputChange}
           />
+          <div className={styles.textSpace}>
           <textarea
             name="description"
             placeholder="Service Description"
             value={newService.description}
             onChange={handleInputChange}
           />
+          </div>
           <input
             type="number"
             name="price"
@@ -125,7 +127,7 @@ const AdminServices = () => {
                 <th>Title</th>
                 <th>Description</th>
                 <th>Price (Rs.)</th>
-                <th>Category</th> {/* Changed to Category */}
+                <th>Category</th> 
                 <th>Actions</th>
               </tr>
             </thead>

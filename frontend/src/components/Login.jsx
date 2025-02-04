@@ -45,11 +45,11 @@ const Login = () => {
   return (
     <div className={styles.loginContainer}>
       <div className={styles.loginForm}>
-        <h2>Login</h2>
+        <h2 className={styles.heading}>Login</h2>
         {error && <div className={styles.errorMessage}>{error}</div>}
         <form onSubmit={handleSubmit}>
-          <div>
-            <label>Email:</label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Email:</label>
             <input
               type="email"
               name="email"
@@ -57,10 +57,11 @@ const Login = () => {
               onChange={handleChange}
               placeholder="Enter your email"
               required
+              className={styles.inputField}
             />
           </div>
-          <div>
-            <label>Password:</label>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Password:</label>
             <input
               type="password"
               name="password"
@@ -68,18 +69,18 @@ const Login = () => {
               onChange={handleChange}
               placeholder="Enter your password"
               required
+              className={styles.inputField}
             />
           </div>
           <Link to="/forgot-password" className={styles.forgotPassword}>
             Forgot Password?
           </Link>
           <div className={styles.captchaContainer}>
-            <ReCAPTCHA
-              sitekey={SITE_KEY}
-              onChange={setRecaptchaValue}
-            />
+            <ReCAPTCHA sitekey={SITE_KEY} onChange={setRecaptchaValue} />
           </div>
-          <button type="submit" className={styles.loginButton}>Login</button>
+          <button type="submit" className={styles.loginButtonSubmit}>
+            Login
+          </button>
         </form>
       </div>
       <div className={styles.loginImage}></div>

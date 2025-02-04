@@ -33,6 +33,7 @@ router.get('/', async (req, res) => {
         _id: booking._id,
         serviceId: service, // May be null
         clientId: client, // May be null
+        category: booking.category, // Include category here
         date: booking.date,
         timeSlot: booking.timeSlot,
         status: booking.status,
@@ -42,15 +43,14 @@ router.get('/', async (req, res) => {
       };
     });
 
-    res.status(200).json({
-      message: 'Bookings fetched successfully',
-      bookings: bookingsWithDetails,
-    });
+    res.status(200).json({ bookings: bookingsWithDetails });
+
   } catch (err) {
-    console.error('Error fetching bookings:', err); // Log error for debugging
+    console.error('Error fetching bookings:', err);
     res.status(500).json({ message: 'Error fetching bookings', error: err.message });
   }
 });
+
 
 
 // Create a booking (POST)
@@ -73,7 +73,8 @@ router.post('/', async (req, res) => {
       serviceId,
       clientId,
       date: category === "consulting" ? date : undefined, // Include date only for consulting
-      timeSlot: category === "consulting" ? timeSlot : undefined, // Include timeSlot only for consulting
+      timeSlot: category === "consulting" ? timeSlot : undefined, 
+      category,
       status: 'Pending', // Default status for new bookings
     };
 

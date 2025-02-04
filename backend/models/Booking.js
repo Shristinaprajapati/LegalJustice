@@ -28,8 +28,14 @@ const bookingSchema = new mongoose.Schema({
   adminNotes: { 
     type: String, 
     required: false, 
+  },
+  category: { 
+    type: String, 
+    enum: ['consulting', 'documentation'], 
+    required: false
   }
-}, { 
+},
+ { 
   timestamps: true 
 });
 

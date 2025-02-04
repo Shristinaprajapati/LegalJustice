@@ -61,11 +61,14 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
           clientId: formData.clientId,
           date: formData.date,
           timeSlot: formData.timeSlot,
+          category: formData.category,  
+          
         };
       } else {
         bookingData = {
           serviceId: formData.serviceId,
           clientId: formData.clientId,
+          category: formData.category,
         };
       }
 
@@ -134,7 +137,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
                     required
                   />
                 </label>
-                <label>
+                {/* <label>
                   Name:
                   <input
                     type="text"
@@ -163,7 +166,9 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
                     readOnly
                     required
                   />
-                </label>
+                </label> */}
+
+                
                 <label>
                   Date:
                   <input

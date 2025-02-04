@@ -91,39 +91,42 @@ const AdminCalendar = () => {
         value={selectedDate}
         tileClassName={tileClassName} // Apply custom styles for highlighted dates
       />
-      <div className={styles.detailsContainer}>
-        <h3>Bookings for {selectedDate.toDateString()}</h3>
-        {bookingsForSelectedDate.length > 0 ? (
-          <ul className={styles.bookingList}>
-            {bookingsForSelectedDate.map((booking) => (
-              <li key={booking._id} className={styles.bookingItem}>
-                <p>
-                  <strong>Client:</strong> {booking.clientId?.name || 'N/A'}
-                </p>
-                <p>
-                  <strong>Email:</strong> {booking.clientId?.email || 'N/A'}
-                </p>
-                <p>
-                  <strong>Service:</strong> {booking.serviceId?.title || 'N/A'}
-                </p>
-                <p>
-                  <strong>Time Slot:</strong> {booking.timeSlot || 'N/A'}
-                </p>
-                {booking.status === 'Confirmed' && (
-                  <button
-                    onClick={() => handleDeleteBooking(booking._id)}
-                    className={styles.statusButtonCancel}
-                  >
-                    Done
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No bookings for this date.</p>
-        )}
-      </div>
+  <div className={styles.detailsContainer}>
+  <h3 className={styles.dateHeader}>Bookings for {selectedDate.toDateString()}</h3>
+  {bookingsForSelectedDate.length > 0 ? (
+    <ul className={styles.bookingList}>
+      {bookingsForSelectedDate.map((booking) => (
+        <li key={booking._id} className={styles.bookingItem}>
+          <div className={styles.bookingDetails}>
+            <p>
+              <strong>Client:</strong> {booking.clientId?.name || 'N/A'}
+            </p>
+            <p>
+              <strong>Email:</strong> {booking.clientId?.email || 'N/A'}
+            </p>
+            <p>
+              <strong>Service:</strong> {booking.serviceId?.title || 'N/A'}
+            </p>
+            <p>
+              <strong>Time Slot:</strong> {booking.timeSlot || 'N/A'}
+            </p>
+          </div>
+          {booking.status === 'Confirmed' && (
+            <button
+              onClick={() => handleDeleteBooking(booking._id)}
+              className={styles.statusButtonCancel}
+            >
+              Done
+            </button>
+          )}
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <p className={styles.noBookingsText}>No bookings for this date.</p>
+  )}
+</div>
+
     </div>
   );
 };
