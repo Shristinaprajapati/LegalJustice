@@ -1,5 +1,6 @@
-import React, { useRef } from "react";
+import React, { useRef , useEffect} from "react";
 import JoditEditor from "jodit-react";
+import axios from "axios";
 
 const DivorceAgreement = ({ 
   clientName, 
@@ -39,6 +40,8 @@ const DivorceAgreement = ({
   notarySignatureDate
 }) => {
   const editor = useRef(null);
+  const title = "Divorce Agreement";
+ 
 
   // Template for the divorce agreement
   const agreementTemplate = `
@@ -63,7 +66,7 @@ const DivorceAgreement = ({
 
     h1, h2, h3 {
       font-size: 18px;
-      text-align: center;
+      text-align: left;
       font-weight: bold;
       margin: 10px 0;
     }
@@ -258,6 +261,58 @@ const DivorceAgreement = ({
     .replaceAll("{witnessSignatureDate}", witnessSignatureDate || "____")
     .replaceAll("{notarySignatureDate}", notarySignatureDate || "____");
 
+
+    
+// Handle save content
+const handleSaveContent = async () => {
+  
+  if (!editor.current) {
+    alert("Editor is not initialized.");
+    return;
+  }
+
+  const agreementHTML = editor.current.value; // Get full HTML content
+  const agreementText = agreementHTML
+  .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")  // Remove <style> tags and their content
+  .replace(/<\/?[^>]+(>|$)/g, "");  // Remove all remaining HTML tags but keep text
+
+  console.log(agreementText);
+
+  console.log(clientId);
+
+  if (!clientId || !clientName || !title || !agreementText.trim()) {
+    alert("All fields are required.");
+    return;
+  }
+
+  try {
+    const response = await axios.post("http://localhost:8080/api/document/save", JSON.stringify({
+      clientId,
+      clientName,
+      title,
+      agreementContent: agreementText,
+    }), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    
+
+    if (response.status === 201) {
+      alert("Document saved successfully!");
+    } else {
+      alert("Error saving document.");
+    }
+  } catch (error) {
+    console.error("Error saving document:", error);
+    alert("Error saving document.");
+  }
+};
+
+
+
+    
+
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
       <h1 style={{ textAlign: "center" }}>Divorce Agreement Document</h1>
@@ -287,9 +342,42 @@ const DivorceAgreement = ({
             defaultFont: "Arial",
           }}
         />
+
+         {/* Action Buttons */}
+         <div style={{ marginTop: "20px", textAlign: "center" }}>
+        <button
+        onClick={handleSaveContent}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#4CAF50",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            marginRight: "10px"
+          }}
+        >
+          Save Changes
+        </button>
+        {/* <button
+          onClick={handleCancel}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#f44336",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer"
+          }}
+        >
+          Cancel
+        </button> */}
+      </div>
+
       </div>
     </div>
   );
 };
 
 export default DivorceAgreement;
+           

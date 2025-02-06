@@ -82,13 +82,13 @@
 .captchaContainer {
   display: flex;
   justify-content: center;
-  margin: 15px 0;
 }
 
 .loginButtonSubmit {
   background-color: #2563eb;
+  margin-top: -25px;
   color: white;
-  padding: 12px;
+  padding: 1px;
   border: none;
   border-radius: 8px;
   font-size: 16px;

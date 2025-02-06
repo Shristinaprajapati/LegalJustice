@@ -72,6 +72,12 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
+                <Link to="/document" className={getLinkClass('/document')}>
+                <FaFileAlt className={styles.icon} />
+                  Documents
+                </Link>
+              </li>
+        <li>
           <button
             className={`${styles.dropdownToggle} ${showTemplatesDropdown ? styles.active : ''}`}
             onClick={toggleDropdown}
@@ -86,11 +92,11 @@ const Sidebar = () => {
                   Divorce Agreements
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/document" className={getLinkClass('/document')}>
                   Documents
                 </Link>
-              </li>
+              </li> */}
             </ul>
           )}
         </li>

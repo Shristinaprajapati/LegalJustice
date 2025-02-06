@@ -15,6 +15,9 @@ const htmlTemplates = require("./routes/htmlTemplates");
 
 const divorseAgreement = require("./routes/divorceAgreementRoutes");
 
+
+const document = require("./routes/documentroute");
+
 // const form1 = require('./routes/form1data')
 
 
@@ -38,6 +41,7 @@ app.use('/api/check-email', profileRoute);
 // app.use("/api/divorseagreement", form1);
 app.use("/api/divorse-agreement", divorseAgreement);
 
+app.use("/api/document", document);
 
 app.use('/api', htmlTemplates);
 
