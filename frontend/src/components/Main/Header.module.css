@@ -1,149 +1,174 @@
 /* Header Styles */
 .header {
-    background-color: rgba(26, 26, 26, 0.5);
-    backdrop-filter: blur(0px);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 40px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .scrolled {
-    background-color: #f8f9fa;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-  }
-  
-  .logo img {
-    width: 185px;
-    height: 44px;
-    object-fit: contain;
-  }
-  
+  background-color: rgba(26, 26, 26, 0.5);
+  backdrop-filter: blur(0px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scrolled {
+  background-color: #f8f9fa;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.logo img {
+  width: 185px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.navLinks {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navLinks li a {
+  text-decoration: none;
+  font-size: 1.09rem;
+  color: #ffffff;
+  font-weight: 500;
+  padding: 8px 15px;
+  transition: color 0.3s ease;
+}
+
+.navLinks li a:hover {
+  color: #ffffff;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #ffffff;
+  margin: 5px 0;
+  transition: all 0.3s ease;
+}
+
+/* Auth buttons: Login and Sign Up */
+.authButtons {
+  display: flex;
+  gap: 10px;
+}
+
+.loginBtn,
+.signupBtn {
+  padding: 9px 30px;
+  border: 1px solid #fbfbfb;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.loginBtn {
+  border-radius: 3.125rem;
+  border: 2px solid #ffffff;
+  color: white;
+  background-color: transparent;
+}
+
+.signupBtn {
+  border-radius: 3.125rem;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+}
+
+.loginBtn:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.signupBtn:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+/* Bell Icon Notification */
+.notificationBell {
+  position: relative;
+  cursor: pointer;
+  margin-left: 20px;
+  font-size: 1.5rem;
+  color: #ffffff;
+  transition: color 0.3s ease;
+}
+
+.notificationBell:hover {
+  color: #0056b3;
+}
+
+.notificationBell .notificationCount {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 50%;
+  padding: 5px 8px;
+  font-size: 12px;
+}
+
+/* Media Queries for Header Responsiveness */
+@media (max-width: 768px) {
   .navLinks {
-    list-style: none;
-    display: flex;
-    gap: 20px;
-  }
-  
-  .navLinks li a {
-    text-decoration: none;
-    font-size: 1.09rem;
-    color: #ffffff;
-    font-weight: 500;
-    padding: 8px 15px;
-    transition: color 0.3s ease;
-  }
-  
-  .navLinks li a:hover {
-    color: #ffffff;
-  }
-  
-  .hamburger {
     display: none;
-    flex-direction: column;
-    cursor: pointer;
-  }
-  
-  .bar {
-    width: 25px;
-    height: 3px;
-    background-color: #ffffff;
-    margin: 5px 0;
-    transition: all 0.3s ease;
-  }
-  
-  /* Auth buttons: Login and Sign Up */
-  .authButtons {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .loginBtn,
-  .signupBtn {
-    padding: 9px 30px;
-    border: 1px solid #fbfbfb;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-  
-  .loginBtn {
-    border-radius: 3.125rem;
-    border: 2px solid #ffffff;
-    color: white;
-    background-color: transparent;
-  }
-  
-  .signupBtn {
-    border-radius: 3.125rem;
-    background-color: #ffffff;
-    color: rgb(0, 0, 0);
-  }
-  
-  .loginBtn:hover {
-    background-color: #0056b3;
-    color: white;
-  }
-  
-  .signupBtn:hover {
-    background-color: #0056b3;
-    color: white;
-  }
-  
-  /* Media Queries for Header Responsiveness */
-  @media (max-width: 768px) {
-    .navLinks {
-      display: none;
-    }
-  
-    .navOpen .navLinks {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      top: 60px;
-      left: 0;
-      width: 100%;
-      background-color: #fff;
-      padding: 20px 0;
-      gap: 20px;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-      z-index: 999;
-    }
-  
-    .authButtons {
-      display: none;
-    }
-  
-    .hamburger {
-      display: flex;
-    }
-  
-    .navOpen {
-      display: flex;
-      flex-direction: column;
-      position: absolute;
-      background-color: #1e3050;
-      top: 60px;
-      left: 0;
-      right: 0;
-      z-index: 999;
-    }
-  
-    .navOpen .navLinks {
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-      padding: 20px 0;
-    }
   }
 
- /* Profile Section for Logged-In Users */
+  .navOpen .navLinks {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 20px 0;
+    gap: 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+
+  .authButtons {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .navOpen {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    background-color: #1e3050;
+    top: 60px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+  }
+
+  .navOpen .navLinks {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 0;
+  }
+}
+
+/* Profile Section for Logged-In Users */
 .profileSection {
   margin-left: 120px;
   display: flex;
@@ -245,4 +270,73 @@
     font-size: 13px;
     padding: 8px 0;
   }
+}
+.notificationIcon {
+  position: relative;
+  display: inline-block;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.bellIcon {
+  font-size: 24px;
+  color: #e9e9e9;
+  transition: color 0.3s ease;
+}
+
+.bellIcon:hover {
+  color: #0056b3; /* Hover effect for bell icon */
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.notificationsDropdown {
+  position: absolute;
+  top: 35px; /* Adjusted to appear below the bell icon */
+  right: 0;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  width: 250px;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px 15px;
+  z-index: 1000;
+  display: none; /* Hidden by default, will be shown with JS */
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.notificationsDropdown.show {
+  display: block;
+  opacity: 1;
+}
+
+.notificationsDropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.notificationsDropdown ul li {
+  padding: 8px 12px;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+.notificationsDropdown ul li:hover {
+  background-color: #f1f1f1;
+  color: #0056b3;
 }

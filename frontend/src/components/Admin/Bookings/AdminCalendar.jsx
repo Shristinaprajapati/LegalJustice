@@ -4,31 +4,31 @@ import 'react-calendar/dist/Calendar.css'; // Import Calendar styles
 import styles from './AdminCalendar.module.css'; // Optional: Custom styles
 import axios from 'axios';
 
-const AdminCalendar = () => {
+const AdminCalendar = ({ refreshCalendar }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [confirmedDates, setConfirmedDates] = useState([]);
   const [bookingsForSelectedDate, setBookingsForSelectedDate] = useState([]);
 
   // Fetch all bookings from the backend
+  const fetchBookings = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/bookings'); // Fetch all bookings
+      const bookings = response.data.bookings || [];
+
+      const formattedBookings = bookings.map((booking) => ({
+        ...booking,
+        date: new Date(booking.date), // Convert booking date to a Date object
+      }));
+
+      setConfirmedDates(formattedBookings);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/api/bookings'); // Fetch all bookings
-        const bookings = response.data.bookings || [];
-
-        const formattedBookings = bookings.map((booking) => ({
-          ...booking,
-          date: new Date(booking.date), // Convert booking date to a Date object
-        }));
-
-        setConfirmedDates(formattedBookings);
-      } catch (error) {
-        console.error('Error fetching bookings:', error);
-      }
-    };
-
     fetchBookings();
-  }, []);
+  }, [refreshCalendar]); // Re-fetch bookings when refreshCalendar changes
 
   // Handle date selection
   const handleDateChange = (date) => {
@@ -91,42 +91,41 @@ const AdminCalendar = () => {
         value={selectedDate}
         tileClassName={tileClassName} // Apply custom styles for highlighted dates
       />
-  <div className={styles.detailsContainer}>
-  <h3 className={styles.dateHeader}>Bookings for {selectedDate.toDateString()}</h3>
-  {bookingsForSelectedDate.length > 0 ? (
-    <ul className={styles.bookingList}>
-      {bookingsForSelectedDate.map((booking) => (
-        <li key={booking._id} className={styles.bookingItem}>
-          <div className={styles.bookingDetails}>
-            <p>
-              <strong>Client:</strong> {booking.clientId?.name || 'N/A'}
-            </p>
-            <p>
-              <strong>Email:</strong> {booking.clientId?.email || 'N/A'}
-            </p>
-            <p>
-              <strong>Service:</strong> {booking.serviceId?.title || 'N/A'}
-            </p>
-            <p>
-              <strong>Time Slot:</strong> {booking.timeSlot || 'N/A'}
-            </p>
-          </div>
-          {booking.status === 'Confirmed' && (
-            <button
-              onClick={() => handleDeleteBooking(booking._id)}
-              className={styles.statusButtonCancel}
-            >
-              Done
-            </button>
-          )}
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p className={styles.noBookingsText}>No bookings for this date.</p>
-  )}
-</div>
-
+      <div className={styles.detailsContainer}>
+        <h3 className={styles.dateHeader}>Bookings for {selectedDate.toDateString()}</h3>
+        {bookingsForSelectedDate.length > 0 ? (
+          <ul className={styles.bookingList}>
+            {bookingsForSelectedDate.map((booking) => (
+              <li key={booking._id} className={styles.bookingItem}>
+                <div className={styles.bookingDetails}>
+                  <p>
+                    <strong>Client:</strong> {booking.clientId?.name || 'N/A'}
+                  </p>
+                  <p>
+                    <strong>Email:</strong> {booking.clientId?.email || 'N/A'}
+                  </p>
+                  <p>
+                    <strong>Service:</strong> {booking.serviceId?.title || 'N/A'}
+                  </p>
+                  <p>
+                    <strong>Time Slot:</strong> {booking.timeSlot || 'N/A'}
+                  </p>
+                </div>
+                {booking.status === 'Confirmed' && (
+                  <button
+                    onClick={() => handleDeleteBooking(booking._id)}
+                    className={styles.statusButtonCancel}
+                  >
+                    Done
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className={styles.noBookingsText}>No bookings for this date.</p>
+        )}
+      </div>
     </div>
   );
 };

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const divorceAgreementSchema = new mongoose.Schema({
   clientName: { type: String, required: true },
   clientId: { type: String, required: true },
+  serviceId: { type: String, required: true },
   spouse1: { type: String, required: true },
   spouse2: { type: String, required: true },
   children: { type: String, required: false },

@@ -1,0 +1,149 @@
+/* Main Wrapper */
+.wrapper {
+    display: flex;
+    background-color: #f4f4f9;
+  }
+  
+
+  
+  /* Main Content */
+  .mainContent {
+    margin-left: 250px;
+    flex-grow: 1;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  /* Back Button */
+  .backButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #007bff;
+    font-weight: bold;
+    margin-bottom: -40px; /* Adds spacing under the back button */
+    transition: color 0.3s ease;
+  }
+  
+  .backButton:hover {
+    color: #0056b3;
+  }
+  
+  .backIcon {
+    font-size: 20px;
+  }
+  
+  /* Title Section */
+  .titleSection {
+    margin-bottom: 10px;
+  }
+  
+  .title {
+    font-size: 26px;
+    font-weight: 600;
+    color: #333;
+    text-align: left;
+  }
+  
+/* Document Details Text */
+.documentText {
+    font-size: 16px;
+    color: #444;
+    text-align: left;
+    font-family: Arial, sans-serif;
+    margin-bottom: 2px; /* Adds spacing between paragraphs */
+    margin-left: -2px;
+  }
+  
+  .documentDetails{
+    margin-left: -5px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+  }
+  /* Editor Section */
+  .editorContainer {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  
+  .editorLabel {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-top: 5px;
+    margin-bottom: 25px;
+    text-align: left;
+  }
+  
+  /* No Document Found Message */
+  .noDocument {
+    text-align: center;
+    font-size: 18px;
+    color: #ff4d4d;
+    margin-top: 50px;
+  }
+
+  
+ /* Button Container */
+.buttonsWrapper {
+    display: flex;
+    justify-content: space-between;  /* Distribute buttons to opposite corners */
+    margin-top: 20px;
+  }
+  
+  /* Save Button Container */
+  .saveButtonContainer {
+    flex: 1;  /* Allow the save button to align left */
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  /* Save Button */
+  .saveButton {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .saveButton:hover {
+    background-color: #218838;
+  }
+  
+  /* Convert to PDF Button Container */
+  .convertButtonContainer {
+    flex: 1;  /* Allow the convert button to align right */
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  /* Convert to PDF Button */
+  .convertButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .convertButton:hover {
+    background-color: #0056b3;
+  }
+  

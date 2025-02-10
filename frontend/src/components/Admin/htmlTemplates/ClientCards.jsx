@@ -9,6 +9,7 @@ const ClientCards = () => {
   const [selectedClient, setSelectedClient] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Fetch all clients from the backend
   useEffect(() => {
@@ -54,12 +55,31 @@ const ClientCards = () => {
   
     fetchAgreementData();
   };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredClients = clients.filter((client) =>
+    client.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    client.clientId.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   
 
   return (
     <div className={styles.maindiv}>
       <Sidebar />
-      <h1 className={styles.heading}>Clients</h1>
+      <h1 className={styles.divorceheading}>Divorce Agreements</h1>
+        {/* Search Bar in the Right Section */}
+        <div className={styles.searchContainer}>
+          <input
+            type="text"
+            className={styles.searchBar}
+            placeholder="Search by Name or ID"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+        </div>
 
       <div className={styles.clientCardsContainer}>
         {clients.map((client) => (
@@ -70,7 +90,7 @@ const ClientCards = () => {
               onClick={() => handleCreateDocument(client.clientId)} // Pass the client ID to fetch agreement data
               className={styles.createDocumentButton}
             >
-              Create Document
+              See Document
             </button>
           </div>
         ))}
@@ -83,44 +103,7 @@ const ClientCards = () => {
       {/* Pass selected client data as props to DivorceTemplate */}
       {selectedClient && (
   <>
-    {/* Log the props passed to DivorceTemplate */}
-    {console.log("Props passed to DivorceTemplate:", {
-      clientName: selectedClient.clientName,
-      clientId: selectedClient.clientId,
-      spouse1: selectedClient.spouse1,
-      spouse2: selectedClient.spouse2,
-      children: selectedClient.children,
-      propertyDivision: selectedClient.propertyDivision,
-      alimony: selectedClient.alimony,
-      spouse1Address: selectedClient.spouse1Address,
-      spouse2Address: selectedClient.spouse2Address,
-      marriageDate: selectedClient.marriageDate,
-      marriageLocation: selectedClient.marriageLocation,
-      child1Name: selectedClient.child1Name,
-      child1DOB: selectedClient.child1DOB,
-      child2Name: selectedClient.child2Name,
-      child2DOB: selectedClient.child2DOB,
-      custodyArrangement: selectedClient.custodyArrangement,
-      visitationSchedule: selectedClient.visitationSchedule,
-      childSupport: selectedClient.childSupport,
-      realPropertyDivision: selectedClient.realPropertyDivision,
-      vehicleDivision: selectedClient.vehicleDivision,
-      bankAccountDivision: selectedClient.bankAccountDivision,
-      retirementAccountDivision: selectedClient.retirementAccountDivision,
-      personalPropertyDivision: selectedClient.personalPropertyDivision,
-      alimonyAmount: selectedClient.alimonyAmount,
-      alimonyDuration: selectedClient.alimonyDuration,
-      alimonyStartDate: selectedClient.alimonyStartDate,
-      spouse1Name: selectedClient.spouse1Name,
-      spouse1Debts: selectedClient.spouse1Debts,
-      spouse2Name: selectedClient.spouse2Name,
-      spouse2Debts: selectedClient.spouse2Debts,
-      jurisdiction: selectedClient.jurisdiction,
-      spouse1SignatureDate: selectedClient.spouse1SignatureDate,
-      spouse2SignatureDate: selectedClient.spouse2SignatureDate,
-      witnessSignatureDate: selectedClient.witnessSignatureDate,
-      notarySignatureDate: selectedClient.notarySignatureDate,
-    })}
+
 
     {/* Render DivorceTemplate with the props */}
     <DivorceTemplate

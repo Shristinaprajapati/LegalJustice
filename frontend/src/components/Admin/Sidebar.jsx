@@ -51,7 +51,18 @@ const Sidebar = () => {
 
   return (
     <div className={styles.sidebar}>
-      <h2>Legal Justice</h2>
+      <img 
+  src="/Images/logo1.png" 
+  alt="Legal Justice Logo" 
+  style={{ 
+    width: '200px', 
+    height: 'auto', 
+    borderRadius: '8px', 
+    margin: '15px' 
+  }} 
+/>
+
+
       <ul>
         <li>
           <Link to="/admin/AdminDashboard" className={getLinkClass('/admin/AdminDashboard')}>
@@ -90,6 +101,11 @@ const Sidebar = () => {
               <li>
                 <Link to="/divorsetemplate" className={getLinkClass('/divorsetemplate')}>
                   Divorce Agreements
+                </Link>
+              </li>
+              <li>
+                <Link to="/propertytransfer" className={getLinkClass('/divorsetemplate')}>
+                  Property Transfer
                 </Link>
               </li>
               {/* <li>

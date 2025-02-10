@@ -3,6 +3,7 @@ import Sidebar from '../Sidebar';
 import axios from 'axios';
 import styles from './booking.module.css';
 import AdminCalendar from './AdminCalendar';
+import BookingPopup from './bookingpopup';
 
 const Booking = () => {
   const [bookings, setBookings] = useState({});
@@ -10,6 +11,12 @@ const Booking = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeBookingId, setActiveBookingId] = useState(null); // For tracking the booking with active "dots menu"
+  const [refreshCalendar, setRefreshCalendar] = useState(false); // New state for refresh
+
+   // New state for popup
+   const [showPopup, setShowPopup] = useState(false);
+   const [selectedBookingId, setSelectedBookingId] = useState(null);
+   const [popupCategory, setPopupCategory] = useState('');
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -36,22 +43,54 @@ const Booking = () => {
     fetchBookings();
   }, []);
 
-  const handleStatusChange = async (_id, newStatus, category) => {
+
+  const handleStatusChange = async (_id, newStatus, category, bypassPopup = false) => {
+    console.log(`Category: ${category}, New Status: ${newStatus}`);  // Debug log
     try {
-      const response = await axios.patch(`http://localhost:8080/api/bookings/${_id}`, { status: newStatus });
+      // Ensure _id is the correct booking ID, not the whole booking object
+      const bookingId = _id._id || _id;  // If _id is an object, extract the actual ID
+  
+      const response = await axios.patch(`http://localhost:8080/api/bookings/${bookingId}`, { status: newStatus });
+  
       if (response.status === 200) {
         setBookings((prevBookings) => ({
           ...prevBookings,
           [category]: prevBookings[category].map((booking) =>
-            booking._id === _id ? { ...booking, status: newStatus } : booking
+            booking._id === bookingId ? { ...booking, status: newStatus } : booking
           ),
         }));
+        setRefreshCalendar((prev) => !prev);
       } else {
         throw new Error(response.data.message || 'Failed to update status');
+      }
+  
+      if (category === 'documentation' && newStatus === 'Confirmed' && !bypassPopup) {
+        // Find the booking data using the bookingId
+        const bookingData = bookings[category].find((booking) => booking._id === bookingId);
+        
+        // Set the full booking data in state
+        setSelectedBookingId(bookingData);  // Pass the entire booking data
+  
+        // Show the popup
+        setShowPopup(true);
+        setPopupCategory(category);
       }
     } catch (err) {
       setError(`Error updating booking status: ${err.message}`);
     }
+  };
+  
+  
+  
+
+  const handlePopupConfirm = () => {
+    handleStatusChange(selectedBookingId, 'Confirmed', popupCategory, true);
+    setShowPopup(false);
+  };
+  
+
+  const handlePopupCancel = () => {
+    setShowPopup(false);
   };
 
   const handleDeleteBooking = async (_id, category) => {
@@ -81,6 +120,8 @@ const Booking = () => {
   const handleDotsClick = (bookingId) => {
     setActiveBookingId((prevId) => (prevId === bookingId ? null : bookingId)); // Toggle visibility of delete button
   };
+
+  
 
   if (loading) return <div>Loading bookings...</div>;
 
@@ -274,8 +315,20 @@ const Booking = () => {
         </div>
 
         <div className={styles.calendarSection}>
-          <AdminCalendar />
-        </div>
+        {(selectedCategory === "Consulting" || selectedCategory === "All") && (
+            <AdminCalendar refreshCalendar={refreshCalendar} />
+          )}
+
+  <BookingPopup 
+  show={showPopup} 
+  onConfirm={handlePopupConfirm} 
+  onCancel={handlePopupCancel} 
+  bookingData={selectedBookingId} // Pass the selected booking data
+/>
+
+      
+</div>
+
       </div>
     </div>
   );

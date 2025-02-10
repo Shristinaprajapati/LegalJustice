@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './AdminServices.module.css';
 import Sidebar from '../Sidebar'; // Import Sidebar component
+import DivorceAgreementForm from '..//htmlTemplates/DivorseAgreementForm';
 
 const AdminServices = () => {
   const [services, setServices] = useState([]);
@@ -10,6 +11,7 @@ const AdminServices = () => {
     description: '',
     price: '',
     category: '', // Use category instead of type
+    formTemplate: '', // Add field for formTemplate
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,7 +43,7 @@ const AdminServices = () => {
     try {
       const response = await axios.post('http://localhost:8080/api/services', newService);
       setServices([...services, response.data]);
-      setNewService({ title: '', description: '', price: '', category: '' }); // Reset form
+      setNewService({ title: '', description: '', price: '', category: '', formTemplate: '' }); // Reset form
     } catch (err) {
       setError('Failed to add service');
     }
@@ -61,6 +63,24 @@ const AdminServices = () => {
     return <div>Loading services...</div>;
   }
 
+  // Render specific form for each form template
+  const renderFormTemplate = () => {
+    switch (newService.formTemplate) {
+      case 'form1':
+        return <DivorceAgreementForm submitForm={handleAddService} />; // Render DivorceAgreementForm
+      case 'form2':
+        return <div>Form 2 Content</div>; // Replace with actual form content for form2
+      case 'form3':
+        return <div>Form 3 Content</div>; // Replace with actual form content for form3
+      case 'form4':
+        return <div>Form 4 Content</div>; // Replace with actual form content for form4
+      case 'form5':
+        return <div>Form 5 Content</div>; // Replace with actual form content for form5
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className={styles.container}>
       <Sidebar />
@@ -79,12 +99,12 @@ const AdminServices = () => {
             onChange={handleInputChange}
           />
           <div className={styles.textSpace}>
-          <textarea
-            name="description"
-            placeholder="Service Description"
-            value={newService.description}
-            onChange={handleInputChange}
-          />
+            <textarea
+              name="description"
+              placeholder="Service Description"
+              value={newService.description}
+              onChange={handleInputChange}
+            />
           </div>
           <input
             type="number"
@@ -115,6 +135,29 @@ const AdminServices = () => {
               Documentation Service
             </label>
           </div>
+
+          {/* Show dropdown menu only if category is 'documentation' */}
+          {newService.category === 'documentation' && (
+            <div className={styles.formTemplate}>
+              <label>Select a form template:</label>
+              <select
+                name="formTemplate"
+                value={newService.formTemplate}
+                onChange={handleInputChange}
+              >
+                <option value="">Select a form</option>
+                <option value="form1">Divorce Agreement Form</option>
+                <option value="form2">Form 2</option>
+                <option value="form3">Form 3</option>
+                <option value="form4">Form 4</option>
+                <option value="form5">Form 5</option>
+              </select>
+            </div>
+          )}
+
+          {/* Render the corresponding form only if category is 'documentation' */}
+          {newService.category === 'documentation' && renderFormTemplate()}
+
           <button onClick={handleAddService}>Add Service</button>
         </div>
 
@@ -127,7 +170,7 @@ const AdminServices = () => {
                 <th>Title</th>
                 <th>Description</th>
                 <th>Price (Rs.)</th>
-                <th>Category</th> 
+                <th>Category</th>
                 <th>Actions</th>
               </tr>
             </thead>

@@ -6,8 +6,6 @@
   background-color: #f8f9fa;
 }
 
-
-
 .sidebarContainer a:hover {
   background-color: #007bff;
 }
@@ -17,6 +15,7 @@
   flex-grow: 1;
   padding: 30px;
   overflow-y: auto;
+  background-color: #f8f9fa;
 }
 
 h2 {
@@ -25,7 +24,6 @@ h2 {
   color: #333;
   margin-bottom: 30px;
   margin-left: 0px;
-  
 }
 
 .categorySelector {
@@ -67,17 +65,19 @@ h2 {
 .documentCard {
   background-color: white;
   padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 14px;
+  box-shadow: 0 6px 15px rgba(61, 61, 61, 0.1);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
 }
 
 .documentCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 7px 15px rgba(66, 66, 66, 0.15);
 }
 
 .documentCard span {
@@ -94,11 +94,44 @@ h2 {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: 15px;
 }
 
 .documentCard button:hover {
   background-color: #218838;
   transform: scale(1.05);
+}
+
+.docName{
+  margin-bottom: 15px;
+}
+
+.documentInfo p {
+  width: 100%;
+  margin-top: 5px;
+  padding: 5px;
+  background-color: transparent; /* Removed background color */
+  border-radius: 8px;
+  text-align: left;
+
+}
+
+.documentInfo p {
+  margin: 5px 0;
+  font-size: 14px; /* Increased font size to 14px */
+  color: #333;  /* Ensuring it's readable */
+}
+
+.documentInfo .value {
+  font-size: 14px; /* Increased font size to 14px */
+  color: black;
+}
+
+.errorMessage {
+  color: #ff4d4d;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 20px;
 }
 
 p {
@@ -127,5 +160,13 @@ p {
   .categorySelector {
     flex-direction: column;
     gap: 10px;
+  }
+
+  .documentCard {
+    padding: 20px;
+  }
+
+  .documentGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 }

@@ -7,19 +7,36 @@ const AdminDashboard = () => {
     <div className={styles.dashboardContainer}>
       <Sidebar />
       <div className={styles.mainContent}>
-        <h2>Admin Dashboard</h2>
+        <div className={styles.header}>
+          <h2>Admin Dashboard</h2>
+        </div>
+        
         <div className={styles.stats}>
           <div className={styles.statCard}>
-            <h3>Bookings</h3>
-            <p>5 Pending</p>
+            <div className={styles.statTitle}>
+              <h3>Bookings</h3>
+            </div>
+            <div className={styles.statValue}>
+              <p>5 Pending</p>
+            </div>
           </div>
+
           <div className={styles.statCard}>
-            <h3>Templates</h3>
-            <p>3 Active</p>
+            <div className={styles.statTitle}>
+              <h3>Templates</h3>
+            </div>
+            <div className={styles.statValue}>
+              <p>3 Active</p>
+            </div>
           </div>
+
           <div className={styles.statCard}>
-            <h3>Payments</h3>
-            <p>$2000</p>
+            <div className={styles.statTitle}>
+              <h3>Payments</h3>
+            </div>
+            <div className={styles.statValue}>
+              <p>$2000</p>
+            </div>
           </div>
         </div>
       </div>

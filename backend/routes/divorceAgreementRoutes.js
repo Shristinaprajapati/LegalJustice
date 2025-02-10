@@ -34,6 +34,7 @@ router.post(
     const {
       clientName,
       clientId,
+      serviceId,
       spouse1,
       spouse2,
       children,
@@ -73,6 +74,7 @@ router.post(
       const newAgreement = new DivorceAgreement({
         clientName,
         clientId,
+        serviceId,
         spouse1,
         spouse2,
         children,

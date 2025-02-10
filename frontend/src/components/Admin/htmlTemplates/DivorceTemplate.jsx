@@ -1,6 +1,7 @@
 import React, { useRef , useEffect} from "react";
 import JoditEditor from "jodit-react";
 import axios from "axios";
+import jsPDF from "jspdf";
 
 const DivorceAgreement = ({ 
   clientName, 
@@ -273,8 +274,8 @@ const handleSaveContent = async () => {
 
   const agreementHTML = editor.current.value; // Get full HTML content
   const agreementText = agreementHTML
-  .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")  // Remove <style> tags and their content
-  .replace(/<\/?[^>]+(>|$)/g, "");  // Remove all remaining HTML tags but keep text
+  // .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")  // Remove <style> tags and their content
+  // .replace(/<\/?[^>]+(>|$)/g, "");  // Remove all remaining HTML tags but keep text
 
   console.log(agreementText);
 
@@ -298,20 +299,79 @@ const handleSaveContent = async () => {
     });
     
 
-    if (response.status === 201) {
-      alert("Document saved successfully!");
-    } else {
-      alert("Error saving document.");
-    }
+    // if (response.status === 201) {
+    //   alert("Document saved successfully!");
+    // } else {
+    //   alert("Error saving document.");
+    // }
   } catch (error) {
     console.error("Error saving document:", error);
     alert("Error saving document.");
   }
 };
 
+const fetchAndGeneratePDF = async () => {
+  try {
+    // Fetch agreement data from API
+    const response = await fetch(`http://localhost:8080/api/document/${clientId}`);
+    const data = await response.json();
 
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to fetch data");
+    }
 
-    
+    // Extract agreement content
+    const { clientName, title, agreementContent } = data.agreements[0]; // Assuming multiple agreements, use the first one
+
+    // Create a new PDF document
+    const doc = new jsPDF();
+
+    // Set font to Arial with size 11 for the entire document
+    doc.setFont("Arial", "normal");
+    doc.setFontSize(12);
+
+    // Define margin and line spacing
+    const leftMargin = 20;
+    const topMargin = 20;
+    const rightMargin = 190; // Adjust based on page width (210 mm - leftMargin)
+    const bottomMargin = 20;
+    const lineSpacing = 5.5; // Set consistent line spacing
+
+    // Add the title and metadata on the first page
+    doc.setFont("Arial", "bold");
+    doc.text(`Agreement for ${clientName}`, leftMargin, topMargin);
+
+    doc.setFont("Arial", "normal");
+    doc.text(`Title: ${title}`, leftMargin, topMargin + 10);
+    doc.text("Agreement Content:", leftMargin, topMargin + 20);
+
+    // Add a new page for the agreement content to start from the second page
+    doc.addPage();
+
+    // Split content into multiple lines if it's too long
+    const contentLines = doc.splitTextToSize(agreementContent, rightMargin - leftMargin);
+    let yPosition = topMargin;
+
+    // Write content and handle multiple pages
+    for (let i = 0; i < contentLines.length; i++) {
+      if (yPosition + lineSpacing > 270 - bottomMargin) {  // Check if the current position exceeds the page limit
+        doc.addPage();  // Add a new page
+        yPosition = topMargin;  // Reset the position to the top of the new page
+      }
+
+      // Align text to the left by setting the alignment to "left"
+      doc.text(contentLines[i], leftMargin, yPosition, { align: "left" });
+
+      yPosition += lineSpacing; // Move the Y position down by the line spacing
+    }
+
+    // Save the PDF
+    doc.save(`${clientName}_agreement.pdf`);
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+};
+  
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
@@ -359,19 +419,20 @@ const handleSaveContent = async () => {
         >
           Save Changes
         </button>
-        {/* <button
-          onClick={handleCancel}
+
+         <button
+         onClick={fetchAndGeneratePDF}
           style={{
             padding: "10px 20px",
-            backgroundColor: "#f44336",
+            backgroundColor: "#4CAF50",
             color: "white",
             border: "none",
             borderRadius: "5px",
             cursor: "pointer"
           }}
         >
-          Cancel
-        </button> */}
+          Convert to PDF
+        </button> 
       </div>
 
       </div>

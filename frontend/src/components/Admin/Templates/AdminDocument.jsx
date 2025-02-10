@@ -1,34 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from "../Sidebar";
 import styles from "./AdminDocuments.module.css";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const AdminDocument = () => {
   const [documents, setDocuments] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
+
   const categories = [
     'All', 'Family Law', 'Real Estate Documents', 'Intellectual Property', 
     'Legal Letters', 'Litigation and Dispute Resolution'
   ];
 
   useEffect(() => {
-    // Fetch saved documents from the server (for now we will use mock data)
     const fetchDocuments = async () => {
-      const mockDocuments = [
-        { name: 'Divorce Agreement', category: 'Family Law' },
-        { name: 'Real Estate Contract', category: 'Real Estate Documents' },
-        { name: 'Trademark Registration', category: 'Intellectual Property' },
-        { name: 'Notice of Legal Action', category: 'Legal Letters' },
-        { name: 'Litigation Settlement Agreement', category: 'Litigation and Dispute Resolution' },
-        // More mock documents can be added here
-      ];
-      setDocuments(mockDocuments);
+      try {
+        const response = await axios.get("http://localhost:8080/api/document/");
+        setDocuments(response.data.agreements);
+        setLoading(false);
+      } catch (err) {
+        setError("Failed to load documents.");
+        setLoading(false);
+      }
     };
+
     fetchDocuments();
   }, []);
 
-  const handleEditDocument = (docName) => {
-    // You can load and display the content of the document here and allow admin to edit
-    alert(`Editing ${docName}`);
+  const handleEditDocument = (doc) => {
+    navigate('/editdocument', { state: { document: doc } }); // Pass document details
   };
 
   const filteredDocuments = selectedCategory === 'All' 
@@ -57,16 +62,21 @@ const AdminDocument = () => {
         </div>
         
         <div className={styles.documentGrid}>
-          {filteredDocuments.length === 0 ? (
+          {loading && <p>Loading documents...</p>}
+          {error && <p className={styles.errorMessage}>{error}</p>}
+          {filteredDocuments.length === 0 && !loading && (
             <p>No documents available for this category.</p>
-          ) : (
-            filteredDocuments.map((doc) => (
-              <div key={doc.name} className={styles.documentCard}>
-                <span>{doc.name}</span>
-                <button onClick={() => handleEditDocument(doc.name)}>Edit</button>
-              </div>
-            ))
           )}
+          {filteredDocuments.map((doc) => (
+            <div key={doc._id} className={styles.documentCard}>
+              <span className={styles.docName}>{doc.title}</span>
+              <div className={styles.documentInfo}>
+                <p><strong>Client ID:</strong> {doc.clientId}</p>
+                <p><strong>Client Name:</strong> {doc.clientName}</p>
+              </div>
+              <button onClick={() => handleEditDocument(doc)}>Edit</button>
+            </div>
+          ))}
         </div>
       </div>
     </div>

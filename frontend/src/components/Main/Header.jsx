@@ -1,38 +1,70 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Header.module.css';
 import axios from 'axios';
+import io from 'socket.io-client'; // Import Socket.IO
+import 'font-awesome/css/font-awesome.min.css'; // Import Font Awesome
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userData, setUserData] = useState({ name: '', email: '' });
+  const [userData, setUserData] = useState({ name: '', email: '', clientId: '' });
+  const [notifications, setNotifications] = useState([]); // State to hold notifications
+  const [showNotifications, setShowNotifications] = useState(false); // State to control dropdown visibility
   const navigate = useNavigate();
+  const socket = useRef(null); // Create a ref to hold the socket connection
 
   useEffect(() => {
+
+    // Connect to the socket server
+    socket.current = io('ws://localhost:8080');
+
+    console.log(socket.current);
+  
+    // Listen for 'receiveNotification' event from the backend
+    socket.current.on('receiveNotification', (notificationData) => {
+      console.log('Received notification:', notificationData);
+      setNotifications((prevNotifications) => [
+        ...prevNotifications,
+        notificationData.message,
+      ]);
+      setShowNotifications(true); // Automatically open dropdown on receiving new notification
+    });
+  
     // Retrieve the email from local storage
     const email = localStorage.getItem('email');
     
     if (email) {
       setIsLoggedIn(true);
-
-      // Make an API call to fetch user details based on the email
+  
+      // Fetch user details from backend
       axios
-        .get(`http://localhost:8080/api/check-email?email=${email}`)
+        .get(`http://localhost:8080/api/users?email=${email}`) 
         .then((response) => {
-          // On success, update the user data
-          setUserData({ name: response.data.name, email: response.data.email });
+          const user = response.data;
+          setUserData({ name: user.name, email: user.email, clientId: user._id });
+  
+          // Register clientId with socket on login
+          socket.current.emit('register', user._id); 
         })
         .catch((error) => {
-          // Handle errors (e.g., 500 server error)
           console.error('Error fetching user details:', error.response ? error.response.data : error.message);
         });
     }
-  }, []);
-
+  
+    // Cleanup socket connection on unmount
+    return () => {
+      socket.current.disconnect();
+    };
+  }, [setShowNotifications,setNotifications]);
+  
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
   };
 
   const handleLogout = () => {
@@ -44,7 +76,6 @@ const Header = () => {
     setIsOpen(false);
     navigate('/login'); // Redirect to login after logout
   };
-  
 
   return (
     <header className={styles.header}>
@@ -80,6 +111,24 @@ const Header = () => {
           </li>
         </ul>
       </nav>
+
+      <div className={styles.notificationIcon} onClick={toggleNotifications}>
+        <i className={`fa fa-bell ${styles.bellIcon}`} />
+        {notifications.length > 0 && (
+          <span className={styles.notificationBadge}>
+            {notifications.length}
+          </span>
+        )}
+        {showNotifications && (
+          <div className={`${styles.notificationsDropdown} ${showNotifications ? styles.show : ''}`}>
+            <ul>
+              {notifications.slice(0, 5).map((notification, index) => (
+                <li key={index}>{notification}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
 
       {isLoggedIn ? (
         <div

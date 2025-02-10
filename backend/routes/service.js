@@ -14,14 +14,20 @@ router.get("/", async (req, res) => {
 
 // Add a new service
 router.post("/", async (req, res) => {
-  const { title, description, price, category } = req.body;
+  const { title, description, price, category, formTemplate } = req.body;
 
   // Ensure category is either 'consulting' or 'documentation'
   if (!category || !['consulting', 'documentation'].includes(category)) {
     return res.status(400).json({ message: "Invalid category. Must be 'consulting' or 'documentation'." });
   }
 
-  const service = new Service({ title, description, price, category });
+  // If category is 'documentation', formTemplate is required
+  if (category === 'documentation' && !formTemplate) {
+    return res.status(400).json({ message: "Form template is required for documentation services" });
+  }
+
+  // Create new service
+  const service = new Service({ title, description, price, category, formTemplate });
 
   try {
     const newService = await service.save();

@@ -21,6 +21,10 @@ import Document from "./components/Admin/Templates/AdminDocument.jsx";
 
 import DivorseFrom from "./components/Admin/htmlTemplates/DivorseAgreementForm.jsx";
 import DivorseTemplate from "./components/Admin/htmlTemplates/ClientCards.jsx";
+import EditDocument from "./components/Admin/Templates/EditDocument.jsx";
+
+
+import BookingPop from "./components/Admin/Bookings/bookingpopup.jsx";
 
 
 
@@ -52,6 +56,10 @@ function App() {
 
         <Route path ="/divorseform" element={<DivorseFrom/>}/>
         <Route path ="/divorsetemplate" element={<DivorseTemplate/>}/>
+        <Route path ="/editdocument" element={<EditDocument/>}/>
+
+
+        <Route path ="/booking-pop" element={<BookingPop/>}/>
 
         
       </Routes>
