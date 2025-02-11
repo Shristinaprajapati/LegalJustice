@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import styles from './DivorseAgreementForm.module.css';
+import styles from './DivorceAgreementForm.module.css';
 
-const DivorceAgreementForm = ({ submitForm }) => {
-  const navigate = useNavigate();
+const DivorceAgreementForm = () => {
   const [formData, setFormData] = useState({
     clientName: '',
     clientId: '',
+    serviceId: '67a84aa53c49df8a5b9ca1df', // Hardcoded serviceId
     spouse1: '',
     spouse2: '',
     children: '',
@@ -51,20 +50,31 @@ const DivorceAgreementForm = ({ submitForm }) => {
     }));
   };
 
+  const isValidDate = (date) => {
+    const parsedDate = Date.parse(date);
+    return !isNaN(parsedDate); // Check if the date is valid
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (submitForm) {
-        await submitForm(formData);
-      } else {
-        const response = await axios.post(
-          'http://localhost:8080/api/divorse-agreement/',
-          formData
-        );
 
-        console.log('Success:', response.data.message);
-        navigate('/divorce-agreement-template', { state: { clientId: formData.clientId } });
-      }
+    // Validate child DOB fields before submitting
+    if (formData.child1DOB && !isValidDate(formData.child1DOB)) {
+      console.log('Invalid child1DOB date');
+      return;
+    }
+
+    if (formData.child2DOB && !isValidDate(formData.child2DOB)) {
+      console.log('Invalid child2DOB date');
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/api/divorse-agreement',
+        formData
+      );
+      console.log('Success:', response.data.message);
     } catch (error) {
       console.error('Error submitting form:', error.response?.data || error.message);
     }
@@ -113,17 +123,16 @@ const DivorceAgreementForm = ({ submitForm }) => {
         ].map((field) => (
           <div key={field} className={styles.field}>
             <label className={styles.label}>
-              {field.charAt(0).toUpperCase() +
-                field.slice(1).replace(/([A-Z])/g, ' $1')}
-              :
+              {field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1')}:
             </label>
             <input
-              type={field.toLowerCase().includes('date') ? 'date' : 'text'}
+              type={field.includes('DOB') || field.includes('Date') ? 'date' : 'text'}
               name={field}
               value={formData[field]}
               onChange={handleChange}
               placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1')}`}
               className={styles.input}
+              required={field === 'child1DOB' || field === 'child2DOB'} // Mark child DOB fields as required
             />
           </div>
         ))}

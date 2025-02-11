@@ -32,7 +32,7 @@ const BookingPopup = ({ show, onConfirm, onCancel, bookingData }) => {
     const notificationData = {
       message: 'Your booking form is ready. Click below to fill it out.',
       buttonText: 'Go to Form',
-      redirectUrl: '/divorseform', // URL to direct the client to the form
+      redirectUrl: 'http://localhost:3000/divorseform', // URL to direct the client to the form
       clientId, // Send the clientId to target a specific user
     };
   

@@ -18,6 +18,10 @@ const divorseAgreement = require("./routes/divorceAgreementRoutes");
 const document = require("./routes/documentroute");
 // const form1 = require('./routes/form1data')
 
+const notificationRoutes = require("./routes/notificationRoutes");
+
+
+
 // database connection
 connection();
 
@@ -39,6 +43,8 @@ app.use("/api/divorse-agreement", divorseAgreement);
 app.use("/api/document", document);
 app.use('/api', htmlTemplates);
 
+app.use("/api/notifications", notificationRoutes);
+
 // Create an HTTP server using Express app
 const server = http.createServer(app);
 
@@ -50,6 +56,8 @@ const io = socketIo(server, {
   },
 });
 
+
+const Notification = require("./models/notificationModdel"); 
 
 const clients = {}; // To store the clientId and associated socket ID
 
@@ -63,42 +71,41 @@ io.on('connection', (socket) => {
   });
 
   // Listen for the 'sendFormNotification' event from admin side
-  socket.on('sendFormNotification', (notificationData) => {
+  socket.on('sendFormNotification', async (notificationData) => {
     const { clientId, message, buttonText, redirectUrl } = notificationData;
 
-    // Check if we have a socket connection for this clientId
-    if (clients[clientId]) {
-      io.to(clients[clientId]).emit('r', {
-        message,
-        buttonText,
-        redirectUrl,
-      });
-    } else {
-      console.log(`No client found with clientId: ${clientId}`);
-    }
-  });
-
-// Listen for the 'sendFormNotification' event from admin side
-socket.on('sendFormNotification', (notificationData) => {
-    const { clientId, message, buttonText, redirectUrl } = notificationData;
-  
     // Log the notification data to see if it's being received
     console.log('Received notification data:', notificationData);
-  
-    // Check if we have a socket connection for this clientId
-    if (clients[clientId]) {
-      io.to(clients[clientId]).emit('receiveNotification', {
+
+    try {
+      // Save the notification to the database
+      const newNotification = new Notification({
+        clientId,
         message,
         buttonText,
         redirectUrl,
       });
-      console.log(`Notification sent to client ${clientId}`); // Log that the notification was sent
-    } else {
-      console.log(`No client found with clientId: ${clientId}`);
+      await newNotification.save(); // Save to DB
+      console.log("Notification saved to DB");
+
+      // Check if we have a socket connection for this clientId
+      if (clients[clientId]) {
+        io.to(clients[clientId]).emit('receiveNotification', {
+          message,
+          buttonText,
+          redirectUrl,
+        });
+        console.log(`Notification sent to client ${clientId}`); // Log that the notification was sent
+      } else {
+        console.log(`No client found with clientId: ${clientId}`);
+      }
+    } catch (error) {
+      console.error('Error saving notification to DB:', error.message);
     }
   });
-  
+
 });
+
 
 
 

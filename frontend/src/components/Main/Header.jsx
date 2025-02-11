@@ -15,19 +15,28 @@ const Header = () => {
   const socket = useRef(null); // Create a ref to hold the socket connection
 
   useEffect(() => {
-
     // Connect to the socket server
     socket.current = io('ws://localhost:8080');
-
     console.log(socket.current);
   
     // Listen for 'receiveNotification' event from the backend
     socket.current.on('receiveNotification', (notificationData) => {
       console.log('Received notification:', notificationData);
-      setNotifications((prevNotifications) => [
-        ...prevNotifications,
-        notificationData.message,
-      ]);
+  
+      // Deduplicate: Check if the notification is already in the list
+      setNotifications((prevNotifications) => {
+        // Only add the notification if it's not already in the list (check message as an example)
+        const isDuplicate = prevNotifications.some(
+          (notification) => notification.message === notificationData.message
+        );
+        
+        if (isDuplicate) {
+          return prevNotifications;
+        } else {
+          return [notificationData, ...prevNotifications];
+        }
+      });
+  
       setShowNotifications(true); // Automatically open dropdown on receiving new notification
     });
   
@@ -46,6 +55,28 @@ const Header = () => {
   
           // Register clientId with socket on login
           socket.current.emit('register', user._id); 
+  
+          // Fetch notifications from the backend for the logged-in user
+          axios
+            .get(`http://localhost:8080/api/notifications/${user._id}`)
+            .then((response) => {
+              // Assuming notifications are returned as an array
+              const notificationsFromDb = response.data.notifications;
+  
+              // Deduplicate: Check if notifications are already in the state before adding
+              setNotifications((prevNotifications) => {
+                const newNotifications = notificationsFromDb.filter((newNotification) => 
+                  !prevNotifications.some((existingNotification) => existingNotification.message === newNotification.message)
+                );
+  
+                return [...newNotifications, ...prevNotifications]; // Add new ones first
+              });
+  
+              setShowNotifications(true); // Show notifications as soon as they are fetched
+            })
+            .catch((error) => {
+              console.error('Error fetching notifications:', error.response ? error.response.data : error.message);
+            });
         })
         .catch((error) => {
           console.error('Error fetching user details:', error.response ? error.response.data : error.message);
@@ -56,7 +87,9 @@ const Header = () => {
     return () => {
       socket.current.disconnect();
     };
-  }, [setShowNotifications,setNotifications]);
+  }, [setShowNotifications, setNotifications]);
+  
+  
   
 
   const toggleMenu = () => {
@@ -113,22 +146,38 @@ const Header = () => {
       </nav>
 
       <div className={styles.notificationIcon} onClick={toggleNotifications}>
-        <i className={`fa fa-bell ${styles.bellIcon}`} />
-        {notifications.length > 0 && (
-          <span className={styles.notificationBadge}>
-            {notifications.length}
-          </span>
-        )}
-        {showNotifications && (
-          <div className={`${styles.notificationsDropdown} ${showNotifications ? styles.show : ''}`}>
-            <ul>
-              {notifications.slice(0, 5).map((notification, index) => (
-                <li key={index}>{notification}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
+  <i className={`fa fa-bell ${styles.bellIcon}`} />
+  {notifications.length > 0 && (
+    <span className={styles.notificationBadge}>
+      {notifications.length}
+    </span>
+  )}
+  {showNotifications && (
+    <div className={`${styles.notificationsDropdown} ${showNotifications ? styles.show : ''}`}>
+      <ul className={styles.notificationList}>
+        {notifications.slice(0, 5).map((notification, index) => (
+          <li key={index} className={styles.notificationItem}>
+            <p className={styles.notificationMessage}>{notification.message}</p> 
+            {notification.redirectUrl && ( 
+              <a 
+                href={notification.redirectUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className={styles.notificationLink}
+              >
+                <button className={styles.notificationButton}>
+                  {notification.buttonText || 'View'}
+                </button>
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
+
+
 
       {isLoggedIn ? (
         <div
