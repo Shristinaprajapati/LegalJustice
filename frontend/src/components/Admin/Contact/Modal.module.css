@@ -1,0 +1,105 @@
+/* Modal.module.css */
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* Ensures it's above other content */
+  }
+  
+  .modal {
+    background: white;
+    padding: 20px;
+    border-radius: 15px; /* Rounded corners */
+    max-width: 500px;
+    width: 100%;
+    position: relative; /* To position the cross icon properly */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+  }
+  
+  .closeIcon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .closeIcon:hover {
+    color: #f00; /* Red color on hover */
+  }
+  
+  h2 {
+    margin-top: 0;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: left; /* Align header text to the left */
+  }
+  
+  .formGroup {
+    margin-bottom: -10px; /* Increased bottom margin for spacing */
+  }
+  
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    text-align: left; /* Align label text to the left */
+  }
+  
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 2px;
+    border: 1px solid #ccc;
+    border-radius: 8px; /* Rounded corners for input fields */
+  }
+  
+  textarea {
+    height: 150px; /* Fixed height for message area */
+    width: 480px;
+    resize: none; /* Disable resizing of the textarea */
+  }
+  
+  .emailDisplay {
+    background-color: #f7f7f7;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #333;
+    text-align: left; /* Align email display text to the left */
+  }
+  
+  .sendButton {
+    padding: 10px 15px;
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    align-self: flex-end; /* Align the button to the right */
+  }
+  
+  .sendButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .sendButton:focus {
+    outline: none;
+  }
+  

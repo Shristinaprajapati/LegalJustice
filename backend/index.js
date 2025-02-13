@@ -17,7 +17,8 @@ const htmlTemplates = require("./routes/htmlTemplates");
 const divorseAgreement = require("./routes/divorceAgreementRoutes");
 const partnershipAgreement = require("./routes/partnershipAgreementRoutes");
 const document = require("./routes/documentroute");
-// const form1 = require('./routes/form1data')
+const contactRoutes = require("./routes/contactRoutes");
+const replyEmail = require("./routes/replyEmailRoute");
 
 const notificationRoutes = require("./routes/notificationRoutes");
 
@@ -38,6 +39,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/password-reset", passwordResetRoutes);
 app.use("/api/services", serviceRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/reply", replyEmail);
 app.use('/api/check-email', profileRoute);
 // app.use("/api/templates", templatesRouter);
 app.use("/api/divorse-agreement", divorseAgreement);

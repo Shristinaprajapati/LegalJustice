@@ -10,6 +10,7 @@ import EmailVerify from "./components/EmailVerify";
 import ForgotPassword from "./components/ForgotPassword";
 import PasswordReset from "./components/PasswordReset";
 import PracticeArea from "./components/Main/PracticeArea/practiceArea";
+import Contact from "./components/contact/contact.jsx";
 // import Resetpassword from "./components/ResetPassword";
 
 
@@ -17,6 +18,7 @@ import AdminPanel from "./components/Admin/AdminDashboard";
 import Bookings from "./components/Admin/Bookings/booking.jsx";
 import Services from "./components/Admin/Services/services.jsx";
 import Document from "./components/Admin/Templates/AdminDocument.jsx";
+import ContactForm from "./components/Admin/Contact/AdminContact.jsx";
 
 import DivorseFrom from "./components/Admin/htmlTemplates/DivorseAgreementForm.jsx";
 import DivorseTemplate from "./components/Admin/htmlTemplates/ClientCards.jsx";
@@ -47,12 +49,14 @@ function App() {
         <Route path="/service" element={<Service />} />
         {/* <Route path="/password-reset/:id/:token" element={<ResetPassword />} /> */}
         <Route path="/practice-areas" element={<PracticeArea />} />
+        <Route path="/contact" element={<Contact />} />
 
       
         <Route path="/admin/AdminDashboard" element={<AdminPanel />} />
         <Route path ="/booking" element={<Bookings/>}/>
         <Route path ="/services" element={<Services/>}/>
         <Route path ="/document" element={<Document/>}/>
+        <Route path="/contactform" element={<ContactForm />} />
 
 
         <Route path ="/divorseform" element={<DivorseFrom/>}/>

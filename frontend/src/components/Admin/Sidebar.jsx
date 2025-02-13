@@ -115,7 +115,15 @@ const Sidebar = () => {
             Payment History
           </Link>
         </li>
+
         <li>
+        <Link to="/contactform" className={`${styles.link} ${getLinkClass('/contactform')}`}>
+            <FaFileAlt className={styles.icon} />
+            Contact
+          </Link>
+              </li>
+        <li>
+
           <Link to="/login" className={`${styles.link} ${styles.logout}`}>
             <FaSignOutAlt className={styles.icon} />
             Logout
