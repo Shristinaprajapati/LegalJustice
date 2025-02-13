@@ -31,13 +31,6 @@ const Sidebar = () => {
           category: 'Family Law',
         });
 
-        // API call to store Real Estate Agreement Template
-        await axios.post('http://localhost:8080/api/store-template', {
-          name: 'Real Estate Agreement Template',
-          content: realEstateTemplateHtml,
-          category: 'Real Estate Documents',
-        });
-
         console.log('Templates stored successfully!');
       } catch (error) {
         console.error('Error storing templates:', error);
@@ -104,8 +97,8 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/propertytransfer" className={getLinkClass('/divorsetemplate')}>
-                  Property Transfer
+                <Link to="/partnershiptemplate" className={getLinkClass('/divorsetemplate')}>
+                  Partnership Template
                 </Link>
               </li>
               {/* <li>

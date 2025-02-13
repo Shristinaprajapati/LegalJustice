@@ -9,7 +9,6 @@ import Service from './components/Service.jsx';
 import EmailVerify from "./components/EmailVerify";
 import ForgotPassword from "./components/ForgotPassword";
 import PasswordReset from "./components/PasswordReset";
-import ResetPassword from "./components/password-reset";
 import PracticeArea from "./components/Main/PracticeArea/practiceArea";
 // import Resetpassword from "./components/ResetPassword";
 
@@ -22,6 +21,8 @@ import Document from "./components/Admin/Templates/AdminDocument.jsx";
 import DivorseFrom from "./components/Admin/htmlTemplates/DivorseAgreementForm.jsx";
 import DivorseTemplate from "./components/Admin/htmlTemplates/ClientCards.jsx";
 import EditDocument from "./components/Admin/Templates/EditDocument.jsx";
+import PartnerTemplate from "./components/Admin/htmlTemplates/PartnershipCard.jsx";
+import PartnerFrom from "./components/Admin/htmlTemplates/PartnershipAgreementForm.jsx";
 
 
 import BookingPop from "./components/Admin/Bookings/bookingpopup.jsx";
@@ -41,10 +42,10 @@ function App() {
         <Route path="/signup" element={<SignUp />} /> {/* SignUp route */}
 			  <Route path="/users/:id/verify/:token" element={<EmailVerify />} />
 			  <Route path="/forgot-password" element={<ForgotPassword />} />
-		  	<Route path="/password-reset/:id/:token" element={<PasswordReset />} />
+        <Route path="/reset-password" element={<PasswordReset />} />
         {/* <Route path="/reset-password" element={<Resetpassword />} /> */}
         <Route path="/service" element={<Service />} />
-        <Route path="/password-reset/:id/:token" element={<ResetPassword />} />
+        {/* <Route path="/password-reset/:id/:token" element={<ResetPassword />} /> */}
         <Route path="/practice-areas" element={<PracticeArea />} />
 
       
@@ -55,7 +56,9 @@ function App() {
 
 
         <Route path ="/divorseform" element={<DivorseFrom/>}/>
+        <Route path ="/partnerform" element={<PartnerFrom />}/>
         <Route path ="/divorsetemplate" element={<DivorseTemplate/>}/>
+        <Route path ="/partnershiptemplate" element={<PartnerTemplate/>}/>
         <Route path ="/editdocument" element={<EditDocument/>}/>
 
 

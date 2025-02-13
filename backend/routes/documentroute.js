@@ -51,16 +51,16 @@ router.post('/save', async (req, res) => {
   }
 
   try {
-    // Check if a document already exists for the clientId
-    const existingDocument = await DivorceAgreement.findOne({ clientId });
+    // Check if a document already exists for the clientId, clientName, and title
+    const existingDocument = await DivorceAgreement.findOne({ clientId, clientName, title });
 
     if (existingDocument) {
-      // If the document exists, update the agreementContent
+      // If the document exists with the same clientId, clientName, and title, update the agreementContent
       existingDocument.agreementContent = agreementContent;
       await existingDocument.save();
       return res.status(200).json({ message: 'Document updated successfully!' });
     } else {
-      // If no document exists, create a new one
+      // If no document exists with the same clientId, clientName, and title, create a new one
       const newDocument = new DivorceAgreement({
         clientId,
         clientName,
@@ -75,6 +75,8 @@ router.post('/save', async (req, res) => {
     res.status(500).json({ message: 'Failed to save or update the document.' });
   }
 });
+
+
 
 
 router.get('/:clientId', async (req, res) => {

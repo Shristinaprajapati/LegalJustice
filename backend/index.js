@@ -15,6 +15,7 @@ const profileRoute = require('./routes/profile');
 const htmlTemplates = require("./routes/htmlTemplates");
 
 const divorseAgreement = require("./routes/divorceAgreementRoutes");
+const partnershipAgreement = require("./routes/partnershipAgreementRoutes");
 const document = require("./routes/documentroute");
 // const form1 = require('./routes/form1data')
 
@@ -40,6 +41,7 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/check-email', profileRoute);
 // app.use("/api/templates", templatesRouter);
 app.use("/api/divorse-agreement", divorseAgreement);
+app.use("/api/partnership-agreement", partnershipAgreement);
 app.use("/api/document", document);
 app.use('/api', htmlTemplates);
 
@@ -72,7 +74,7 @@ io.on('connection', (socket) => {
 
   // Listen for the 'sendFormNotification' event from admin side
   socket.on('sendFormNotification', async (notificationData) => {
-    const { clientId, message, buttonText, redirectUrl } = notificationData;
+    const { clientId,serviceId, message, buttonText, redirectUrl } = notificationData;
 
     // Log the notification data to see if it's being received
     console.log('Received notification data:', notificationData);
@@ -81,6 +83,7 @@ io.on('connection', (socket) => {
       // Save the notification to the database
       const newNotification = new Notification({
         clientId,
+        serviceId,
         message,
         buttonText,
         redirectUrl,

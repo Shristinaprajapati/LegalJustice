@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import styles from "./ForgotPassword.module.css";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
 	const [email, setEmail] = useState("");
@@ -10,42 +11,56 @@ const ForgotPassword = () => {
 	const [error, setError] = useState("");
 	const [showOtpPopup, setShowOtpPopup] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const navigate = useNavigate();
 
+	// Handle email submission to request OTP
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const url = `http://localhost:8080/api/password-reset`;
-			const { data } = await axios.post(url, { email });
+			const { data } = await axios.post(`http://localhost:8080/api/password-reset`, { email });
 			setMsg(data.message);
 			setError("");
 			setShowOtpPopup(true);
-			setUserId(data.userId); // Assume the userId is returned by the backend
+			setUserId(data.userId); // Ensure backend sends this
 		} catch (error) {
-			if (error.response) {
-				setError(error.response.data.message || "An error occurred");
-				setMsg("");
-			}
+			setError(error.response?.data?.message || "An error occurred");
+			setMsg("");
 		} finally {
 			setLoading(false);
 		}
 	};
 
+	// Handle OTP verification
 	const handleOtpSubmit = async (e) => {
 		e.preventDefault();
 		setLoading(true);
+
+		if (!userId) {
+			setError("User ID missing. Please try again.");
+			setLoading(false);
+			return;
+		}
+
+		if (!/^\d{6}$/.test(otp)) {
+			setError("Invalid OTP format. Must be a 6-digit number.");
+			setLoading(false);
+			return;
+		}
+
 		try {
-			const url = `http://localhost:8080/api/password-reset/verify-otp`;
-			const { data } = await axios.post(url, { userId, otp });
+			const { data } = await axios.post(`http://localhost:8080/api/password-reset/verify-otp`, { userId, otp });
 			setMsg(data.message);
 			setError("");
 			setShowOtpPopup(false);
-			window.location.href = `/reset-password?userId=${userId}&otp=${otp}`;
+
+			
+        // Navigate to password reset page with userId and otp as state
+        navigate("/reset-password", { state: { userId, otp } });
+		
 		} catch (error) {
-			if (error.response) {
-				setError(error.response.data.message || "Invalid OTP");
-				setMsg("");
-			}
+			setError(error.response?.data?.message || "Invalid OTP");
+			setMsg("");
 		} finally {
 			setLoading(false);
 		}

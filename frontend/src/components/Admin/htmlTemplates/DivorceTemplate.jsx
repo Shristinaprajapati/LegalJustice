@@ -266,49 +266,48 @@ const DivorceAgreement = ({
     
 // Handle save content
 const handleSaveContent = async () => {
-  
+
   if (!editor.current) {
     alert("Editor is not initialized.");
     return;
   }
 
   const agreementHTML = editor.current.value; // Get full HTML content
-  const agreementText = agreementHTML
-  // .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")  // Remove <style> tags and their content
-  // .replace(/<\/?[^>]+(>|$)/g, "");  // Remove all remaining HTML tags but keep text
+  const agreementText = agreementHTML; // You can clean up the content if needed here
 
-  console.log(agreementText);
-
-  console.log(clientId);
-
+  // Check if all required fields are filled
   if (!clientId || !clientName || !title || !agreementText.trim()) {
     alert("All fields are required.");
     return;
   }
 
   try {
-    const response = await axios.post("http://localhost:8080/api/document/save", JSON.stringify({
+    const response = await axios.post("http://localhost:8080/api/document/save", {
       clientId,
       clientName,
       title,
       agreementContent: agreementText,
-    }), {
+    }, {
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    
 
-    // if (response.status === 201) {
-    //   alert("Document saved successfully!");
-    // } else {
-    //   alert("Error saving document.");
-    // }
+    // Check if the request was successful
+    if (response.status === 201) {
+      alert("Document saved successfully!");
+    } else if (response.status === 200) {
+      alert("Document updated successfully!");
+    } else {
+      alert("Error saving document..");
+    }
+
   } catch (error) {
-    console.error("Error saving document:", error);
+    console.error("Error saving document:", error.response || error.message);
     alert("Error saving document.");
   }
 };
+
 
 const fetchAndGeneratePDF = async () => {
   try {

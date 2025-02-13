@@ -18,23 +18,40 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (!recaptchaValue) {
       setError("Please complete the reCAPTCHA verification.");
       return;
     }
+
     try {
       const url = "http://localhost:8080/api/auth";
       const payload = { ...data, recaptchaValue };
 
-      const response = await axios.post(url, payload);
+      // 🔹 Add Timeout (10 seconds)
+      const response = await axios.post(url, payload, { timeout: 10000 }); 
       const res = response.data;
 
-      localStorage.setItem("token", res.token);
-      localStorage.setItem("email", data.email);
+      console.log("Login Response:", res); // Debugging entire response
+      console.log("Received Token:", res.data); // 🔹 Print Token in Console
+      
+      if (res.data) {
+        console.log("Storing Token:", res.data);  // Debugging before storage
 
-      navigate(res.isAdmin ? "/admin/AdminDashboard" : "/");
+        //  Store JWT Token Properly
+        localStorage.setItem("token", res.data);  
+        localStorage.setItem("email", data.email);
+
+        // 🔹 Redirect Based on Role
+        navigate(res.isAdmin ? "/admin/AdminDashboard" : "/");
+      } else {
+        setError("Authentication failed. No token received.");
+      }
     } catch (error) {
-      if (error.response?.status >= 400 && error.response?.status <= 500) {
+      if (error.code === "ECONNABORTED") {
+        // 🔹 Handle Timeout Error
+        setError("Request timed out. Please try again.");
+      } else if (error.response?.status >= 400 && error.response?.status <= 500) {
         setError(error.response.data.message);
       } else {
         setError("An unexpected error occurred. Please try again.");

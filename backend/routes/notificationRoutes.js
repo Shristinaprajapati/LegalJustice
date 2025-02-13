@@ -2,14 +2,14 @@ const express = require("express");
 const Notification = require("../models/notificationModdel");
 const router = express.Router();
 
-// Route to save notification
 router.post("/create", async (req, res) => {
   try {
-    const { clientId, message, buttonText, redirectUrl } = req.body;
+    const { clientId, serviceId, message, buttonText, redirectUrl } = req.body;
 
     // Create new notification instance
     const newNotification = new Notification({
       clientId,
+      serviceId,  
       message,
       buttonText,
       redirectUrl,
@@ -31,6 +31,7 @@ router.post("/create", async (req, res) => {
     });
   }
 });
+
 
 // Route to get notifications for a specific client
 router.get("/:clientId", async (req, res) => {

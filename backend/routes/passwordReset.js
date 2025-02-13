@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const { User } = require("../models/user");
 const Token = require("../models/token");
-const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
 const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
@@ -22,7 +21,7 @@ router.post("/", async (req, res) => {
 		const otp = Math.floor(100000 + Math.random() * 900000).toString();
 		const token = await Token.findOneAndUpdate(
 			{ userId: user._id },
-			{ token: otp, expiresAt: Date.now() + 10 * 60 * 1000 },
+			{ token: otp, expiresAt: new Date(Date.now() + 10 * 60 * 1000) }, // Store as Date object
 			{ upsert: true, new: true }
 		);
 
@@ -46,12 +45,12 @@ router.post("/verify-otp", async (req, res) => {
 		const token = await Token.findOne({ userId, token: otp });
 		if (!token) return res.status(400).send({ message: "Invalid OTP" });
 
-		if (Date.now() > token.expiresAt) {
+		if (new Date() > token.expiresAt) {  // Corrected date check
 			await Token.deleteOne({ userId });
 			return res.status(400).send({ message: "OTP expired" });
 		}
 
-		res.status(200).send({ message: "OTP verified" });
+		res.status(200).send({ message: "OTP verified. You can now reset your password.", userId });
 	} catch (error) {
 		res.status(500).send({ message: "Internal Server Error" });
 	}
@@ -63,6 +62,11 @@ router.post("/reset-password", async (req, res) => {
 		const { userId, password } = req.body;
 		const user = await User.findById(userId);
 		if (!user) return res.status(404).send({ message: "User not found" });
+
+		// Validate password
+		const passwordSchema = passwordComplexity().validate(password);
+		if (passwordSchema.error)
+			return res.status(400).send({ message: passwordSchema.error.details[0].message });
 
 		const salt = await bcrypt.genSalt(10);
 		user.password = await bcrypt.hash(password, salt);

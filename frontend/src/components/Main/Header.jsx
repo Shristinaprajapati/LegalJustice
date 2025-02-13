@@ -37,7 +37,7 @@ const Header = () => {
         }
       });
   
-      setShowNotifications(true); // Automatically open dropdown on receiving new notification
+      // setShowNotifications(true); // Automatically open dropdown on receiving new notification
     });
   
     // Retrieve the email from local storage
@@ -72,7 +72,7 @@ const Header = () => {
                 return [...newNotifications, ...prevNotifications]; // Add new ones first
               });
   
-              setShowNotifications(true); // Show notifications as soon as they are fetched
+              // setShowNotifications(true); // Show notifications as soon as they are fetched
             })
             .catch((error) => {
               console.error('Error fetching notifications:', error.response ? error.response.data : error.message);

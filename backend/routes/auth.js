@@ -48,12 +48,13 @@ router.post("/", async (req, res) => {
       return res.status(401).send({ message: "Invalid email or password." });
     }
 
+  
     // Generate token
     const token = user.generateAuthToken();
 
     // Determine if user is admin
     const isAdmin = user.role === "admin"; // Assuming "role" field exists in schema
-
+    
     res.status(200).send({
       data: token,
       message: "Logged in successfully.",

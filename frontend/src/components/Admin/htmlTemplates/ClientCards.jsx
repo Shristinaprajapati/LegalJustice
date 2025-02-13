@@ -25,6 +25,8 @@ const ClientCards = () => {
     fetchClients();
   }, []);
 
+  
+
   const handleCreateDocument = (clientId) => {
     setLoading(true);
     setError(null);

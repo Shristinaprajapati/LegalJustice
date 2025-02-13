@@ -27,13 +27,34 @@ const BookingPopup = ({ show, onConfirm, onCancel, bookingData }) => {
   const handleSendForm = () => {
     // Get the clientId from the booking data
     const clientId = bookingData.clientId._id;
-    
+    const serviceId = bookingData?.serviceId?._id;
+  
+    console.log('Service ID:', serviceId);
+  
+    // Initialize category and redirectUrl variables
+    let redirectUrl = '';
+    let category = ''; // Declare category variable
+  
+    // Determine the redirect URL and category based on the serviceId
+    if (serviceId === '67a84aa53c49df8a5b9ca1df') {
+      redirectUrl = 'http://localhost:3000/divorseform';
+      category = 'Divorce Agreement';  // Corrected typo in category
+    } else if (serviceId === '67abfc26166a138b70b6271d') {
+      redirectUrl = 'http://localhost:3000/partnerform';
+      category = 'Partnership Agreement';
+    } else {
+      // If there are more service IDs, you can add additional conditions here
+      console.log('Service ID does not match any predefined IDs.');
+      return; // Exit the function if no match is found
+    }
+  
     // Prepare the notification data
     const notificationData = {
-      message: 'Your booking form is ready. Click below to fill it out.',
+      message: `Your booking has been confirmed. Fill out the below form to proceed with the ${category}.`,
       buttonText: 'Go to Form',
-      redirectUrl: 'http://localhost:3000/divorseform', // URL to direct the client to the form
+      redirectUrl, // Use the dynamically set redirectUrl
       clientId, // Send the clientId to target a specific user
+      serviceId,
     };
   
     // Log the notification data to check if it's correct
