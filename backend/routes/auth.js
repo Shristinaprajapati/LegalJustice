@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Joi = require("joi");
 const { User } = require("../models/user");
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcryptjs');
 const axios = require("axios").default;
 
 const SECRET_KEY = "6Lc5D6IqAAAAAAW78fRxvrv0xPHqBlGOHriC3b6P";

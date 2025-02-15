@@ -4,7 +4,7 @@ const Token = require("../models/token");
 const sendEmail = require("../utils/sendEmail");
 const Joi = require("joi");
 const passwordComplexity = require("joi-password-complexity");
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcryptjs');
 
 // Send OTP for password reset
 router.post("/", async (req, res) => {
