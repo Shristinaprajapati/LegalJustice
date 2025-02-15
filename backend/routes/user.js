@@ -50,4 +50,36 @@ router.get('/', async (req, res) => {
     }
   });
 
+
+
+  // Fetch client by clientId
+router.get('/client', async (req, res) => {
+  const { clientId } = req.query; // Extract clientId from query parameters
+  if (!clientId) {
+      return res.status(400).json({ message: 'Client ID is required' });
+  }
+  try {
+      const client = await User.findOne({ _id: clientId }); // Assuming User model is used for clients too
+      if (!client) {
+          return res.status(404).json({ message: 'Client not found' });
+      }
+      // Only return necessary fields
+      const { _id, name, email, phone } = client;
+      res.json({ _id, name, email, phone });
+  } catch (err) {
+      res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
+// Fetch the count of users
+router.get('/count', async (req, res) => {
+  try {
+      const userCount = await User.countDocuments(); // Get the count of users
+      res.json({ userCount });
+  } catch (err) {
+      res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
+
 module.exports = router;

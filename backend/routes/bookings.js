@@ -183,6 +183,20 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Fetch the count of all bookings
+router.get('/count', async (req, res) => {
+  try {
+    // Get the count of all bookings
+    const bookingCount = await Booking.countDocuments();
+
+    res.status(200).json({ bookingCount });
+  } catch (err) {
+    console.error('Error fetching booking count:', err);
+    res.status(500).json({ message: 'Error fetching booking count', error: err.message });
+  }
+});
+
+
 
 
 

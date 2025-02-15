@@ -32,9 +32,27 @@ const AdminDocument = () => {
     fetchDocuments();
   }, []);
 
-  const handleEditDocument = (doc) => {
-    navigate('/editdocument', { state: { document: doc } }); // Pass document details
+  const handleEditDocument = async (doc) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/users/client?clientId=${doc.clientId}`);
+      
+      if (response.status === 200 && response.data.email) {
+        const email = response.data.email;
+        console.log("Client Email:", email);
+  
+        // Navigate with both document details and the fetched email
+        navigate('/editdocument', { state: { document: doc, email: email } });
+  
+      } else {
+        console.error("Email not found for this client.");
+        alert("Email not found for this client.");
+      }
+    } catch (error) {
+      console.error("Error fetching client email:", error);
+      alert("Failed to fetch client details.");
+    }
   };
+  
 
   const filteredDocuments = selectedCategory === 'All' 
     ? documents 

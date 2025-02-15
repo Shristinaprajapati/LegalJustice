@@ -6,13 +6,18 @@ import Sidebar from "../Sidebar";
 import axios from "axios";
 import { jsPDF } from "jspdf";
 import styles from "./EditDocument.module.css";
+import SendDocumentPopup from "./SendDocument"; 
 
 const EditDocument = () => {
+  
   const location = useLocation();
   const navigate = useNavigate();
   const document = location.state?.document;
+  const { email } = location.state || {};
 
   const [content, setContent] = useState(document?.agreementContent || "");
+  const [clientEmail, setClientEmail] = useState(null); // Store fetched email
+  const [showPopup, setShowPopup] = useState(false); // Show/hide popup
 
   if (!document) {
     return <p className={styles.noDocument}>No document data found.</p>;
@@ -48,6 +53,19 @@ const EditDocument = () => {
       alert("Error saving document.");
     }
   };
+
+  const handleSendDocument = () => {
+    const clientEmail = email || document?.clientEmail;
+    if (clientEmail) {
+      setClientEmail(clientEmail);
+      setShowPopup(true); // Show the popup
+    } else {
+      alert("Client email not found.");
+    }
+  };
+  
+  
+  
 
 
   const handleConvertToPDF = () => {
@@ -127,11 +145,17 @@ const EditDocument = () => {
           <h2 className={styles.title}>Edit Document</h2>
         </div>
 
-        <div className={styles.documentDetails}>
-          <p className={styles.documentText}><strong>Title:</strong> {document.title}</p>
-          <p className={styles.documentText}><strong>Client ID:</strong> {document.clientId}</p>
-          <p className={styles.documentText}><strong>Client Name:</strong> {document.clientName}</p>
-        </div>
+<div className={styles.documentDetails}>
+  <div className={styles.documentInfo}>
+    <p className={styles.documentText}><strong>Title:</strong> {document.title}</p>
+    <p className={styles.documentText}><strong>Client ID:</strong> {document.clientId}</p>
+    <p className={styles.documentText}><strong>Client Name:</strong> {document.clientName}</p>
+  </div>
+  <button className={styles.sendButton} onClick={handleSendDocument}>
+            Send Document
+          </button>
+</div>
+
 
         <div className={styles.editorContainer}>
           <p className={styles.editorLabel}><strong>Agreement Content:</strong></p>
@@ -158,6 +182,17 @@ const EditDocument = () => {
 </div>
 
       </div>
+      {showPopup && clientEmail && (
+  <SendDocumentPopup 
+    email={clientEmail} 
+    onClose={() => setShowPopup(false)} 
+  />
+)}
+
+
+
+
+
     </div>
   );
 };

@@ -1,141 +1,141 @@
-/* Service.module.css */
-
-/* Container for the service content */
+/* General Styling */
 .servicesContainer {
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    font-family: 'DM Sans', sans-serif;
-    background-color: #f7f7f7; /* Light, neutral background */
-}
-
-/* Section title styling */
-.sectionTitle {
-    font-size: 2rem;
-    color: #2c3e50; /* Dark grayish-blue for a professional feel */
-    margin-bottom: 1.5rem;
+    padding: 40px 5%;
+    background-color: #f9f9f9;
+    font-family: "Satoshi", sans-serif;
+  }
+  
+  /* Section Titles */
+  .sectionTitle {
+    font-size: 24px;
+    font-weight: 600;
     text-align: center;
-    position: relative;
-}
-
-.sectionTitle::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 4px;
-    background-color: #95a5a6; /* Subtle gray for the underline */
-    margin: 0.5rem auto 0;
-}
-
-/* Grid layout for service cards */
-.servicesGrid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+    text-align: left;
+  }
+  
+  /* Service Grid */
+  .servicesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
     justify-content: center;
-}
-
-/* Individual service card styling */
-.serviceCard {
+    margin-bottom: 40px;
+  }
+  
+  /* Service Card */
+  .serviceCard {
     background: #ffffff;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-    flex: 1 1 calc(33.33% - 1.5rem);
-    text-align: left; /* Align content to the left */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.serviceCard:hover {
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    
+  }
+  
+  .serviceCard:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* Service icon styling */
-.serviceIcon {
-    font-size: 3rem;
-    color: #34495e; /* Neutral gray-blue for icons */
-    margin-bottom: 1rem;
-}
-
-/* Service title styling */
-.serviceTitle {
-    font-size: 1.5rem;
-    color: #2c3e50; /* Dark grayish-blue for consistency */
-    font-weight: bold;
-    margin-bottom: 0.75rem;
-}
-
-/* Service description styling */
-.serviceDescription {
-    font-size: 1rem;
-    color: #7f8c8d; /* Subtle medium gray for description text */
-    line-height: 1.6;
-    margin-bottom: 1rem;
-}
-
-/* Price and button container */
-.priceDetail {
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Icon Wrapper */
+  .iconWrapper {
+    width: 60px;
+    height: 60px;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Align items to the left */
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-
-/* Price styling */
-.price {
-    font-size: 1.25rem;
-    color: #27ae60; /* Green for price */
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #c9c9c9, #dbdbdb);
+    border-radius: 50%;
+    margin: 0 auto 15px auto;
+  }
+  
+  /* Service Icons */
+  .serviceIcon {
+    font-size: 28px;
+    color: #41434d;
+  }
+  
+  /* Service Titles */
+  .serviceTitle {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 1px;
+    color: #222;
+    text-align: left;
+  }
+  
+  /* Service Description */
+  .serviceDescription {
+    font-size: 14px;
+    color: #808080;
+    margin-top: 14px;
+    margin-bottom: 5px;
+    line-height: 1.4;
+    text-align: left;
+  }
+  
+  /* Price Styling */
+  .price {
+    font-size: 18px;
     font-weight: bold;
-}
-
-/* Button styling */
-.bookNowBtn, .getDocumentBtn {
-    background-color: #2c3e50; /* Dark gray-blue for buttons */
-    color: #ffffff;
+    color: #4169E1;
+    margin-top: 18px;
+    margin-bottom: 15px;
+    text-align: left;
+  }
+  
+  /* Buttons */
+  .bookNowBtn,
+  .getDocumentBtn {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: bold;
     border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.bookNowBtn:hover, .getDocumentBtn:hover {
-    background-color: #34495e; /* Slightly darker gray-blue on hover */
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+  }
+  
+  .bookNowBtn {
+    background: #4169E1;
+    color: white;
+  }
+  
+  .getDocumentBtn {
+    background:#4169E1;
+    color: white;
+  }
+  
+  .bookNowBtn:hover {
+    background: #4169E1;
     transform: scale(1.05);
-}
-
-/* No service message styling */
-.noServiceMessage {
+  }
+  
+  .getDocumentBtn:hover {
+    background: #4169E1;
+    transform: scale(1.05);
+  }
+  
+  /* Loading & Error Messages */
+  .loading,
+  .errorMessage {
     text-align: center;
-    color: #e74c3c; /* Red for error or no service */
-    font-size: 1.25rem;
-    margin: 2rem 0;
-}
-
-/* Loading and error message styling */
-.loading, .errorMessage {
+    font-size: 16px;
+    font-weight: bold;
+    color: #007BFF;
+    margin: 20px 0;
+  }
+  
+  /* No Service Message */
+  .noServiceMessage {
     text-align: center;
-    font-size: 1.25rem;
-    margin: 2rem 0;
-    color: #34495e; /* Dark gray for message text */
-}
-
-.errorMessage {
-    color: #e74c3c; /* Red for errors */
-}
-
-/* Responsive design */
-@media (max-width: 1024px) {
-    .serviceCard {
-        flex: 1 1 calc(50% - 1.5rem);
-    }
-}
-
-@media (max-width: 768px) {
-    .serviceCard {
-        flex: 1 1 100%;
-    }
-}
+    font-size: 14px;
+    font-weight: bold;
+    color: #777;
+    padding: 15px;
+  }
+  

@@ -78,7 +78,10 @@ const Service = () => {
           ) : (
             services.filter(service => service.category === "consulting").map(service => (
               <div className={styles.serviceCard} key={service._id}>
-                {serviceIcons[service.category] || <FaBriefcase className={styles.serviceIcon} />} {/* Default icon */}
+                <div className={styles.iconWrapper}>
+  {serviceIcons[service.category] || <FaBalanceScale className={styles.serviceIcon} />}
+</div>
+
                 <h3 className={styles.serviceTitle}>{service.title}</h3>
                 <p className={styles.serviceDescription}>{service.description}</p>
                 <p className={styles.price}>Rs. {service.price}</p>
