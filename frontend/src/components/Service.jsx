@@ -109,11 +109,15 @@ const Service = () => {
         </div>
         
         <PopupForm
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          formData={formData}
-          setFormData={setFormData}
-        />
+  isOpen={isModalOpen}
+  onClose={closeModal}
+  formData={formData}
+  setFormData={setFormData}
+  name={formData.name}
+  email={formData.email}
+  phone={formData.phone}
+/>
+
       </div>
     </>
   );

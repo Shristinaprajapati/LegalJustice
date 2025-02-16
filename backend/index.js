@@ -40,7 +40,7 @@ app.use(bodyParser.json());
 
 
 // Use the Khalti routes
-app.use(khaltiRoutes);
+app.use("/api", khaltiRoutes);
 
 // routes
 app.use("/api/users", userRoutes);

@@ -3,14 +3,11 @@ import axios from "axios";
 import styles from "./PopupForm.module.css";
 import MessagePopup from "./MessagePopup.jsx";
 
-// Assuming MessagePopup component is imported
-// import MessagePopup from "./MessagePopup.jsx";
-
 const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
-  const [isMessagePopupOpen, setIsMessagePopupOpen] = useState(false); // State for controlling MessagePopup visibility
+  const [isMessagePopupOpen, setIsMessagePopupOpen] = useState(false);
 
   const email = localStorage.getItem("email");
 
@@ -44,14 +41,14 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setSuccessMessage(""); // Clear success message when user changes input
-    setError(""); // Clear error message
+    setSuccessMessage("");
+    setError("");
   };
 
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
-    setSuccessMessage(""); // Clear previous success message
+    setSuccessMessage("");
 
     try {
       let bookingData;
@@ -61,8 +58,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
           clientId: formData.clientId,
           date: formData.date,
           timeSlot: formData.timeSlot,
-          category: formData.category,  
-          
+          category: formData.category,
         };
       } else {
         bookingData = {
@@ -77,12 +73,47 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
         bookingData
       );
 
-      setSuccessMessage("Booking successful!"); // Set success message after successful booking
-      setIsMessagePopupOpen(true); // Open the MessagePopup
+      setSuccessMessage("Booking successful!");
+      setIsMessagePopupOpen(true);
 
       resetFormData();
     } catch (err) {
       setError(err.response?.data?.message || "Failed to create booking");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleKhaltiPayment = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const paymentPayload = {
+        return_url: "https://test-pay.khalti.com/?pidx=og5SibiRyR8giYx4CqUWGh", 
+        website_url: "http://localhost:3000",
+        amount: 2000 * 100, // Amount in paisa (2000 NPR)
+        purchase_order_id: formData.serviceId,
+        purchase_order_name: "Legal Document Purchase",
+        customer_info: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+        },
+      };
+
+      const khaltiResponse = await axios.post(
+        "http://localhost:8080/api/khalti-api",
+        paymentPayload
+      );
+
+      if (khaltiResponse.data.success) {
+        window.location.href = khaltiResponse.data.data.payment_url;
+      } else {
+        setError("Failed to initiate Khalti payment.");
+      }
+    } catch (err) {
+      setError("Error processing payment: " + err.response?.data?.message);
     } finally {
       setLoading(false);
     }
@@ -97,7 +128,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
   };
 
   const closeMessagePopup = () => {
-    setIsMessagePopupOpen(false); // Close MessagePopup when it's closed
+    setIsMessagePopupOpen(false);
   };
 
   if (!isOpen) return null;
@@ -114,12 +145,9 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
           {formData.category === "consulting" ? (
             <>
               <h3>Book Service</h3>
-
               {loading && <p>Loading...</p>}
               {error && <p className={styles.errorMessage}>{error}</p>}
-              {successMessage && (
-                <p className={styles.successMessage}>{successMessage}</p>
-              )}
+              {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
 
               <form
                 onSubmit={(e) => {
@@ -129,80 +157,23 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
               >
                 <label>
                   Service:
-                  <input
-                    type="text"
-                    name="service"
-                    value={formData.service}
-                    readOnly
-                    required
-                  />
+                  <input type="text" name="service" value={formData.service} readOnly required />
                 </label>
-                {/* <label>
-                  Name:
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    readOnly
-                    required
-                  />
-                </label>
-                <label>
-                  Email:
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    readOnly
-                    required
-                  />
-                </label>
-                <label>
-                  Phone:
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    readOnly
-                    required
-                  />
-                </label> */}
-
-                
                 <label>
                   Date:
-                  <input
-                    type="date"
-                    name="date"
-                    value={formData.date}
-                    onChange={handleInputChange}
-                    required
-                  />
+                  <input type="date" name="date" value={formData.date} onChange={handleInputChange} required />
                 </label>
                 <label>
                   Time Slot:
-                  <select
-                    name="timeSlot"
-                    value={formData.timeSlot}
-                    onChange={handleInputChange}
-                    required
-                  >
+                  <select name="timeSlot" value={formData.timeSlot} onChange={handleInputChange} required>
                     <option value="">Select a time slot</option>
-                    <option value="10:00 AM - 11:00 AM">
-                      10:00 AM - 11:00 AM
-                    </option>
-                    <option value="11:00 AM - 12:00 PM">
-                      11:00 AM - 12:00 PM
-                    </option>
-                    <option value="1:00 PM - 2:00 PM">
-                      1:00 PM - 2:00 PM
-                    </option>
+                    <option value="10:00 AM - 11:00 AM">10:00 AM - 11:00 AM</option>
+                    <option value="11:00 AM - 12:00 PM">11:00 AM - 12:00 PM</option>
+                    <option value="1:00 PM - 2:00 PM">1:00 PM - 2:00 PM</option>
                   </select>
                 </label>
                 <div className={styles.modalActions}>
-                  <button type="submit" className={styles.submitBtn}>
-                    Submit
-                  </button>
+                  <button type="submit" className={styles.submitBtn}>Submit</button>
                 </div>
               </form>
             </>
@@ -213,16 +184,11 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
 
               {loading && <p>Loading...</p>}
               {error && <p className={styles.errorMessage}>{error}</p>}
-              {successMessage && (
-                <p className={styles.successMessage}>{successMessage}</p>
-              )}
+              {successMessage && <p className={styles.successMessage}>{successMessage}</p>}
 
               <div className={styles.modalActions}>
-                <button
-                  onClick={handleSubmit}
-                  className={styles.submitBtn}
-                >
-                  Yes
+                <button onClick={handleKhaltiPayment} className={styles.submitBtn}>
+                  Yes, Pay Rs. 2000
                 </button>
               </div>
             </>
@@ -230,12 +196,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
         </div>
       </div>
 
-      {/* Conditionally render the MessagePopup */}
-      <MessagePopup
-        isOpen={isMessagePopupOpen}
-        onClose={closeMessagePopup}
-        message="Document request sent successfully!"
-      />
+      <MessagePopup isOpen={isMessagePopupOpen} onClose={closeMessagePopup} message="Document request sent successfully!" />
     </>
   );
 };
