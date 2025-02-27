@@ -1,11 +1,14 @@
 const router = require("express").Router();
 const Joi = require("joi");
 const { User } = require("../models/user");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const axios = require("axios").default;
 
 const SECRET_KEY = "6Lc5D6IqAAAAAAW78fRxvrv0xPHqBlGOHriC3b6P";
+const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret"; // Store in .env
 
+// Authentication route
 router.post("/", async (req, res) => {
   try {
     const { recaptchaValue, email, password } = req.body;
@@ -27,7 +30,10 @@ router.post("/", async (req, res) => {
     );
 
     if (!recaptchaResponse.data.success) {
-      return res.status(400).send({ message: "reCAPTCHA verification failed." });
+      return res.status(400).send({
+        message: "reCAPTCHA verification failed.",
+        errorCodes: recaptchaResponse.data["error-codes"],
+      });
     }
 
     // Validate email and password
@@ -48,17 +54,26 @@ router.post("/", async (req, res) => {
       return res.status(401).send({ message: "Invalid email or password." });
     }
 
-  
     // Generate token
-    const token = user.generateAuthToken();
+    const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
+      expiresIn: "1h", // Token expires in 1 hour
+    });
 
-    // Determine if user is admin
-    const isAdmin = user.role === "admin"; // Assuming "role" field exists in schema
-    
+    // If the user is a specific email, send a redirect response
+    if (email === "shristiprajapati339@gmail.com") {
+      return res.status(200).send({
+        token,
+        message: "Logged in successfully.",
+        redirectTo: "http://localhost:3000/admin/AdminDashboard",
+        user: { id: user._id, email: user.email, role: user.role },
+      });
+    }
+
+    // Normal response for other users
     res.status(200).send({
-      data: token,
+      token,
       message: "Logged in successfully.",
-      isAdmin,
+      user: { id: user._id, email: user.email, role: user.role },
     });
   } catch (error) {
     console.error("Error during authentication:", error.message);
@@ -74,5 +89,37 @@ const validate = (data) => {
   });
   return schema.validate(data);
 };
+
+// User data fetch route
+router.get('/me', async (req, res) => {
+  // Get the token from the Authorization header
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+
+  if (!token) {
+    return res.status(401).send({ message: 'Access denied. No token provided.' });
+  }
+
+  try {
+    // Verify the token
+    const decoded = jwt.verify(token, JWT_SECRET);
+    
+    // Find the user by the ID from the decoded token
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return res.status(404).send({ message: 'User not found.' });
+    }
+
+    // Send the user data back in the response
+    res.send({
+      name: user.name,
+      email: user.email,
+      clientId: user._id,
+      role: user.role,
+    });
+  } catch (error) {
+    console.error("Error verifying token:", error.message);
+    res.status(400).send({ message: 'Invalid token.' });
+  }
+});
 
 module.exports = router;

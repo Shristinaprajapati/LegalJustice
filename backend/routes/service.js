@@ -50,4 +50,38 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+
+// Edit (Update) a service
+router.put("/:id", async (req, res) => {
+  const { title, description, price, category, formTemplate } = req.body;
+
+  try {
+    const service = await Service.findById(req.params.id);
+    if (!service) {
+      return res.status(404).json({ message: "Service not found" });
+    }
+
+    // Ensure category is either 'consulting' or 'documentation'
+    if (category && !['consulting', 'documentation'].includes(category)) {
+      return res.status(400).json({ message: "Invalid category. Must be 'consulting' or 'documentation'." });
+    }
+
+    // If category is 'documentation', formTemplate is required
+    if (category === 'documentation' && !formTemplate) {
+      return res.status(400).json({ message: "Form template is required for documentation services" });
+    }
+
+    // Update service fields
+    if (title !== undefined) service.title = title;
+    if (description !== undefined) service.description = description;
+    if (price !== undefined) service.price = price;
+    if (category !== undefined) service.category = category;
+    if (formTemplate !== undefined) service.formTemplate = formTemplate;
+
+    const updatedService = await service.save();
+    res.json(updatedService);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 module.exports = router;

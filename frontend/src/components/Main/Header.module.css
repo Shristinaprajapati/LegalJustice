@@ -362,3 +362,313 @@
 .notificationButton:hover {
   color: darkblue;
 }
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1000;
+}
+
+/* Sidebar Container */
+.sidebar {
+  width: 400px;
+  height: 100vh;
+  background: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: row;
+  transition: transform 0.3s ease-in-out;
+  position: absolute; 
+  right: 0; 
+  top: 0;
+}
+
+
+/* Separate div for transparent background */
+.iconBarWrapper {
+  margin-top: -200px;
+  position: absolute;
+  left: -50px; /* Adjust position */
+  height: 100%;
+  display: flex;
+  align-items: center;
+  background: transparent;
+}
+
+/* Vertical Icon Bar */
+.iconBar {
+  width: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  margin: 5px 0;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 22px;
+  color: white;
+  transition: all 0.3s ease-in-out;
+}
+
+.icon:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* First icon (Close button) */
+.icon:first-child {
+  background: #2c718f;
+  color: white;
+}
+
+/* Sidebar Content */
+.content {
+  padding: 20px;
+  width: 100%;
+}
+
+
+
+
+/* Profile Section */
+.menu {
+  list-style: none;
+  padding: 8px;
+  text-align: left; 
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 96%;
+  max-width: 400px;
+  box-sizing: border-box;
+}
+
+/* Profile Icon */
+.profileIcon {
+  font-size: 50px; 
+  color: #2c718f; 
+  margin-bottom: 10px;
+  margin-left: -6px;
+  align-self: left;
+}
+
+/* Profile Name */
+.profileName {
+  font-size: 18px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 5px;
+  word-wrap: break-word;
+}
+
+/* Profile Email */
+.profileEmail {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+  word-wrap: break-word;
+  margin-top: 6px;
+  font-style: normal;
+}
+
+/* Logout Button */
+.logout {
+  font-size: 14px;
+  font-weight: bold;
+  color: #d9534f; /* Red color for logout */
+  cursor: pointer;
+  padding: 8px;
+  text-align: center;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.logout:hover {
+  background: rgba(217, 83, 79, 0.1);
+}
+
+/* Settings Section */
+
+.settingsSection{
+  margin-top: 20px;
+  margin-bottom: 50px;
+}
+.settingsTitle {
+  background-color: #eaeaea;
+  display: flex;
+  gap: 10px; 
+  padding: 12px 12px; /* Add padding for a better visual space */
+  border-radius: 6px; /* Rounded corners for a softer look */
+  height: 40px;
+  margin-bottom: 20px;
+}
+
+
+.profileSection {
+  margin-left: 0px;
+  display: flex;
+  gap: 15px;
+}
+
+/* Title Styling */
+.sectionTitle {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* Label Styling */
+.inputLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Input Field */
+.inputField {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  box-sizing: border-box;
+}
+
+/* Save Button */
+.saveBtn {
+  padding: 10px 15px;
+  background: #2c718f;
+  color: white;
+  border: none;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.saveBtn:hover {
+  background: #1f5b73;
+}
+
+/* Paragraph Styling */
+.sectionText {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+
+
+
+
+
+
+
+/* Common Section Styling */
+.section {
+  text-align: center;
+}
+
+.section h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+/* Profile Name */
+.profileName {
+  font-size: 16px;
+  font-weight: bold;
+  color: #222;
+}
+
+/* Profile Email */
+.profileEmail {
+  font-size: 14px;
+  color: #555;
+}
+
+.bookingList {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 660px;
+  overflow-y: auto;
+  scrollbar-width: none; 
+}
+
+.bookingList::-webkit-scrollbar {
+  display: none; 
+}
+
+
+.bookingCard {
+  background: white;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+ 
+}
+
+.serviceTitle {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: -26px;
+}
+
+.bookingDate, .bookingTime {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: gray;
+  font-size: 14px;
+  margin-bottom: -30px;
+}
+
+.bookingStatus {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 5px 8px;
+  border-radius: 5px;
+  width: fit-content;
+}
+
+.bookingStatus.pending {
+  background-color: #ffeeba;
+  color: #856404;
+}
+
+.bookingStatus.confirmed {
+  background-color: #c3e6cb;
+  color: #155724;
+}
+
+.bookingStatus.cancelled {
+  background-color: #f5c6cb;
+  color: #721c24;
+}

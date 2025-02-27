@@ -16,48 +16,51 @@ const Login = () => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
+  const handleRecaptcha = (value) => {
+    setRecaptchaValue(value);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+  
     if (!recaptchaValue) {
       setError("Please complete the reCAPTCHA verification.");
       return;
     }
-
+  
     try {
       const url = "http://localhost:8080/api/auth";
       const payload = { ...data, recaptchaValue };
-
-      // 🔹 Add Timeout (10 seconds)
-      const response = await axios.post(url, payload, { timeout: 10000 }); 
+  
+      const response = await axios.post(url, payload, { timeout: 10000 });
       const res = response.data;
-
-      console.log("Login Response:", res); // Debugging entire response
-      console.log("Received Token:", res.data); // 🔹 Print Token in Console
-      
-      if (res.data) {
-        console.log("Storing Token:", res.data);  // Debugging before storage
-
-        //  Store JWT Token Properly
-        localStorage.setItem("token", res.data);  
+  
+      console.log("Login Response:", res);
+  
+      if (res.token) {
+        console.log("Storing Token:", res.token);
+        localStorage.setItem("token", res.token);
         localStorage.setItem("email", data.email);
-
-        // 🔹 Redirect Based on Role
-        navigate(res.isAdmin ? "/admin/AdminDashboard" : "/");
+  
+        // Redirect to the admin dashboard if the user is an admin
+        if (res.redirectTo) {
+          window.location.href = res.redirectTo; // Redirect to the admin dashboard
+        } else {
+          navigate("/"); // Normal user, redirect to home page
+        }
       } else {
         setError("Authentication failed. No token received.");
       }
     } catch (error) {
+      console.error("Login Error:", error);
       if (error.code === "ECONNABORTED") {
-        // 🔹 Handle Timeout Error
         setError("Request timed out. Please try again.");
-      } else if (error.response?.status >= 400 && error.response?.status <= 500) {
-        setError(error.response.data.message);
       } else {
-        setError("An unexpected error occurred. Please try again.");
+        setError(error.response?.data?.message || "An unexpected error occurred. Please try again.");
       }
     }
   };
+  
 
   return (
     <div className={styles.loginContainer}>
@@ -93,14 +96,19 @@ const Login = () => {
             Forgot Password?
           </Link>
           <div className={styles.captchaContainer}>
-            <ReCAPTCHA sitekey={SITE_KEY} onChange={setRecaptchaValue} />
+            <ReCAPTCHA sitekey={SITE_KEY} onChange={handleRecaptcha} />
           </div>
           <button type="submit" className={styles.loginButtonSubmit}>
             Login
           </button>
         </form>
         <div className={styles.signupLinkContainer}>
-          <p className={styles.paragraph}>Don't have an account? <Link to="/signup" className={styles.signupLink}>Sign Up</Link></p>
+          <p className={styles.paragraph}>
+            Don't have an account?{" "}
+            <Link to="/signup" className={styles.signupLink}>
+              Sign Up
+            </Link>
+          </p>
         </div>
       </div>
       <div className={styles.loginImage}></div>

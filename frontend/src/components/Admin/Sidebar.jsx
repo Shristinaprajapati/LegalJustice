@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FaTachometerAlt, FaServicestack, FaBook, FaFileAlt, FaMoneyBillAlt, FaSignOutAlt } from 'react-icons/fa';
+import { Icon } from '@iconify/react';
 import ReactDOMServer from 'react-dom/server';
 import axios from 'axios';
 import DivorceAgreementTemplate from './htmlTemplates/ClientCards.jsx';
@@ -45,48 +45,47 @@ const Sidebar = () => {
   return (
     <div className={styles.sidebar}>
       <img 
-  src="/Images/logo1.png" 
-  alt="Legal Justice Logo" 
-  style={{ 
-    width: '200px', 
-    height: 'auto', 
-    borderRadius: '8px', 
-    margin: '15px' 
-  }} 
-/>
-
+        src="/Images/logo1.png" 
+        alt="Legal Justice Logo" 
+        style={{ 
+          width: '200px', 
+          height: 'auto', 
+          borderRadius: '8px', 
+          margin: '15px' 
+        }} 
+      />
 
       <ul>
         <li>
           <Link to="/admin/AdminDashboard" className={getLinkClass('/admin/AdminDashboard')}>
-            <FaTachometerAlt className={styles.icon} />
+            <Icon icon="ic:outline-dashboard" className={styles.icon} />
             Dashboard
           </Link>
         </li>
         <li>
           <Link to="/services" className={getLinkClass('/services')}>
-            <FaServicestack className={styles.icon} />
+            <Icon icon="bx:bxs-server" className={styles.icon} />
             Services
           </Link>
         </li>
         <li>
           <Link to="/booking" className={getLinkClass('/booking')}>
-            <FaBook className={styles.icon} />
+            <Icon icon="fa-solid:book" className={styles.icon} />
             Bookings
           </Link>
         </li>
         <li>
-                <Link to="/document" className={getLinkClass('/document')}>
-                <FaFileAlt className={styles.icon} />
-                  Documents
-                </Link>
-              </li>
+          <Link to="/document" className={getLinkClass('/document')}>
+            <Icon icon="fa-regular:file-alt" className={styles.icon} />
+            Documents
+          </Link>
+        </li>
         <li>
           <button
             className={`${styles.dropdownToggle} ${showTemplatesDropdown ? styles.active : ''}`}
             onClick={toggleDropdown}
           >
-            <FaFileAlt className={styles.icon} />
+            <Icon icon="ic:outline-description" className={styles.icon} />
             Templates <span>{showTemplatesDropdown ? '▲' : '▼'}</span>
           </button>
           {showTemplatesDropdown && (
@@ -101,31 +100,24 @@ const Sidebar = () => {
                   Partnership Template
                 </Link>
               </li>
-              {/* <li>
-                <Link to="/document" className={getLinkClass('/document')}>
-                  Documents
-                </Link>
-              </li> */}
             </ul>
           )}
         </li>
         <li>
           <Link to="/admin/payment-history" className={getLinkClass('/admin/payment-history')}>
-            <FaMoneyBillAlt className={styles.icon} />
+            <Icon icon="mdi:cash-multiple" className={styles.icon} />
             Payment History
           </Link>
         </li>
-
         <li>
-        <Link to="/contactform" className={`${styles.link} ${getLinkClass('/contactform')}`}>
-            <FaFileAlt className={styles.icon} />
+          <Link to="/contactform" className={`${styles.link} ${getLinkClass('/contactform')}`}>
+            <Icon icon="fa-solid:address-book" className={styles.icon} />
             Contact
           </Link>
-              </li>
+        </li>
         <li>
-
           <Link to="/login" className={`${styles.link} ${styles.logout}`}>
-            <FaSignOutAlt className={styles.icon} />
+            <Icon icon="fa-solid:sign-out-alt" className={styles.icon} />
             Logout
           </Link>
         </li>

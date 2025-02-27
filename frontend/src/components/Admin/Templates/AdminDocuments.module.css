@@ -60,6 +60,8 @@ h2 {
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 30px;
   margin-top: 20px;
+  width: 100%;  /* Ensure the grid spans the full width */
+  box-sizing: border-box;  /* Make sure padding and gap don't affect the width */
 }
 
 .documentCard {
@@ -72,7 +74,8 @@ h2 {
   justify-content: flex-start;
   align-items: flex-start;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 100%;
+  width: 100%;  /* Make sure each card fills the grid cell */
+  box-sizing: border-box;
 }
 
 .documentCard:hover {
@@ -102,7 +105,7 @@ h2 {
   transform: scale(1.05);
 }
 
-.docName{
+.docName {
   margin-bottom: 15px;
 }
 
@@ -113,7 +116,6 @@ h2 {
   background-color: transparent; /* Removed background color */
   border-radius: 8px;
   text-align: left;
-
 }
 
 .documentInfo p {
@@ -168,5 +170,6 @@ p {
 
   .documentGrid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px; /* Reduce gap for better spacing */
   }
 }

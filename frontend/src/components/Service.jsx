@@ -24,6 +24,7 @@ const Service = () => {
     serviceId: "",
     service: "",
     category: "",
+    clientId: "",
   });
 
   useEffect(() => {
@@ -116,6 +117,7 @@ const Service = () => {
   name={formData.name}
   email={formData.email}
   phone={formData.phone}
+  clientId={formData.clientId}
 />
 
       </div>

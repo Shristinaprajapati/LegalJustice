@@ -1,102 +1,64 @@
+/* General Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'DM Sans', sans-serif;
+}
+
+body {
+  background-color: #f4f7fc;
+}
+
 /* Container for sidebar and content */
 .container {
   display: flex;
   height: 100vh;
+} 
+
+.sidebar h2 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 15px;
 }
 
-/* Sidebar styles - to be handled by the Sidebar component */
-.sidebar {
-  width: 250px;
-  background-color: #2c3e50;
+.sidebar a {
+  text-decoration: none;
   color: white;
-  position: fixed;
-  height: 100%;
-  padding-top: 20px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  transition: background 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-/* Main content area adjusted for the sidebar */
+.sidebar a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Main content area */
 .content {
-  margin-left: 250px;
-  padding: 20px;
-  width: calc(100% - 250px);
-  background-color: #f9f9f9;
+  margin-left: 260px;
+  padding: 25px;
+  width: calc(100% - 260px);
+  background-color: #f4f7fc;
   overflow-y: auto;
 }
 
-/* Add Service Form */
-.addServiceForm {
-  margin: 20px auto;
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 8px;
-}
-
-.addServiceForm h3 {
-  margin-bottom: 15px;
-  color: #333;
-}
-
-.addServiceForm input,
-.addServiceForm textarea,
-.addServiceForm button {
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  width: 100%;
-}
-
-.addServiceForm input[type="number"] {
-  max-width: 150px;
-}
-
-.addServiceForm button {
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 10px;
-}
-
-.addServiceForm button:hover {
-  background-color: #45a049;
-}
-
-/* Radio buttons styling */
-.serviceType {
-  display: flex;
-  gap: 15px;
-}
-
-.serviceType label {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-/* Error message styling */
-.errorMessage {
-  color: #e74c3c;
-  text-align: center;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-/* Existing Services Table */
+/* Booking Table */
 .servicesList {
-  margin-top: 30px;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.servicesList h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 20px;
 }
 
 .servicesList table {
@@ -108,34 +70,178 @@
 .servicesList th,
 .servicesList td {
   border: 1px solid #ddd;
-  padding: 12px;
+  padding: 12px 15px;
   text-align: left;
-  font-size: 16px;
+  font-size: 14px;
+  color: #333;
 }
 
 .servicesList th {
-  background-color: #f4f4f4;
-  color: #333;
+  background-color: #f7f7f7;
+  color: #555;
+  font-weight: 600;
+}
+
+.servicesList td {
+  background-color: #fff;
 }
 
 .servicesList tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
+.servicesList tr:hover {
+  background-color: #f1f1f1;
+}
+
+.servicesList th:nth-child(2),
+.servicesList td:nth-child(2) {
+  width: 60%;
+}
+
+.servicesList th:last-child,
+.servicesList td:last-child {
+  width: 20%;
+}
+
+/* Action Button */
 .servicesList button {
   background-color: #e74c3c;
   color: white;
-  padding: 5px 10px;
+  padding: 8px 12px;
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  font-size: 14px;
+  transition: all 0.3s ease;
 }
 
 .servicesList button:hover {
   background-color: #c0392b;
 }
 
-.textSpace{
-  width: 36rem;
+/* Add Service Form */
+.addServiceForm {
+  max-width: 650px;
+  margin: 20px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
+.addServiceForm h3 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.addServiceForm input,
+.addServiceForm textarea,
+.addServiceForm button {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+
+.addServiceForm input:focus,
+.addServiceForm textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+.addServiceForm input[type="number"] {
+  max-width: 180px;
+}
+
+.addServiceForm button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.addServiceForm button:hover {
+  background-color: #0056b3;
+}
+
+/* Radio Buttons Styling */
+.serviceType {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.serviceType label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+/* Error Message Styling */
+.errorMessage {
+  color: #e74c3c;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  background: #fdecea;
+  margin-bottom: 15px;
+}
+
+/* Text Area Customization */
+.textSpace {
+  width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 220px;
+  }
+  
+  .content {
+    margin-left: 220px;
+    width: calc(100% - 220px);
+  }
+
+  .addServiceForm {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .servicesList {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .sidebar {
+    width: 200px;
+  }
+
+  .content {
+    margin-left: 200px;
+    width: calc(100% - 200px);
+    padding: 15px;
+  }
+
+  .servicesList th,
+  .servicesList td {
+    font-size: 14px;
+    padding: 10px;
+  }
 }

@@ -197,6 +197,49 @@ router.get('/count', async (req, res) => {
 });
 
 
+// Fetch all bookings by clientId
+router.get('/client/:clientId', async (req, res) => {
+  try {
+    const { clientId } = req.params;
+
+    // Find bookings by clientId and populate details
+    const bookings = await Booking.find({ clientId })
+      .populate('clientId', 'name email') // Populate client details
+      .populate('serviceId', 'title'); // Populate service details
+
+    if (!bookings || bookings.length === 0) {
+      return res.status(404).json({ message: 'No bookings found for this client' });
+    }
+
+    // Format the response to include all relevant details
+    const bookingsWithDetails = bookings.map((booking) => ({
+      _id: booking._id,
+      service: booking.serviceId ? {
+        _id: booking.serviceId._id,
+        title: booking.serviceId.title,
+      } : null,
+      client: booking.clientId ? {
+        _id: booking.clientId._id,
+        name: booking.clientId.name,
+        email: booking.clientId.email,
+      } : null,
+      category: booking.category,
+      date: booking.date,
+      timeSlot: booking.timeSlot,
+      status: booking.status, // Includes latest status set by admin
+      createdAt: booking.createdAt,
+      updatedAt: booking.updatedAt, // Shows the last status update timestamp
+    }));
+
+    res.status(200).json({ bookings: bookingsWithDetails });
+
+  } catch (err) {
+    console.error('Error fetching bookings by clientId:', err);
+    res.status(500).json({ message: 'Error fetching bookings', error: err.message });
+  }
+});
+
+
 
 
 
