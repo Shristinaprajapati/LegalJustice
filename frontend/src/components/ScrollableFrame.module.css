@@ -1,49 +1,75 @@
 /* ScrollableFrame.module.css */
 
+/* General Styles */
+.container {
+  font-family: 'Satoshi', sans-serif;
+  color: #1E1E1E;
+  background: #F8F9FA;
+}
+
+/* Typography */
+h1, .heading {
+  font-size: 2.0rem;
+  font-weight: 700;
+  color: #1E1E1E;
+  text-align: left;
+  margin-bottom: -28px;
+}
+
+h2, .subheading {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #444;
+}
+
+p, .paragraph {
+  font-size: 1rem;
+  line-height: 1.4;
+  color: #6C757D;
+  text-align: left;
+  margin-bottom: 24px;
+  font-style: normal;
+}
+
+
+
 /* Manage Cases Section */
 .manageCasesSection {
+  margin-top: 80px;
   display: flex;
-  align-items: center;
-  justify-content: flex-start; /* Align to the left */
-  background-color: #1c1c1c;
+  align-items: left;
+  justify-content: space-between;
+  background-color: #ffffff;
   color: #ffffff;
   padding: 90px 80px;
   border-radius: 8px;
+  gap: 40px;
 }
 
 .manageCasesSection .content {
+  margin-top: 80px;
   flex: 1;
   max-width: 40%;
-  text-align: left; /* Align text to the left */
-}
-
-.manageCasesSection .heading {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #ffffff;
-  text-align: left; /* Align text to the left */
-}
-
-.manageCasesSection .paragraph {
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 30px;
-  color: #d0d0d0;
-  text-align: left; /* Align text to the left */
+  margin-left: 20px;
+  text-align: left;
 }
 
 .manageCasesSection .talkToUsBtn {
-  max-width: 24%;
-  padding: 10px 20px;
+  padding: 12px 24px;
   background-color: transparent;
-  border: 1px solid #007BFF;
+  border: 2px solid #007BFF;
   border-radius: 50px;
   color: #007BFF;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-align: left; /* Align text to the left */
+  transition: 0.3s ease-in-out;
 }
 
 .manageCasesSection .talkToUsBtn:hover {
@@ -59,20 +85,127 @@
 }
 
 .manageCasesSection .image img {
-  margin-left: 10rem;
   border-radius: 8px;
   max-width: 80%;
   height: auto;
   object-fit: cover;
 }
 
+
+/* Contact Section */
+.contact-section {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #f9f9f9;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Contact Page Button */
+.contact-btn {
+  background: none;
+  border: 2px solid #111;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.contact-btn:hover {
+  background: #111;
+  color: white;
+}
+
+/* Title & Subtitle */
+h2 {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: #111;
+  margin-bottom: 10px;
+}
+
+p {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+/* Contact Cards Grid */
+.contact-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Individual Contact Card */
+.contact-card {
+  width: 300px;
+  padding: 25px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  text-align: center;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Background Colors */
+.bg-red-100 { background-color: #fde8e8; }
+.bg-pink-100 { background-color: #fce7f3; }
+.bg-blue-100 { background-color: #e0f2fe; }
+
+/* Icon Styling */
+.icon-container {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+}
+
+.location-icon {
+  font-size: 50px;
+  color: #333;
+}
+
+/* View Location Button */
+.view-location-btn {
+  background: none;
+  border: 2px solid #111;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 15px auto 0;
+  width: 80%;
+}
+
+.view-location-btn:hover {
+  background: #111;
+  color: white;
+}
+
+
+
+
+
 /* Partner Section */
 .partnerSection {
   display: flex;
   flex-direction: column;
-  padding: 60px 80px;
+  padding: 80px 100px;
   gap: 40px;
-  text-align: left; /* Align text to the left */
 }
 
 .partnerSection .partnerContent {
@@ -93,37 +226,106 @@
   object-fit: cover;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+.partnerimg{
+  margin-top: 18px;
+}
 
 .partnerSection .partnerText {
   flex: 1.5;
 }
 
-.partnerSection .subheading {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-left: 0;
-  margin-bottom: 50px;
-  text-align: left; /* Align text to the left */
+
+/* Trusted Partner Section */
+.trustedPartner {
+  text-align: center;
+  padding: 40px 10%;
+  background: #F8F9FA;
 }
 
-.partnerSection .paragraph {
+.list {
+  list-style-type: none;
+  padding: 0;
   font-size: 1rem;
-  line-height: 1.6;
-  color: #424242;
-  text-align: left; /* Align text to the left */
+  color: #6C757D;
 }
+
+/* Hero Section */
+.heroSection {
+  text-align: center;
+  padding: 60px 20px;
+  background: #F8F9FA;
+}
+
+.primaryButton,
+.secondaryButton {
+  padding: 12px 24px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s ease-in-out;
+}
+
+.primaryButton {
+  background-color: #003366;
+  color: white;
+}
+
+.secondaryButton {
+  background-color: #003366;;
+  color: rgb(255, 255, 255);
+}
+
+.primaryButton:hover {
+  background-color: #003366;
+}
+
+.secondaryButton:hover {
+  background-color: #003366;
+}
+
+/* Personalized & Elevating Experience Sections */
+.personalizedSection,
+.elevatingExperience {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 50px 10%;
+  background: white;
+}
+
+.textContainer {
+  max-width: 50%;
+}
+
+.image {
+  width: 40%;
+  border-radius: 10px;
+}
+
+
+
+
+
 
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
   .manageCasesSection,
   .partnerSection {
     padding: 60px 5%;
+    flex-direction: column;
+    align-items: center;
   }
 
   .manageCasesSection .content,
   .partnerSection .partnerContent {
     max-width: 100%;
-    text-align: left; /* Align text to the left */
+    text-align: center;
+  }
+
+  .manageCasesSection .image,
+  .partnerSection .partnerImage {
+    max-width: 90%;
   }
 }
 
@@ -133,29 +335,43 @@
     padding: 40px 5%;
   }
 
-  .manageCasesSection .heading,
-  .partnerSection .subheading {
+  h1, .heading {
     font-size: 2rem;
   }
 
-  .manageCasesSection .paragraph,
-  .partnerSection .paragraph {
-    font-size: 1rem;
+  h2, .subheading {
+    font-size: 1.7rem;
+  }
+
+  p, .paragraph {
+    font-size: 0.95rem;
   }
 
   .manageCasesSection .talkToUsBtn {
-    padding: 10px 20px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    transition: 0.3s ease-in-out;
   }
 }
 
 @media (max-width: 480px) {
-  .manageCasesSection .heading,
-  .partnerSection .subheading {
+  h1, .heading {
     font-size: 1.8rem;
   }
 
-  .manageCasesSection .paragraph,
-  .partnerSection .paragraph {
-    font-size: 0.95rem;
+  h2, .subheading {
+    font-size: 1.5rem;
+  }
+
+  p, .paragraph {
+    font-size: 0.9rem;
+  }
+
+  .manageCasesSection .talkToUsBtn {
+    width: 100%;
+    text-align: center;
   }
 }

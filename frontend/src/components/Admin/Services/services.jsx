@@ -3,6 +3,7 @@ import axios from 'axios';
 import styles from './AdminServices.module.css';
 import Sidebar from '../Sidebar';
 import { FaEllipsisV } from 'react-icons/fa';
+import DivorceAgreementForm from '..//htmlTemplates/DivorseAgreementForm';
 
 const AdminServices = () => {
   const [services, setServices] = useState([]);
@@ -74,6 +75,23 @@ const AdminServices = () => {
     }
   };
 
+  const renderFormTemplate = () => {
+    switch (newService.formTemplate) {
+      case 'form1':
+        return <DivorceAgreementForm submitForm={handleAddService} />;
+      case 'form2':
+        return <div>Form 2 Content</div>;
+      case 'form3':
+        return <div>Form 3 Content</div>;
+      case 'form4':
+        return <div>Form 4 Content</div>;
+      case 'form5':
+        return <div>Form 5 Content</div>;
+      default:
+        return null;
+    }
+  };
+
   if (loading) return <div>Loading services...</div>;
 
   return (
@@ -97,20 +115,61 @@ const AdminServices = () => {
             <tbody>
               {services.map((service) => (
                 <tr key={service._id}>
-                  <td>{editService?._id === service._id ? <input type="text" name="title" value={editService.title} onChange={handleEditChange} /> : service.title}</td>
-                  <td>{editService?._id === service._id ? <textarea name="description" value={editService.description} onChange={handleEditChange} /> : service.description}</td>
-                  <td>{editService?._id === service._id ? <input type="number" name="price" value={editService.price} onChange={handleEditChange} /> : service.price}</td>
                   <td>
                     {editService?._id === service._id ? (
-                      <button className={styles.saveButton} onClick={handleUpdateService}>Save</button>
+                      <input
+                        type="text"
+                        name="title"
+                        value={editService.title}
+                        onChange={handleEditChange}
+                      />
                     ) : (
-                      <button className={styles.editButton} onClick={() => handleEditClick(service)}>Edit</button>
+                      service.title
+                    )}
+                  </td>
+                  <td>
+                    {editService?._id === service._id ? (
+                      <textarea
+                        name="description"
+                        value={editService.description}
+                        onChange={handleEditChange}
+                      />
+                    ) : (
+                      service.description
+                    )}
+                  </td>
+                  <td>
+                    {editService?._id === service._id ? (
+                      <input
+                        type="number"
+                        name="price"
+                        value={editService.price}
+                        onChange={handleEditChange}
+                      />
+                    ) : (
+                      service.price
+                    )}
+                  </td>
+                  <td>
+                    {editService?._id === service._id ? (
+                      <button className={styles.saveButton} onClick={handleUpdateService}>
+                        Save
+                      </button>
+                    ) : (
+                      <button className={styles.editButton} onClick={() => handleEditClick(service)}>
+                        Edit
+                      </button>
                     )}
                     <div className={styles.menuWrapper}>
-                      <FaEllipsisV className={styles.menuIcon} onClick={() => setMenuVisible(menuVisible === service._id ? null : service._id)} />
+                      <FaEllipsisV
+                        className={styles.menuIcon}
+                        onClick={() => setMenuVisible(menuVisible === service._id ? null : service._id)}
+                      />
                       {menuVisible === service._id && (
                         <div className={styles.menu}>
-                          <button className={styles.deleteButton} onClick={() => handleDeleteService(service._id)}>Delete</button>
+                          <button className={styles.deleteButton} onClick={() => handleDeleteService(service._id)}>
+                            Delete
+                          </button>
                         </div>
                       )}
                     </div>
@@ -123,10 +182,75 @@ const AdminServices = () => {
 
         <div className={styles.addServiceForm}>
           <h3>Add New Service</h3>
-          <input className={styles.input} type="text" name="title" placeholder="Service Title" value={newService.title} onChange={handleInputChange} />
-          <textarea className={styles.textarea} name="description" placeholder="Service Description" value={newService.description} onChange={handleInputChange} />
-          <input className={styles.input} type="number" name="price" placeholder="Price (Rs.)" value={newService.price} onChange={handleInputChange} />
-          <button className={styles.addButton} onClick={handleAddService}>Add Service</button>
+          <input
+            className={styles.input}
+            type="text"
+            name="title"
+            placeholder="Service Title"
+            value={newService.title}
+            onChange={handleInputChange}
+          />
+          <textarea
+            className={styles.textarea}
+            name="description"
+            placeholder="Service Description"
+            value={newService.description}
+            onChange={handleInputChange}
+          />
+          <input
+            className={styles.input}
+            type="number"
+            name="price"
+            placeholder="Price (Rs.)"
+            value={newService.price}
+            onChange={handleInputChange}
+          />
+          <div className={styles.serviceType}>
+            <label>
+              <input
+                type="radio"
+                name="category"
+                value="consulting"
+                checked={newService.category === 'consulting'}
+                onChange={handleInputChange}
+              />
+              Consulting Service
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="category"
+                value="documentation"
+                checked={newService.category === 'documentation'}
+                onChange={handleInputChange}
+              />
+              Documentation Service
+            </label>
+          </div>
+
+          {newService.category === 'documentation' && (
+            <div className={styles.formTemplate}>
+              <label>Select a form template:</label>
+              <select
+                name="formTemplate"
+                value={newService.formTemplate}
+                onChange={handleInputChange}
+              >
+                <option value="">Select a form</option>
+                <option value="form1">Divorce Agreement Form</option>
+                <option value="form2">Form 2</option>
+                <option value="form3">Form 3</option>
+                <option value="form4">Form 4</option>
+                <option value="form5">Form 5</option>
+              </select>
+            </div>
+          )}
+
+          {newService.category === 'documentation' && renderFormTemplate()}
+
+          <button className={styles.addButton} onClick={handleAddService}>
+            Add Service
+          </button>
         </div>
       </div>
     </div>

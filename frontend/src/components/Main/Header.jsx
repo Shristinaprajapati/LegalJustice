@@ -19,6 +19,7 @@ const Header = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [activeSubTab, setActiveSubTab] = useState(null);
 
   useEffect(() => {
     // Check if there's a token in localStorage, meaning the user is logged in
@@ -126,6 +127,8 @@ const Header = () => {
   const handleClose = () => {
     setIsOpen(false); // Assuming isOpen is controlled by state
   };
+
+  
   
 
   return (
@@ -232,39 +235,48 @@ const Header = () => {
 
 {/* Profile Tab (Includes Settings) */}
 {activeTab === "profile" && (
-  <ul className={styles.menu}>
-    {/* Profile Section */}
-    <li className={styles.profileSection}>
-      <div className={styles.profileContent}>
-        <Icon icon="mdi:account-circle-outline" className={styles.profileIcon} />
-        <div className={styles.profileText}>
-          <strong className={styles.profileName}>{userData.name}</strong>
-          <p className={styles.profileEmail}>{userData.email}</p>
-        </div>
-      </div>
-    </li>
+        <ul className={styles.menu}>
+          {/* Profile Section */}
+          <li className={styles.profileSection}>
+            <div className={styles.profileContent}>
+              <Icon icon="mdi:account-circle-outline" className={styles.profileIcon} />
+              <div className={styles.profileText}>
+                <strong className={styles.profileName}>{userData.name}</strong>
+                <p className={styles.profileEmail}>{userData.email}</p>
+              </div>
+            </div>
+          </li>
 
-    {/* Settings Section */}
-    <li className={styles.settingsSection}>
-      <div className={styles.settingsContent}>
-      <div className={styles.settingsTitle}>
-        <Icon icon="mdi:cog-outline" className={styles.settingsIcon} />
-        <h2 className={styles.sectionTitle}>Settings</h2>
-        </div>
-        <div className={styles.settingsText}>
-          <label className={styles.inputLabel}>Reset Password:</label>
-          <input type="password" placeholder="Enter new password" className={styles.inputField} />
-          <button className={styles.saveBtn}>Change Password</button>
-        </div>
-      </div>
-    </li>
+          {/* Settings Section */}
+          <li
+            className={styles.settingsSection}
+            onClick={() => setActiveSubTab(activeSubTab === "settings" ? null : "settings")} // Toggle logic
+          >
+            <div className={styles.settingsContent}>
+              <div className={styles.settingsTitle}>
+                <Icon icon="mdi:cog-outline" className={styles.settingsIcon} />
+                <h2 className={styles.sectionTitle}>Settings</h2>
+              </div>
+            </div>
+          </li>
 
-    {/* Logout Button */}
-    <li onClick={handleLogout} className={styles.logout}>
-      Logout
-    </li>
-  </ul>
-)}
+          {/* Reset Password (Toggles when Settings is clicked) */}
+          {activeSubTab === "settings" && (
+            <li className={styles.settingsDetails}>
+              <div className={styles.settingsText}>
+                <label className={styles.inputLabel}>Reset Password:</label>
+                <input type="password" placeholder="Enter new password" className={styles.inputField} />
+                <button className={styles.saveBtn}>Change Password</button>
+              </div>
+            </li>
+          )}
+
+          {/* Logout Button */}
+          <li onClick={handleLogout} className={styles.logout}>
+            Logout
+          </li>
+        </ul>
+      )}
 
 
 

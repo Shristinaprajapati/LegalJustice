@@ -73,41 +73,212 @@ const Service = () => {
       <Header />
       <div className={styles.servicesContainer}>
         <h2 className={styles.sectionTitle}>Consulting Services</h2>
-        <div className={styles.servicesGrid}>
-          {services.filter(service => service.category === "consulting").length === 0 ? (
-            <div className={styles.noServiceMessage}>No consulting services available.</div>
-          ) : (
-            services.filter(service => service.category === "consulting").map(service => (
-              <div className={styles.serviceCard} key={service._id}>
-                <div className={styles.iconWrapper}>
-  {serviceIcons[service.category] || <FaBalanceScale className={styles.serviceIcon} />}
+        <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: "20px",
+    maxWidth: "1500px",
+    margin: "auto",
+  }}
+>
+  {services.filter(service => service.category === "consulting").length === 0 ? (
+    <div
+      style={{
+        textAlign: "center",
+        fontSize: "16px",
+        color: "#666",
+        margin: "20px auto",
+        fontWeight: "bold",
+      }}
+    >
+      No consulting services available.
+    </div>
+  ) : (
+    services.filter(service => service.category === "consulting").map(service => (
+      <div
+        key={service._id}
+        style={{
+          backgroundColor: "#ffffff",
+          borderRadius: "10px",
+          boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
+          padding: "20px",
+          textAlign: "center",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "#e3f2fd",
+            padding: "15px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: "10px",
+            width: "100%",
+            height: "100px",
+            marginBottom: "15px",
+          }}
+        >
+          {serviceIcons[service.category] || (
+            <FaBalanceScale style={{ fontSize: "28px", color: "#004aad" }} />
+          )}
+        </div>
+
+        <h3
+          style={{
+            fontSize: "20px",
+            fontWeight: "700",
+            color: "#0a0a0a",
+            marginBottom: "-40px",
+          }}
+        >
+          {service.title}
+        </h3>
+        <p
+          style={{
+            fontSize: "14px",
+            color: "#444",
+            marginBottom: "-15px",
+          }}
+        >
+          {service.description}
+        </p>
+        <p
+          style={{
+            fontSize: "16px",
+            fontWeight: "bold",
+            color: "#0a0a0a",
+            marginBottom: "15px",
+          }}
+        >
+          Rs. {service.price}
+        </p>
+        <button
+          style={{
+            backgroundColor: "#004aad",
+            color: "#fff",
+            fontSize: "16px",
+            padding: "12px 20px",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            fontWeight: "bold",
+            transition: "background-color 0.3s ease",
+          }}
+          onClick={() => openModal(service._id, service.title, service.category)}
+        >
+          BOOK NOW
+        </button>
+      </div>
+    ))
+  )}
 </div>
 
-                <h3 className={styles.serviceTitle}>{service.title}</h3>
-                <p className={styles.serviceDescription}>{service.description}</p>
-                <p className={styles.price}>Rs. {service.price}</p>
-                <button className={styles.bookNowBtn} onClick={() => openModal(service._id, service.title, service.category)}>BOOK NOW</button>
-              </div>
-            ))
-          )}
-        </div>
         
         <h2 className={styles.sectionTitle}>Documentation Services</h2>
-        <div className={styles.servicesGrid}>
-          {services.filter(service => service.category === "documentation").length === 0 ? (
-            <div className={styles.noServiceMessage}>No documentation services available.</div>
-          ) : (
-            services.filter(service => service.category === "documentation").map(service => (
-              <div className={styles.serviceCard} key={service._id}>
-                {serviceIcons[service.category] || <FaBalanceScale className={styles.serviceIcon} />} {/* Default icon */}
-                <h3 className={styles.serviceTitle}>{service.title}</h3>
-                <p className={styles.serviceDescription}>{service.description}</p>
-                <p className={styles.price}>Rs. {service.price}</p>
-                <button className={styles.getDocumentBtn} onClick={() => openModal(service._id, service.title, service.category)}>GET DOCUMENT</button>
-              </div>
-            ))
+        <div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 1fr)",
+    gap: "20px",
+    maxWidth: "1500px",
+    margin: "auto",
+  }}
+>
+  {services.filter(service => service.category === "documentation").length === 0 ? (
+    <div
+      style={{
+        textAlign: "center",
+        fontSize: "16px",
+        color: "#666",
+        margin: "20px auto",
+        fontWeight: "bold",
+      }}
+    >
+      No documentation services available.
+    </div>
+  ) : (
+    services.filter(service => service.category === "documentation").map(service => (
+      <div
+        key={service._id}
+        style={{
+          backgroundColor: "#ffffff",
+          borderRadius: "10px",
+          boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
+          padding: "20px",
+          textAlign: "center",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "#fce4ec",
+            padding: "15px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: "10px",
+            width: "100%",
+            height: "100px",
+            marginBottom: "15px",
+          }}
+        >
+          {serviceIcons[service.category] || (
+            <FaBalanceScale style={{ fontSize: "28px", color: "#004aad" }} />
           )}
         </div>
+
+        <h3
+          style={{
+            fontSize: "20px",
+            fontWeight: "700",
+            color: "#0a0a0a",
+            marginBottom: "-40px",
+          }}
+        >
+          {service.title}
+        </h3>
+        <p
+          style={{
+            fontSize: "14px",
+            color: "#444",
+            marginBottom: "-15px",
+          }}
+        >
+          {service.description}
+        </p>
+        <p
+          style={{
+            fontSize: "16px",
+            fontWeight: "bold",
+            color: "#0a0a0a",
+            marginBottom: "15px",
+          }}
+        >
+          Rs. {service.price}
+        </p>
+        <button
+          style={{
+            backgroundColor: "#004aad",
+            color: "#fff",
+            fontSize: "16px",
+            padding: "12px 20px",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            fontWeight: "bold",
+            transition: "background-color 0.3s ease",
+          }}
+          onClick={() => openModal(service._id, service.title, service.category)}
+        >
+          GET DOCUMENT
+        </button>
+      </div>
+    ))
+  )}
+</div>
+
         
         <PopupForm
   isOpen={isModalOpen}
