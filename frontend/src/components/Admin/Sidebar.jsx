@@ -103,6 +103,14 @@ const Sidebar = () => {
             </ul>
           )}
         </li>
+
+        <li>
+          <Link to="/admin/blogs" className={`${styles.link} ${getLinkClass('/admin/blogs')}`}>
+            <Icon icon="fa-solid:address-book" className={styles.icon} />
+            Blog Post
+          </Link>
+        </li>
+
         <li>
           <Link to="/admin/payment-history" className={getLinkClass('/admin/payment-history')}>
             <Icon icon="mdi:cash-multiple" className={styles.icon} />
@@ -112,7 +120,7 @@ const Sidebar = () => {
         <li>
           <Link to="/contactform" className={`${styles.link} ${getLinkClass('/contactform')}`}>
             <Icon icon="fa-solid:address-book" className={styles.icon} />
-            Contact
+            Contact Messages
           </Link>
         </li>
         <li>

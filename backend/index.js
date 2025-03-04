@@ -13,6 +13,7 @@ const bookingRoutes = require('./routes/bookings');
 const profileRoute = require('./routes/profile');
 // const templatesRouter = require("./routes/template");
 const htmlTemplates = require("./routes/htmlTemplates");
+const blogRoutes = require("./routes/blogRoutes");
 
 const khaltiRoutes = require("./routes/khalti");  
 
@@ -52,6 +53,8 @@ app.use("/api/contact", contactRoutes);
 app.use("/reply", replyEmail);
 app.use('/api/check-email', profileRoute);
 app.use('/sendemail',sendEmailRoute);
+app.use("/api/blogs", blogRoutes);
+
 
 
 // app.use("/api/templates", templatesRouter);

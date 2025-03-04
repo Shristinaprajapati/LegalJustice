@@ -159,6 +159,11 @@ const Header = () => {
             </Link>
           </li>
           <li>
+            <Link to="/" onClick={() => setIsOpen(false)}>
+              Blog
+            </Link>
+          </li>
+          <li>
             <Link to="/contact" onClick={() => setIsOpen(false)}>
               Contact
             </Link>

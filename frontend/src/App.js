@@ -25,6 +25,9 @@ import DivorseTemplate from "./components/Admin/htmlTemplates/ClientCards.jsx";
 import EditDocument from "./components/Admin/Templates/EditDocument.jsx";
 import PartnerTemplate from "./components/Admin/htmlTemplates/PartnershipCard.jsx";
 import PartnerFrom from "./components/Admin/htmlTemplates/PartnershipAgreementForm.jsx";
+import AdminBlogList from "./components/Admin/Blog/AdminBlogList.jsx";
+import BlogDetail from "./components/Admin/Blog/BlogDetail.jsx";
+
 
 
 import BookingPop from "./components/Admin/Bookings/bookingpopup.jsx";
@@ -57,6 +60,8 @@ function App() {
         <Route path ="/services" element={<Services/>}/>
         <Route path ="/document" element={<Document/>}/>
         <Route path="/contactform" element={<ContactForm />} />
+        <Route path="/admin/blogs" element={<AdminBlogList />} />
+        <Route path="/blog/:id" element={<BlogDetail />} /> 
 
 
         <Route path ="/divorseform" element={<DivorseFrom/>}/>

@@ -1,0 +1,121 @@
+/* AdminBlogList.module.css */
+
+/* Main container (flex layout for sidebar and content) */
+.container {
+    display: flex;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  /* Content container */
+  .contentContainer {
+    margin-left: 250px;
+    padding: 30px;
+    width: 100%;
+    background-color: #f4f4f9;
+  }
+  
+  /* Heading style */
+  .heading {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* Button to add blog */
+  .addBlogButton {
+    background-color: #0073e6;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .addBlogButton:hover {
+    background-color: #005bb5;
+  }
+  
+  /* Table styling */
+  .blogTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .blogTable th,
+  .blogTable td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .blogTable th {
+    background-color: #f4f4f9;
+    font-weight: bold;
+  }
+  
+  .blogTable tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* Styling for blog row */
+  .blogRow {
+    transition: background-color 0.3s ease;
+  }
+  
+  .blogTitle,
+  .author,
+  .date {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  /* View details button */
+  .viewDetailButton {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .viewDetailButton:hover {
+    background-color: #218838;
+  }
+  
+
+
+/* Pagination Styling */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  padding: 20px 0;
+}
+
+.pagination button {
+  background-color: #0073e6;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #005bb5;
+}
