@@ -1,13 +1,12 @@
 const express = require("express");
 const axios = require("axios");
-const Payment = require("../models/payment"); 
+const Payment = require("../models/payment");
+const mongoose = require("mongoose");
 
-const router = express.Router();  // Use a router instead of an app instance
+
+const router = express.Router();
 require("dotenv").config();
 
-
-// Log the KHALTI_SECRET_KEY to check if it's loaded correctly
-console.log("KHALTI_SECRET_KEY:", process.env.KHALTI_SECRET_KEY);
 
 router.post("/khalti-api", async (req, res) => {
   const payload = req.body;
@@ -31,14 +30,8 @@ router.post("/khalti-api", async (req, res) => {
         },
       }
     );
+    console.log(khaltiResponse)
 
-    // Save the transaction data to the DB
-    await saveTransactionToDB({
-      ...khaltiResponse.data,
-      clientId,
-      serviceId,
-      category,
-    });
 
     // Respond with the Khalti response data
     res.json({
@@ -52,40 +45,34 @@ router.post("/khalti-api", async (req, res) => {
 });
 
 
-
 router.get("/khalti-callback", async (req, res) => {
   const {
     pidx,
     status,
-    transaction_id, // Khalti's response contains this for transaction
-    tidx,
+    transaction_id,
     amount,
     total_amount,
     mobile,
     purchase_order_id,
     purchase_order_name,
+    clientId,
+    serviceId,
+    category,
   } = req.query;
 
-  console.log("Received Khalti callback:", req.query); // Log all received data
-
-  // Check for missing required parameters
-  if (!pidx || !status) {
+  // Validate required parameters
+  if (!pidx || !status || !clientId || !serviceId || !category) {
     return res.status(400).json({
       success: false,
-      message: "Invalid callback: Missing required parameters (pidx or status).",
+      message: "Invalid callback: Missing required parameters (pidx, status, clientId, serviceId, or category).",
     });
   }
 
   try {
-    // Check if Khalti secret key is set in environment variables
-    if (!process.env.KHALTI_SECRET_KEY) {
-      throw new Error("KHALTI_SECRET_KEY is not defined in environment variables.");
-    }
-
-    // Verify the payment using Khalti's Lookup API
+    // Verify payment status with Khalti
     const verificationResponse = await axios.post(
       "https://dev.khalti.com/api/v2/epayment/lookup/",
-      { pidx }, // Send pidx to verify the payment
+      { pidx },
       {
         headers: {
           Authorization: `Key ${process.env.KHALTI_SECRET_KEY}`,
@@ -94,20 +81,34 @@ router.get("/khalti-callback", async (req, res) => {
       }
     );
 
-    console.log("Khalti verification response:", verificationResponse.data);
-
-    // Check if the payment was completed
+    // If payment is completed, save the transaction to your database
     if (verificationResponse.data.status === "Completed") {
-      // Save the transaction data in your DB if needed
-      // (Example: saveTransactionToDB({ ...verificationResponse.data, purchase_order_id, purchase_order_name }));
+      const transactionData = {
+        pidx,
+        transaction_id,
+        amount: total_amount,
+        status: verificationResponse.data.status,
+        mobile,
+        purchase_order_id,
+        purchase_order_name,
+        paymentDate: new Date(),
+        paymentMethod: "Khalti",
+        paymentDetails: JSON.stringify(verificationResponse.data),
+        clientId,
+        serviceId,
+        category,
+      };
+
+      // Save transaction to the database
+      await saveTransactionToDB(transactionData);
 
       return res.json({
         success: true,
-        message: "Payment verified successfully.",
-        data: verificationResponse.data, // Include the verified data from Khalti
-        transaction_id: transaction_id, // Send the Khalti transaction_id here
-        purchase_order_id, // Include the original purchase_order_id
-        transaction_code: pidx, // Include the payment identifier (pidx)
+        message: "Payment verified and transaction saved successfully.",
+        data: verificationResponse.data,
+        transaction_id,
+        purchase_order_id,
+        transaction_code: pidx,
       });
     } else {
       return res.status(400).json({
@@ -118,7 +119,6 @@ router.get("/khalti-callback", async (req, res) => {
     }
   } catch (error) {
     console.error("Error verifying Khalti payment:", error?.response?.data || error.message);
-
     return res.status(500).json({
       success: false,
       message: "Error verifying payment with Khalti.",
@@ -128,58 +128,106 @@ router.get("/khalti-callback", async (req, res) => {
 });
 
 
-// Function to Save Transaction to Database
-const saveTransactionToDB = async (data) => {
+router.get("/payment-status/:serviceId/:clientId", async (req, res) => {
+  const { serviceId } = req.params;
+
   try {
-    if (!mongoose.Types.ObjectId.isValid(data.clientId) || !mongoose.Types.ObjectId.isValid(data.serviceId)) {
-      console.error("Invalid ObjectId for clientId or serviceId:", data.clientId, data.serviceId);
-      return;
+    // Fetch the transaction from the database
+    const transaction = await Payment.findOne({ serviceId });
+    if (!transaction) {
+      return res.status(404).json({ success: false, message: "Transaction not found." });
     }
 
+    // Return the payment status
+    res.json({ success: true, status: transaction.status });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Error fetching payment status." });
+  }
+});
+
+// Save payment to the database
+router.post("/payments", async (req, res) => {
+  try {
+    let {
+      pidx,
+      transaction_id,
+      amount,
+      fee,
+      status,
+      refunded,
+      mobile,
+      purchase_order_id,
+      purchase_order_name,
+      clientId,
+      serviceId,
+      category,
+      paymentMethod,
+      paymentDetails,
+    } = req.body;
+
+    // Validate required fields
+    if (
+      !pidx ||
+      !transaction_id ||
+      !amount ||
+      !status ||
+      !purchase_order_id ||
+      !purchase_order_name ||
+      !clientId ||
+      !serviceId ||
+      !category
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields",
+      });
+    }
+
+    // Convert to valid MongoDB ObjectId
+    try {
+      clientId = new mongoose.Types.ObjectId(clientId);
+      serviceId = new mongoose.Types.ObjectId(serviceId);
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid ObjectId format for clientId or serviceId",
+      });
+    }
+
+    // Create and save new payment record
     const newPayment = new Payment({
-      pidx: data.pidx,
-      transaction_id: data.transaction_id || "N/A", // Ensure it doesn't break if missing
-      amount: data.total_amount || 0, // Default value if missing
-      fee: data.fee || 0,
-      status: data.status,
-      refunded: data.refunded || false,
-      mobile: data.mobile || "N/A",
-      purchase_order_id: data.purchase_order_id || "N/A",
-      purchase_order_name: data.purchase_order_name || "N/A",
-      clientId: data.clientId, // Make sure it's a valid ObjectId
-      serviceId: data.serviceId, // Make sure it's a valid ObjectId
-      category: data.category || "Unknown", // Ensure a valid category
+      pidx,
+      transaction_id,
+      amount,
+      fee: fee || 0,
+      status,
+      refunded: refunded || false,
+      mobile,
+      purchase_order_id,
+      purchase_order_name,
+      clientId,
+      serviceId,
+      category,
+      paymentDate: new Date(),
+      paymentMethod: paymentMethod || "Khalti",
+      paymentDetails: paymentDetails || {},
     });
 
     await newPayment.save();
-    console.log("Transaction saved successfully:", newPayment);
+
+    res.status(201).json({
+      success: true,
+      message: "Payment recorded successfully",
+      data: newPayment,
+    });
   } catch (error) {
-    console.error("Error saving transaction:", error);
+    console.error("Error saving payment:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error saving payment",
+      error: error.message,
+    });
   }
-};
+});
 
-
-
-
-// const saveTransactionToDB = async (data) => {
-//   try {
-//     const newPayment = new Payment({
-//       pidx: data.pidx,
-//       transaction_id: data.transaction_id,
-//       amount: data.amount,
-//       status: data.status,
-//       mobile: data.mobile,
-//       purchase_order_id: data.purchase_order_id,
-//       purchase_order_name: data.purchase_order_name,
-//     });
-
-//     await newPayment.save();
-//     console.log("Transaction saved successfully");
-//   } catch (error) {
-//     console.error("Error saving transaction:", error);
-//   }
-// };
-
-
-
-module.exports = router;  
+module.exports = router;

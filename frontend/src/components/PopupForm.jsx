@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./PopupForm.module.css";
-import MessagePopup from "./MessagePopup.jsx";
 import { useSearchParams } from "react-router-dom";
+import PaymentPopup from "./PaymentPopup.jsx";
+import MessagePopup from "./MessagePopup.jsx";
 
 const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
   const [loading, setLoading] = useState(false);
@@ -12,6 +13,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
   const [searchParams] = useSearchParams();
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [showPaymentPopup, setShowPaymentPopup] = useState(false);
 
   const email = localStorage.getItem("email");
 
@@ -20,9 +22,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
       const fetchClientDetails = async () => {
         setLoading(true);
         try {
-          const response = await axios.get(
-            `http://localhost:8080/api/users?email=${email}`
-          );
+          const response = await axios.get(`http://localhost:8080/api/users?email=${email}`);
           const data = response.data;
 
           setFormData((prevData) => ({
@@ -42,99 +42,132 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
     }
   }, [isOpen, email, setFormData]);
 
-  useEffect(() => {
-    const verifyPayment = async () => {
-      const params = {
-        pidx: searchParams.get("pidx"),
-        status: searchParams.get("status"),
-        transaction_id: searchParams.get("transaction_id"),
-        amount: searchParams.get("amount"),
-        total_amount: searchParams.get("total_amount"),
-        mobile: searchParams.get("mobile"),
-        purchase_order_id: searchParams.get("purchase_order_id"),
-        purchase_order_name: searchParams.get("purchase_order_name"),
-        clientId: searchParams.get("clientId"),
-        category: searchParams.get("category"),
-      };
+  const resetFormData = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      date: "",
+      timeSlot: "",
+    }));
+  };
+
+  // useEffect(() => {
+  //   const verifyPayment = async () => {
+  //     const pidx = searchParams.get("pidx");
+  //     const status = searchParams.get("status");
+  //     const transaction_id = searchParams.get("transaction_id");
+  //     const amount = Number(searchParams.get("amount")) || 0;
+  //     const total_amount = Number(searchParams.get("total_amount")) || 0;
+  //     const mobile = searchParams.get("mobile");
+  //     const purchase_order_id = searchParams.get("purchase_order_id");
+  //     const purchase_order_name = searchParams.get("purchase_order_name");
+  //     const clientId = formData.clientId;
+  //     const category = formData.category;
   
-      console.log("Payment Params Detected:", params); // Debugging log
+  //     if (pidx && status && clientId && category) {
+  //       setShowPopup(true);
   
-      if (params.pidx && params.status) {
-        setShowPopup(true);
+  //       if (status === "Completed") {
+  //         try {
+  //           console.log("Payment Completed. Sending verification request to backend...");
   
-        if (params.status === "Completed") {
-          try {
-            const response = await axios.get("http://localhost:8080/api/khalti-callback", {
-              params,
-            });
+  //           // Verify payment with backend
+  //           const response = await axios.post("http://localhost:8080/api/khalti-callback", {
+  //             pidx,
+  //             status,
+  //             transaction_id,
+  //             amount,
+  //             total_amount,
+  //             mobile,
+  //             purchase_order_id,
+  //             purchase_order_name,
+  //             clientId,
+  //             category,
+  //           });
   
-            console.log("Khalti Verification Response:", response.data);
+  //           console.log("Payment Verification Response:", response.data);
   
-            if (response.data.success) {
-              setPaymentStatus("Payment Successful! ✅");
-              await handleSubmit();
-    
-            } else {
-              setPaymentStatus("Payment Verification Failed. ❌");
-            }
-          } catch (error) {
-            setPaymentStatus("Error verifying payment: " + (error.response?.data?.message || error.message));
-          }
-        } else {
-          setPaymentStatus("Payment failed or canceled.");
-        }
-      }
-    };
+  //           if (response.data.success) {
+  //             setPaymentStatus("Payment Successful! ✅");
   
-    verifyPayment();
-  }, [searchParams]);
+  //             // Save payment details to backend
+  //             const paymentResponse = await axios.post("http://localhost:8080/api/payments", {
+  //               clientId,
+  //               transaction_id: transaction_id || pidx, // Ensure a valid transaction ID is stored
+  //               amount: total_amount,
+  //               status: "Success",
+  //               category,
+  //               mobile,
+  //               purchase_order_id,
+  //               purchase_order_name,
+  //               paymentMethod: "Khalti",
+  //             });
   
+  //             console.log("Payment Recorded:", paymentResponse.data);
+  
+  //             // Proceed with booking if needed
+  //             await handleSubmit();
+  //           } else {
+  //             setPaymentStatus("Payment Verification Failed. ❌");
+  //           }
+  //         } catch (error) {
+  //           console.error("Error verifying payment:", error);
+  //           setPaymentStatus("Error verifying payment: " + (error.response?.data?.message || error.message));
+  //         }
+  //       } else {
+  //         setPaymentStatus("Payment failed or canceled.");
+  //       }
+  //     }
+  //   };
+  
+  //   if (formData.clientId && formData.category) {
+  //     verifyPayment();
+  //   }
+  // }, [searchParams, formData.clientId, formData.category]);
   
   
 
-  const createBooking = async (serviceId, clientId, category) => {
-    console.log(serviceId, clientId, category);
+  const handleKhaltiPayment = async (serviceId, clientId) => {
     setLoading(true);
     setError(null);
-    setSuccessMessage("");
-  
+
     try {
-      const bookingData = {
+      const paymentPayload = {
+        return_url: `http://localhost:3000/successful/${serviceId}/${clientId}`,
+        website_url: "http://localhost:3000",
+        amount: 3 * 100,
+        purchase_order_id: serviceId,
+        purchase_order_name: `Service for ${formData.clientId}`,
+        customer_info: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+        },
         serviceId,
-        clientId,
-        category,
+        clientId: formData.clientId,
+        category: formData.category,
       };
-  
-      console.log("Creating Booking with Data:", bookingData); // Debugging log
-  
-      const response = await axios.post("http://localhost:8080/api/bookings", bookingData);
-      console.log("Booking Created Successfully:", response.data); // Debugging log
-  
-      setSuccessMessage("Booking successful!");
-      // setIsMessagePopupOpen(true);
-      resetFormData();
+
+      const khaltiResponse = await axios.post("http://localhost:8080/api/khalti-api", paymentPayload);
+
+      if (khaltiResponse.data.success) {
+        window.location.href = khaltiResponse.data.data.payment_url;
+      } else {
+        setError("Failed to initiate Khalti payment.");
+      }
     } catch (err) {
-      console.error("Booking Creation Error:", err.response?.data?.message || err.message);
-      setError(err.response?.data?.message || "Failed to create booking");
+      setError("Error processing payment: " + err.response?.data?.message);
     } finally {
       setLoading(false);
     }
   };
-  
-  
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setSuccessMessage("");
-    setError("");
-  };
+  
 
   const handleSubmit = async () => {
     setLoading(true);
     setError(null);
     setSuccessMessage("");
-  
+
     try {
       let bookingData;
       if (formData.category === "consulting") {
@@ -146,34 +179,19 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
           category: formData.category,
         };
       } else {
-        // Retrieve the formData from localStorage
-        const storedFormData = JSON.parse(localStorage.getItem('formData'));
-  
-        // Destructure values from the stored formData (with fallback if no data)
+        const storedFormData = JSON.parse(localStorage.getItem("formData"));
         const { serviceId, clientId, category } = storedFormData || {};
-  
-
-  
-        // Create the bookingData object using the retrieved values
         bookingData = {
           serviceId: serviceId,
           clientId: clientId,
           category: category,
         };
       }
-  
-      console.log("Sending booking data:", bookingData); // Debugging log
-      const response = await axios.post(
-        "http://localhost:8080/api/bookings",
-        bookingData
-      );
-  
+
+      const response = await axios.post("http://localhost:8080/api/bookings", bookingData);
       setSuccessMessage("Booking successful!");
       setIsMessagePopupOpen(true);
-  
-      // Remove formData from localStorage after successful booking
-      localStorage.removeItem('formData');
-  
+      localStorage.removeItem("formData");
       resetFormData();
     } catch (err) {
       setError(err.response?.data?.message || "Failed to create booking");
@@ -181,102 +199,30 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
       setLoading(false);
     }
   };
-  
 
-  const handleKhaltiPayment = async (serviceId) => {
-    // Retrieve clientId and category from localStorage
-    const storedFormData = JSON.parse(localStorage.getItem('formData'));
-  
-    // Log to verify if data is retrieved correctly
-    console.log('Retrieved from localStorage:', storedFormData);
-  
-    // Destructure values from the stored formData
-    const { clientId, category } = storedFormData || {};  // In case the stored data is null or undefined
-    
-    console.log(serviceId, formData.name, clientId, category); // Check values before proceeding
-    
-    setLoading(true);
-    setError(null);
-  
-    try {
-      const paymentPayload = {
-        return_url: "http://localhost:3000/service", // Redirecting back to the service page
-        website_url: "http://localhost:3000",
-        amount: 20 * 100, // Amount in paisa
-        purchase_order_id: serviceId, // Use serviceId for purchase_order_id
-        purchase_order_name: "Legal Document Purchase",
-        customer_info: {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-        },
-        serviceId,
-        clientId, // Add clientId from localStorage
-        category, // Add category from localStorage
-      };
-  
-      const khaltiResponse = await axios.post(
-        "http://localhost:8080/api/khalti-api",
-        paymentPayload
-      );
-      console.log("Khalti API Response:", khaltiResponse.data);
-  
-      if (khaltiResponse.data.success) {
-        window.location.href = khaltiResponse.data.data.payment_url; // Redirect to Khalti
-      } else {
-        setError("Failed to initiate Khalti payment.");
-      }
-    } catch (err) {
-      setError("Error processing payment: " + err.response?.data?.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-  
-  // Button to set data to localStorage and call handleKhaltiPayment
-  <button 
-    onClick={() => {
-      // Store formData.clientId and formData.category in localStorage
-      localStorage.setItem('formData', JSON.stringify({
-        serviceId: formData.serviceId,
-        clientId: formData.clientId,
-        category: formData.category,
-      }));
-  
-      // Call handleKhaltiPayment with formData.serviceId
-      handleKhaltiPayment(formData.serviceId);
-    }} 
-    className={styles.submitBtn}>
-    Yes, Pay Rs. 2000
-  </button>
-  
-  
-
-  const resetFormData = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      date: "",
-      timeSlot: "",
-    }));
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setSuccessMessage("");
+    setError("");
   };
 
   const closeMessagePopup = () => {
     setIsMessagePopupOpen(false);
   };
 
+  const popupStyle = {
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    background: "white",
+    padding: "20px",
+    boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
+    borderRadius: "8px",
+    textAlign: "center",
+  };
 
-  // Simple popup styling
-const popupStyle = {
-  position: "fixed",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  background: "white",
-  padding: "20px",
-  boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
-  borderRadius: "8px",
-  textAlign: "center",
-};
   if (!isOpen) return null;
 
   return (
@@ -327,36 +273,23 @@ const popupStyle = {
             <>
               <h3>Get Document</h3>
               <p>Are you sure you want to get the document?</p>
-              {/* <p>Service ID: {formData.serviceId}</p>
-              <p>ClinetId: {formData.clientId}</p>
-              <p>Category: {formData.category}</p> */}
-
               {loading && <p>Loading...</p>}
-              {/* {error && <p className={styles.errorMessage}>{error}</p>}
-              {successMessage && <p className={styles.successMessage}>{successMessage}</p>} */}
-
-<button 
-  onClick={() => {
-    // Store formData.clientId and formData.category in localStorage
-    localStorage.setItem('formData', JSON.stringify({
-      serviceId: formData.serviceId,
-      clientId: formData.clientId,
-      category: formData.category,
-    }));
-
-    // Call handleKhaltiPayment with formData.serviceId
-    handleKhaltiPayment(formData.serviceId);
-  }} 
-  className={styles.submitBtn}>
-  Yes, Pay Rs. 2000
-</button>
-
+              <button 
+                onClick={() => {
+                  localStorage.setItem("formData", JSON.stringify({
+                    serviceId: formData.serviceId,
+                    clientId: formData.clientId,
+                    category: formData.category,
+                  }));
+                  setShowPaymentPopup(true);
+                }} 
+                className={styles.submitBtn}>
+                Yes, Pay Rs. 2000
+              </button>
             </>
           )}
         </div>
       </div>
-
-      <MessagePopup isOpen={isMessagePopupOpen} onClose={closeMessagePopup} message="Document request sent successfully!" />
 
       {showPopup && (
         <div style={popupStyle}>
@@ -364,9 +297,20 @@ const popupStyle = {
           <button onClick={() => setShowPopup(false)}>Close</button>
         </div>
       )}
+
+      {showPaymentPopup && (
+        <PaymentPopup
+          clientDetails={formData}
+          onClose={() => setShowPaymentPopup(false)}
+          onPayNow={() => handleKhaltiPayment(formData.serviceId, formData.clientId)}
+        />
+      )}
+
+      {isMessagePopupOpen && (
+        <MessagePopup message={successMessage} onClose={closeMessagePopup} />
+      )}
     </>
   );
-  
 };
 
 export default PopupForm;

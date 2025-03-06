@@ -27,6 +27,7 @@ import PartnerTemplate from "./components/Admin/htmlTemplates/PartnershipCard.js
 import PartnerFrom from "./components/Admin/htmlTemplates/PartnershipAgreementForm.jsx";
 import AdminBlogList from "./components/Admin/Blog/AdminBlogList.jsx";
 import BlogDetail from "./components/Admin/Blog/BlogDetail.jsx";
+import PaymentSuccessful from "./components/PaymentSuccessful.jsx";
 
 
 
@@ -62,6 +63,7 @@ function App() {
         <Route path="/contactform" element={<ContactForm />} />
         <Route path="/admin/blogs" element={<AdminBlogList />} />
         <Route path="/blog/:id" element={<BlogDetail />} /> 
+        <Route path="/successful/:serviceId/:clientId" element={<PaymentSuccessful />} />
 
 
         <Route path ="/divorseform" element={<DivorseFrom/>}/>

@@ -56,7 +56,7 @@ router.post("/", async (req, res) => {
 
     // Generate token
     const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
-      expiresIn: "1h", // Token expires in 1 hour
+      expiresIn: "7d", 
     });
 
     // If the user is a specific email, send a redirect response
