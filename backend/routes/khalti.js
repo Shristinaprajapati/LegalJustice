@@ -128,6 +128,7 @@ router.get("/khalti-callback", async (req, res) => {
 });
 
 
+
 router.get("/payment-status/:serviceId/:clientId", async (req, res) => {
   const { serviceId } = req.params;
 
@@ -229,5 +230,8 @@ router.post("/payments", async (req, res) => {
     });
   }
 });
+
+
+
 
 module.exports = router;
