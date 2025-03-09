@@ -5,6 +5,7 @@
     "cloudinary": "^2.5.1",
     "express": "^4.21.2",
     "font-awesome": "^4.7.0",
+    "html-to-text": "^9.0.5",
     "jodit": "^4.2.50",
     "jodit-react": "^5.0.10",
     "jspdf": "^2.5.2",

@@ -60,8 +60,8 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
     try {
       const paymentPayload = {
         return_url: `http://localhost:3000/successful/${serviceId}/${clientId}`,
-        website_url: "http://localhost:3000",
-        amount: 3 * 100,
+        website_url: "http://localhost:8080/payment-callback",
+        amount: 4 * 100,
         purchase_order_id: serviceId,
         purchase_order_name: `Service for ${formData.clientId}`,
         customer_info: {

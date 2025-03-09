@@ -72,6 +72,32 @@ const Service = () => {
     <>
       <Header />
       <div className={styles.servicesContainer}>
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
+  <div
+    style={{
+      fontSize: "14px",
+      fontWeight: "500",
+      letterSpacing: "1px",
+      textTransform: "uppercase",
+      color: "#333",
+    }}
+  >
+    Service
+  </div>
+  <div
+    style={{
+      color: "#264262" ,
+      fontSize: "38px",
+      fontWeight: "700",
+      marginTop: "5px",
+      marginBottom: "50px",
+    }}
+  >
+    Guiding You Through Legal Complexities
+  </div>
+</div>
+
+     
         <h2 className={styles.sectionTitle}>Consulting Services</h2>
         <div
   style={{
@@ -117,7 +143,7 @@ const Service = () => {
             borderRadius: "10px",
             width: "100%",
             height: "100px",
-            marginBottom: "15px",
+            marginBottom: "-35px",
           }}
         >
           {serviceIcons[service.category] || (
@@ -213,7 +239,7 @@ const Service = () => {
       >
         <div
           style={{
-            backgroundColor: "#fce4ec",
+            backgroundColor: "#EDF2FB",
             padding: "15px",
             display: "flex",
             justifyContent: "center",

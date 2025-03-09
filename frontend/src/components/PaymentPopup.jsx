@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { QRCode } from "react-qr-code"; // Using react-qr-code as an alternative
 import axios from "axios";
-import styles from "./PopupForm.module.css";
+import styles from "./PaymentPopup.module.css";
 
 const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
   const [paymentUrl, setPaymentUrl] = useState("");
@@ -9,6 +9,7 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [returnUrl, setReturnUrl] = useState("");
+  const [isVisible, setIsVisible] = useState(true);
 
   // Fetch the payment URL when the popup opens
   useEffect(() => {
@@ -19,16 +20,16 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
         const response = await axios.post(
           "http://localhost:8080/api/khalti-api",
           {
-            return_url: `http://localhost:3000/payments/khalti-callback`,
-            website_url: "http://localhost:3000",
-            amount: 3 * 100,
+            return_url: `http://localhost:3000/successful/${clientDetails.serviceId}/${clientDetails.clientId}`,
+            website_url: "http://localhost:8080/payment-callback",
+            amount: 4 * 100,
             purchase_order_id: clientDetails.serviceId,
             purchase_order_name: `Service for ${clientDetails.clientId}`,
             customer_info: {
               name: clientDetails.name,
               email: clientDetails.email,
               phone: clientDetails.phone,
-            },
+            },  
             serviceId: clientDetails.serviceId,
             clientId: clientDetails.clientId,
             category: clientDetails.category,
@@ -76,34 +77,48 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
     }
   };
 
+
+  // Function to close the popup
+  const handleClose = () => {
+    setIsVisible(false); // Close the popup
+    onClose(); // Call the parent onClose function if needed
+  };
+
   return (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
+        {/* Left Section */}
+        <div className={styles.leftSection}>
+          <h3>Payment Details</h3>
+          <div className={styles.clientDetails}>
+            <p><strong>Name:</strong> {clientDetails.name}</p>
+            <p><strong>Email:</strong> {clientDetails.email}</p>
+            <p><strong>Phone:</strong> {clientDetails.phone}</p>
+          </div>
+          {isLoading && <p>Loading...</p>}
+          {error && <p className={styles.error}>{error}</p>}
+          <div className={styles.paymentOptions}>
+            <button onClick={handlePayNow} className={styles.submitBtn} disabled={isLoading}>
+              Pay Now
+            </button>
+          </div>
+        </div>
+  
+        {/* Right Section */}
+        <div className={styles.rightSection}>
         <div className={styles.modalHeader}>
-          <span className={styles.closeIcon} onClick={onClose}>X</span>
-        </div>
-        <h3>Payment Details</h3>
-        <div className={styles.clientDetails}>
-          <p><strong>Name:</strong> {clientDetails.name}</p>
-          <p><strong>Email:</strong> {clientDetails.email}</p>
-          <p><strong>Phone:</strong> {clientDetails.phone}</p>
-        </div>
-        {isLoading && <p>Loading...</p>}
-        {error && <p className={styles.error}>{error}</p>}
-        <div className={styles.paymentOptions}>
-          <button onClick={handlePayNow} className={styles.submitBtn} disabled={isLoading}>
-            Pay Now
-          </button>
+              <span className={styles.closeIcon} onClick={handleClose}>X</span> 
+          </div>
           {paymentUrl && (
             <div className={styles.qrCode}>
-              <p>Scan to Pay:</p>
+              <p>OR, Scan to Pay:</p>
               <QRCode value={paymentUrl} size={200} />
             </div>
           )}
           {returnUrl && (
             <div className={styles.returnUrl}>
-        <p>Check the URL:</p>
-        <a href={returnUrl} target="_blank" rel="noopener noreferrer">{returnUrl}</a>
+              <p>Check the URL after QR payment:</p>
+              <a href={paymentUrl} target="_blank" rel="noopener noreferrer">{paymentUrl}</a>
             </div>
           )}
         </div>

@@ -11,7 +11,8 @@ import ForgotPassword from "./components/ForgotPassword";
 import PasswordReset from "./components/PasswordReset";
 import PracticeArea from "./components/Main/PracticeArea/practiceArea";
 import Contact from "./components/contact/contact.jsx";
-// import Resetpassword from "./components/ResetPassword";
+import Blog from "./components/Blog/blogclient.jsx";
+import BlogPage from "./components/Blog/blogDetail.jsx";
 
 
 import AdminPanel from "./components/Admin/AdminDashboard";
@@ -54,6 +55,8 @@ function App() {
         {/* <Route path="/password-reset/:id/:token" element={<ResetPassword />} /> */}
         <Route path="/practice-areas" element={<PracticeArea />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blogDetail/:id" element={<BlogPage />} />
 
       
         <Route path="/admin/AdminDashboard" element={<AdminPanel />} />

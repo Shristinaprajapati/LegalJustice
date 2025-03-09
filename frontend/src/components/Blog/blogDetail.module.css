@@ -1,0 +1,106 @@
+/* Main Container */
+.container {
+    display: flex;
+    min-height: 100vh;
+    font-family: "Georgia", serif;
+    color: #333;
+    line-height: 1.6;
+    flex-direction: column;
+  }
+  
+  /* Hero Section */
+  .heroSection {
+    margin-top: -100px;
+    background-image: url('/public/Images/book-lot.jpg'); /* Add the path to your image */
+    background-size: cover;
+    background-position: center;
+    height: 350px; /* Adjust height as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+  }
+  .TitleText{
+    margin-top: -50px;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: -30px;
+  }
+  
+  .heroText {
+    font-size: 48px; /* Adjust font size as needed */
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow for better readability */
+  }
+  
+  /* Header (Fixed at the Top, Separate from Content) */
+  .header {
+    display: flex;
+    justify-content: flex-start; /* Align back button to the left */
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 15px 20px;
+    box-shadow: 0 2px 5px rgba(131, 131, 131, 0.1);
+    z-index: 1000;
+    background: white; /* Add background for better visibility */
+  }
+  
+  /* Back Button */
+  .backButton {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 5px;
+    color: #007bff;
+    font-weight: bold;
+  }
+  
+  .backButton:hover {
+    color: #0056b3;
+  }
+  
+  /* Main Content Container */
+  .contentContainer {
+    flex-grow: 1;
+    max-width: 1100px;
+    margin: 80px auto 0; /* Leaves space for fixed header */
+    padding: 20px;
+  }
+  
+  /* Blog Detail */
+  .blogDetail {
+    padding: 20px;
+  }
+  
+  /* Blog Title */
+  .blogTitle {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  /* Blog Date */
+/* Blog Date */
+.blogDate {
+    color: gray;
+    font-size: 14px;
+    text-align: right; /* Align text to the right */
+  }
+  
+  /* Blog Content */
+  .blogContentHtml {
+    margin-top: 20px;
+    text-align: justify;
+  }
+  
+  /* Icon */
+  .icon {
+    font-size: 24px;
+    vertical-align: middle;
+  }

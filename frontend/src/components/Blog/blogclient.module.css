@@ -1,0 +1,162 @@
+.container {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+  }
+  
+  .heroSection {
+    margin-top: -100px;
+    background-image: url('/public/Images/book-lot.jpg'); /* Add the path to your image */
+    background-size: cover;
+    background-position: center;
+    height: 350px; /* Adjust height as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+  }
+  
+  .heroText {
+    font-size: 48px; /* Adjust font size as needed */
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow for better readability */
+  }
+  
+  .contentContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    gap: 20px; /* Reduced gap between sidebar and main content */
+  }
+  
+  .sidebar {
+    width: 250px;
+    padding: 20px;
+  }
+  
+  .sidebarTitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: #264262;
+    margin-bottom: 10px; /* Reduced margin */
+    text-align: left; /* Ensure text is aligned left */
+  }
+  
+  .sidebarList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebarList li {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px; /* Reduced margin */
+    cursor: pointer;
+    transition: color 0.3s ease;
+    text-align: left; /* Ensure text is aligned left */
+  }
+  
+  .sidebarList li:hover {
+    color: #007bff;
+  }
+  
+  .mainContent {
+    flex: 1;
+  }
+  
+  .heading {
+    margin-left: 8px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #264262;
+    margin-bottom: 15px; /* Reduced margin */
+    text-align: left; /* Ensure text is aligned left */
+  }
+  
+  .blogCard {
+    padding: 15px; /* Reduced padding */
+    margin-bottom: 15px; /* Reduced margin */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-bottom: 1px solid #e0e0e0; /* Light gray border at the bottom */
+  }
+  
+  .blogCard:last-child {
+    border-bottom: none; /* Remove border for the last blog card */
+  }
+  
+  .blogCard:hover {
+    transform: translateY(-4px);
+  }
+  
+  .blogTitle {
+    font-size: 20px;
+    font-weight: bold;
+    color: #264262;
+    margin-bottom: 8px; /* Reduced margin */
+    text-align: left; /* Ensure text is aligned left */
+  }
+  
+  .blogMeta {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #888;
+    text-align: left; /* Ensure text is aligned left */
+  }
+  
+  .blogExcerpt {
+    margin-top: 12px;
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6; /* Adjusted line height */
+    margin-bottom: 15px; /* Reduced margin */
+    text-align: left; /* Ensure text is aligned left */
+  }
+  
+  .readMoreButton {
+    background-color: transparent;
+    color: #007bff;
+    border: none;
+    padding: 0;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    text-align: left; /* Ensure text is aligned left */
+  }
+  
+  .readMoreButton:hover {
+    color: #0056b3;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px; /* Reduced margin */
+  }
+  
+  .paginationButton {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .paginationButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .paginationButton:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+  
+  .pageInfo {
+    font-size: 14px;
+    color: #555;
+    margin: 0 10px;
+  }

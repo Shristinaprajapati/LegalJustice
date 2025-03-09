@@ -128,6 +128,96 @@ router.get("/khalti-callback", async (req, res) => {
 });
 
 
+// router.get("/payment-callback", async (req, res) => {
+//   const {
+//     pidx,
+//     status,
+//     transaction_id,
+//     amount,
+//     total_amount,
+//     mobile,
+//     purchase_order_id,
+//     purchase_order_name,
+//     clientId,
+//     serviceId,
+//     category,
+//   } = req.query;
+
+//   // Validate required parameters
+//   if (!pidx || !status || !clientId || !serviceId || !category) {
+//     return res.status(400).json({
+//       success: false,
+//       message: "Invalid callback: Missing required parameters (pidx, status, clientId, serviceId, or category).",
+//     });
+//   }
+
+//   try {
+//     // 🔹 Verify payment with Khalti API
+//     const verificationResponse = await axios.post(
+//       "https://dev.khalti.com/api/v2/epayment/lookup/",
+//       { pidx },
+//       {
+//         headers: {
+//           Authorization: `Key ${process.env.KHALTI_SECRET_KEY}`,
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     );
+
+//     // 🔹 Check if payment is completed
+//     if (verificationResponse.data.status === "Completed") {
+//       // 🔹 Save payment to database
+//       const newPayment = new Payment({
+//         pidx,
+//         transaction_id,
+//         amount: total_amount,
+//         status: verificationResponse.data.status,
+//         mobile,
+//         purchase_order_id,
+//         purchase_order_name,
+//         paymentDate: new Date(),
+//         paymentMethod: "Khalti",
+//         paymentDetails: JSON.stringify(verificationResponse.data),
+//         clientId,
+//         serviceId,
+//         category,
+//       });
+
+//       await newPayment.save();
+
+//       // 🔹 Create booking in database
+//       const newBooking = new Booking({
+//         serviceId,
+//         clientId,
+//         category, // Save the category as it is (e.g., documentation)
+//         status: "Confirmed",
+//         createdAt: new Date(),
+//       });
+
+//       await newBooking.save();
+
+//       console.log("Booking created successfully:", newBooking);
+
+//       // 🔹 Redirect to success page with serviceId and clientId
+//       return res.redirect(`/successful/${serviceId}/${clientId}`);
+//     } else {
+//       return res.status(400).json({
+//         success: false,
+//         message: "Verification failed. Payment status is not completed.",
+//         status: verificationResponse.data.status,
+//       });
+//     }
+//   } catch (error) {
+//     console.error("Error verifying Khalti payment:", error?.response?.data || error.message);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Error verifying payment with Khalti.",
+//       error: error?.response?.data || error.message,
+//     });
+//   }
+// });
+
+
 
 router.get("/payment-status/:serviceId/:clientId", async (req, res) => {
   const { serviceId } = req.params;

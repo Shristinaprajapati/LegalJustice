@@ -24,6 +24,7 @@ const document = require("./routes/documentroute");
 const contactRoutes = require("./routes/contactRoutes");
 const replyEmail = require("./routes/replyEmailRoute");
 const sendEmailRoute = require("./routes/sendDocumentMail"); 
+const paymentCallbackRouter = require('./routes/paymentCallback');
 
 const notificationRoutes = require("./routes/notificationRoutes");
 
@@ -62,6 +63,7 @@ app.use("/api/divorse-agreement", divorseAgreement);
 app.use("/api/partnership-agreement", partnershipAgreement);
 app.use("/api/document", document);
 app.use('/api', htmlTemplates);
+app.use('/payment-callback', paymentCallbackRouter);
 
 app.use("/api/notifications", notificationRoutes);
 

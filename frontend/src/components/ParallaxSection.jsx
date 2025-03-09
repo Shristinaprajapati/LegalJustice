@@ -12,7 +12,7 @@ const ParallaxSection = () => {
         <p className={styles.description}>
           At Legal Justice, we offer friendly and helpful legal support for all your needs. Our team is here to guide you through every step, making sure your rights are protected and your goals are met.
         </p>
-
+    
         <button className={styles.contactButton}>Contact Us</button>
       </div>
 

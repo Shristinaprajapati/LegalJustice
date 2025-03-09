@@ -4,6 +4,7 @@ const Booking = require('../models/Booking');
 const Service = require('../models/service');
 const User = require('../models/user');
 
+
 // Fetch all bookings
 router.get('/', async (req, res) => {
   try {

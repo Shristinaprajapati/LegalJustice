@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Source+Sans+Pro:wght@400;700&display=swap');
+
 .parallax {
   position: relative;
   height: 770px; /* Ensure the parent has a height */
@@ -32,7 +34,6 @@
   text-align: left; /* Align text to the left */
   padding: 1rem;
   margin-left: 5rem; /* 80px in rem */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
   box-sizing: border-box; /* Ensures padding and border are included in the size */
 }
 
@@ -67,7 +68,8 @@
 }
 
 .logoContainer img {
-  height: 4rem; /* Adjust height as needed */
+  margin-top: 50px;
+  height: 2.5rem; /* Adjust height as needed */
   margin: 0 3rem; /* Space between logos */
 }
 

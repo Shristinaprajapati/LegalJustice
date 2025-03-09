@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useMemo, useEffect, useState, useRef } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 
@@ -18,23 +18,23 @@ const BookingSuccess = () => {
     console.log(key, value);
   });
 
-  // Extract transaction details from query parameters
-  const transactionData = {
+  const transactionData = useMemo(() => ({
     pidx: searchParams.get("pidx"),
     transaction_id: searchParams.get("transaction_id"),
     amount: searchParams.get("amount"),
-    fee: 0, // Default fee (can be updated if needed)
+    fee: 0,
     status: searchParams.get("status"),
-    refunded: false, // Default refunded status
+    refunded: false,
     mobile: searchParams.get("mobile"),
     purchase_order_id: searchParams.get("purchase_order_id"),
     purchase_order_name: searchParams.get("purchase_order_name"),
-    clientId: clientId, // Pass clientId as a string
-    serviceId: serviceId, // Pass serviceId as a string
-    category: "documentation", // Corrected typo: "documentation"
-    paymentMethod: "Khalti", // Default payment method
-    paymentDetails: {}, // Raw payment details (if available)
-  };
+    clientId: clientId,
+    serviceId: serviceId,
+    category: "documentation",
+    paymentMethod: "Khalti",
+    paymentDetails: {},
+  }), [searchParams, clientId, serviceId]);
+  
 
   // Function to create a new booking
   const createBooking = async () => {
@@ -61,12 +61,30 @@ const BookingSuccess = () => {
       throw err; // Re-throw the error to handle it in the main function
     }
   };
+  // Function to save payment to the database
+  const savePayment = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/payments",
+        transactionData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-  // Handle payment status and create a booking if payment is completed
+      console.log("Payment recorded successfully:", response.data);
+    } catch (err) {
+      console.error("Error recording payment:", err);
+      throw err; // Re-throw the error to handle it in the main function
+    }
+  };
+  
+
   useEffect(() => {
     const handlePaymentStatus = async () => {
       try {
-        // Validate required fields before proceeding
         if (
           !transactionData.pidx ||
           !transactionData.transaction_id ||
@@ -80,14 +98,15 @@ const BookingSuccess = () => {
         ) {
           throw new Error("Missing required transaction data.");
         }
-
+  
         // Set payment status
         setPaymentStatus(transactionData.status);
-
-        // If payment status is "Completed" and booking hasn't been created yet, create a new booking
+  
+        // Prevent duplicate bookings
         if (transactionData.status === "Completed" && !bookingCreated.current) {
+          bookingCreated.current = true; // Mark as created before async call
           await createBooking();
-          bookingCreated.current = true; // Mark booking as created
+          await savePayment();
         }
       } catch (err) {
         console.error("Error handling payment status or creating booking:", err);
@@ -100,9 +119,10 @@ const BookingSuccess = () => {
         setLoading(false);
       }
     };
-
+  
     handlePaymentStatus();
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once when mounted
+  
 
   // Styles
   const styles = {

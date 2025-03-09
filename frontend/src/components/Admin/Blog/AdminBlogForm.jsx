@@ -89,14 +89,48 @@ const AdminBlogForm = ({ blogId, onSave }) => {
           />
         </div>
 
-        <div className="button-group">
-          <button type="submit" className="save-button">
-            {blogId ? "Update" : "Publish"}
-          </button>
-          <button type="button" className="save-button" onClick={onSave}>
-            Cancel
-          </button>
-        </div>
+        <div
+  style={{
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: "10px",
+    marginTop: "20px",
+  }}
+>
+  <button
+    type="submit"
+    style={{
+      padding: "8px 16px", // Reduced padding
+      fontSize: "14px", // Smaller font size
+      fontWeight: "500",
+      width: "100px", // Set a smaller fixed width
+      backgroundColor: "#007bff",
+      color: "#fff",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+    }}
+  >
+    {blogId ? "Update" : "Publish"}
+  </button>
+  <button
+    type="button"
+    onClick={onSave}
+    style={{
+      padding: "8px 16px", // Reduced padding
+      fontSize: "14px", // Smaller font size
+      fontWeight: "500",
+      width: "100px", // Set a smaller fixed width
+      backgroundColor: "#6c757d",
+      color: "#fff",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+    }}
+  >
+    Cancel
+  </button>
+</div>
       </form>
     </div>
   );

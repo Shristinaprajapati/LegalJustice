@@ -1,11 +1,10 @@
 /* General Styling */
 .servicesContainer {
-  margin-top: -100px;
-    padding: 80px 5%;
-    background-color: #ffffff;
-    font-family: "Satoshi", sans-serif;
-    margin-bottom: -100px;
-  }
+  padding: 50px 5%;
+  background-color: #ffffff;
+  font-family: "Satoshi", sans-serif;
+
+}
   
   /* Section Titles */
   .sectionTitle {
@@ -140,4 +139,6 @@
     color: #777;
     padding: 15px;
   }
+
+  
   
