@@ -96,10 +96,33 @@ const Sidebar = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/partnershiptemplate" className={getLinkClass('/divorsetemplate')}>
+                <Link to="/partnershiptemplate" className={getLinkClass('/partnershiptemplate')}>
                   Partnership Template
                 </Link>
               </li>
+              <li>
+                <Link to="/rentaltemplate" className={getLinkClass('/rentaltemplate')}>
+                  Rental Agreement Template
+                </Link>
+              </li>
+              <li>
+                <Link to="/marriageprooftemplate" className={getLinkClass('/marriageprooftemplate')}>
+                  Marriage Proof Agreement Template
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/propertytransfer" className={getLinkClass('/propertytransfer')}>
+                  Property Transfer Agreement Template
+                </Link>
+              </li>
+              <li>
+                <Link to="/employmenttemplate" className={getLinkClass('/employmenttemplate')}>
+                  Employment Contract
+                </Link>
+              </li>
+
+              
             </ul>
           )}
         </li>

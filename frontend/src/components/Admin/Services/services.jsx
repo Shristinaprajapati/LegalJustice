@@ -4,6 +4,10 @@ import styles from './AdminServices.module.css';
 import Sidebar from '../Sidebar';
 import { FaEllipsisV } from 'react-icons/fa';
 import DivorceAgreementForm from '..//htmlTemplates/DivorseAgreementForm';
+import RentalAgreementForm from '..//htmlTemplates/RentalAgreementForm';
+import MarriageproofAgreement from '..//htmlTemplates/MarriageproofAgreementForm';
+import PropertytransferAgreement from '..//htmlTemplates/PropertytransferAgreementForm';
+import EmploymentContract from '..//htmlTemplates/EmploymentcontractForm';
 
 const AdminServices = () => {
   const [services, setServices] = useState([]);
@@ -82,11 +86,13 @@ const AdminServices = () => {
       case 'form2':
         return <div>Form 2 Content</div>;
       case 'form3':
-        return <div>Form 3 Content</div>;
+        return <RentalAgreementForm submitForm={handleAddService} />;
       case 'form4':
-        return <div>Form 4 Content</div>;
+        return <MarriageproofAgreement submitForm={handleAddService} />;
       case 'form5':
-        return <div>Form 5 Content</div>;
+        return <PropertytransferAgreement submitForm={handleAddService} />;
+      case 'form6':
+        return <EmploymentContract submitForm={handleAddService} />;
       default:
         return null;
     }
@@ -239,9 +245,10 @@ const AdminServices = () => {
                 <option value="">Select a form</option>
                 <option value="form1">Divorce Agreement Form</option>
                 <option value="form2">Form 2</option>
-                <option value="form3">Form 3</option>
-                <option value="form4">Form 4</option>
-                <option value="form5">Form 5</option>
+                <option value="form3">Rental Agreement Form</option>
+                <option value="form4">Marriage Proof Form</option>
+                <option value="form5">Property Transfer Form</option>
+                <option value="form6">Employment Contract Form</option>
               </select>
             </div>
           )}

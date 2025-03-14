@@ -42,6 +42,16 @@ const BookingPopup = ({ show, onConfirm, onCancel, bookingData }) => {
     } else if (serviceId === '67abfc26166a138b70b6271d') {
       redirectUrl = 'http://localhost:3000/partnerform';
       category = 'Partnership Agreement';
+    } else if (serviceId === '67d3b7e6fd712ab1eddaf624') {
+        redirectUrl = 'http://localhost:3000/rentalform';
+        category = 'Rental Agreement';
+      } else if (serviceId === '67d3e4d8aafbee77550d4058') {
+        redirectUrl = 'http://localhost:3000/marriageprooftemplate';
+        category = 'Marriage Proof Document';
+      } else if (serviceId === '67d3f9d3c5edee371762757b') {
+        redirectUrl = 'http://localhost:3000/propertytransfer';
+        category = 'Property Transfer Document';
+    
     } else {
       // If there are more service IDs, you can add additional conditions here
       console.log('Service ID does not match any predefined IDs.');

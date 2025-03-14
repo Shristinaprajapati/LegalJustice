@@ -23,9 +23,14 @@ import ContactForm from "./components/Admin/Contact/AdminContact.jsx";
 
 import DivorseFrom from "./components/Admin/htmlTemplates/DivorseAgreementForm.jsx";
 import DivorseTemplate from "./components/Admin/htmlTemplates/ClientCards.jsx";
+import RentalTemplate from "./components/Admin/htmlTemplates/RentalCard.jsx";
+import MarriageproofTemplate from "./components/Admin/htmlTemplates/MarriageproofCard.jsx";
+import PropertytransferTemplate from "./components/Admin/htmlTemplates/PropertyCard.jsx";
+import EmploymentTemplate from "./components/Admin/htmlTemplates/EmploymentCard.jsx";
 import EditDocument from "./components/Admin/Templates/EditDocument.jsx";
 import PartnerTemplate from "./components/Admin/htmlTemplates/PartnershipCard.jsx";
 import PartnerFrom from "./components/Admin/htmlTemplates/PartnershipAgreementForm.jsx";
+import RentalFrom from "./components/Admin/htmlTemplates/RentalAgreementForm.jsx";
 import AdminBlogList from "./components/Admin/Blog/AdminBlogList.jsx";
 import BlogDetail from "./components/Admin/Blog/BlogDetail.jsx";
 import PaymentSuccessful from "./components/PaymentSuccessful.jsx";
@@ -71,8 +76,14 @@ function App() {
 
         <Route path ="/divorseform" element={<DivorseFrom/>}/>
         <Route path ="/partnerform" element={<PartnerFrom />}/>
+        <Route path ="/rentalform" element={<RentalFrom />}/>
         <Route path ="/divorsetemplate" element={<DivorseTemplate/>}/>
         <Route path ="/partnershiptemplate" element={<PartnerTemplate/>}/>
+        <Route path ="/rentaltemplate" element={<RentalTemplate/>}/>
+        <Route path ="/marriageprooftemplate" element={<MarriageproofTemplate/>}/>
+        <Route path ="/employmenttemplate" element={<EmploymentTemplate/>}/>
+        <Route path ="/propertytransfer" element={<PropertytransferTemplate/>}/>
+
         <Route path ="/editdocument" element={<EditDocument/>}/>
 
 
