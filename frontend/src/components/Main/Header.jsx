@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './Header.module.css';
 import axios from 'axios';
 import io from 'socket.io-client'; // Import Socket.IO
+import { MdAccountCircle, MdCalendarToday, MdCreditCard, MdClose } from "react-icons/md"; // React Icons
+import { FaMoneyBillAlt, FaFileInvoiceDollar } from "react-icons/fa"; // React Icons
 import 'font-awesome/css/font-awesome.min.css'; 
 import { Icon } from "@iconify/react";
 
@@ -15,6 +17,7 @@ const Header = () => {
   const navigate = useNavigate();
   const socket = useRef(null); 
   const [activeTab, setActiveTab] = useState("profile"); 
+  const [payments, setPayments] = useState([]);
 
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -91,6 +94,27 @@ const Header = () => {
             .catch((error) => {
               console.error('Error fetching bookings:', error.response ? error.response.data : error.message);
             });
+
+
+            axios
+            .get(`http://localhost:8080/api/payments/${user.clientId}`)
+            .then((response) => {
+              console.log("Backend response:", response.data); // Log the response
+              const paymentsFromDb = response.data.data || []; // Default to an empty array
+          
+              // Deduplicate payments
+              setPayments((prevPayments) => {
+                const newPayments = paymentsFromDb.filter((newPayment) =>
+                  !prevPayments.some((existingPayment) => existingPayment._id === newPayment._id)
+                );
+          
+                return [...newPayments, ...prevPayments]; // Add new ones first
+              });
+            })
+            .catch((error) => {
+              console.error('Error fetching payments:', error.response ? error.response.data : error.message);
+            });
+
         })
         .catch((error) => {
           console.error('Error fetching user details:', error.response ? error.response.data : error.message);
@@ -323,13 +347,43 @@ const Header = () => {
           </div>
         )}
 
-        {/* Payment Tab */}
-        {activeTab === "payment" && (
-          <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Payment Done</h2>
-            <p className={styles.sectionText}>Here are your past transactions.</p>
+{/* Payment Tab */}
+{activeTab === "payment" && (
+  <div className={styles.section}>
+    <h2 className={styles.sectionTitle}>Payment History</h2>
+    <p className={styles.sectionText}>Here are your past transactions.</p>
+
+    {loading ? (
+      <p className={styles.loading}>Loading payments...</p>
+    ) : error ? (
+      <p className={styles.error}>{error}</p>
+    ) : payments.length === 0 ? (
+      <p className={styles.noPayments}>No payments found.</p>
+    ) : (
+      <div className={styles.paymentList}>
+        {payments.map((payment) => (
+          <div key={payment._id} className={styles.paymentCard}>
+            <h3 className={styles.paymentTitle}>
+              {payment.service?.title || "Payment"}
+            </h3>
+            <p className={styles.paymentAmount}>
+                <FaMoneyBillAlt /> NPR {payment.amount}
+              </p>
+              <p className={styles.paymentDate}>
+                <FaFileInvoiceDollar /> {payment.purchase_order_name}
+              </p>
+              <p className={styles.paymentDate}>
+                <MdCalendarToday /> {new Date(payment.date).toDateString()}
+              </p>
+              <p className={`${styles.paymentStatus} ${styles[payment.status.toLowerCase()]}`}>
+                {payment.status}
+              </p>
           </div>
-        )}
+        ))}
+      </div>
+    )}
+  </div>
+)}
       </div>
     </div>
   </div>

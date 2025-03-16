@@ -4,6 +4,9 @@ import axios from "axios";
 import styles from "./PaymentPopup.module.css";
 
 const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
+  // Log all the data that the component receives
+  console.log("Received Props:", { clientDetails, onClose, onPayNow });
+
   const [paymentUrl, setPaymentUrl] = useState("");
   const [isPaid, setIsPaid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,14 +25,14 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
           {
             return_url: `http://localhost:3000/successful/${clientDetails.serviceId}/${clientDetails.clientId}`,
             website_url: "http://localhost:8080/payment-callback",
-            amount: 4 * 100,
+            amount: 40 * 100, // Ensure this is in the correct unit (paisa or NPR)
             purchase_order_id: clientDetails.serviceId,
             purchase_order_name: `Service for ${clientDetails.clientId}`,
             customer_info: {
               name: clientDetails.name,
               email: clientDetails.email,
               phone: clientDetails.phone,
-            },  
+            },
             serviceId: clientDetails.serviceId,
             clientId: clientDetails.clientId,
             category: clientDetails.category,
@@ -45,7 +48,8 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
           setError("Failed to get payment URL");
         }
       } catch (error) {
-        setError("Error initiating Khalti payment: " + error.message);
+        console.error("Full error response:", error.response?.data); // Log the full error response
+        setError("Error initiating Khalti payment: " + (error.response?.data?.message || error.message));
       } finally {
         setIsLoading(false);
       }
@@ -61,22 +65,22 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
         `http://localhost:8080/api/payment-status/${clientDetails.serviceId}/${clientDetails.clientId}`
       );
       setIsPaid(response.data.paid);
+      return response.data.paid; // Return the payment status
     } catch (error) {
       setError("Error checking payment status: " + error.message);
+      return false; // Return false in case of an error
     }
   };
 
   // Handle "Pay Now" button click
   const handlePayNow = async () => {
-    await checkPaymentStatus();
-
-    if (isPaid) {
+    const paid = await checkPaymentStatus(); // Wait for the payment status check
+    if (paid) {
       window.location.href = `http://localhost:3000/successful/${clientDetails.serviceId}/${clientDetails.clientId}`;
     } else if (paymentUrl) {
       onPayNow();
     }
   };
-
 
   // Function to close the popup
   const handleClose = () => {
@@ -84,7 +88,7 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
     onClose(); // Call the parent onClose function if needed
   };
 
-  return (
+  return isVisible ? (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContent}>
         {/* Left Section */}
@@ -103,11 +107,11 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
             </button>
           </div>
         </div>
-  
+
         {/* Right Section */}
         <div className={styles.rightSection}>
-        <div className={styles.modalHeader}>
-              <span className={styles.closeIcon} onClick={handleClose}>X</span> 
+          <div className={styles.modalHeader}>
+            <span className={styles.closeIcon} onClick={handleClose}>X</span>
           </div>
           {paymentUrl && (
             <div className={styles.qrCode}>
@@ -124,7 +128,7 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default PaymentPopup;

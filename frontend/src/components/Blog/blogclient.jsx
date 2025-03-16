@@ -4,6 +4,7 @@ import axios from "axios";
 import styles from "./blogclient.module.css";
 import Header from "../Main/Header.jsx";
 import { htmlToText } from "html-to-text"; // Import html-to-text library
+import Footer from '../Footer.jsx'
 
 const AdminBlogList = () => {
   const [blogs, setBlogs] = useState([]);
@@ -117,6 +118,7 @@ const AdminBlogList = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

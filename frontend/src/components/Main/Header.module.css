@@ -573,10 +573,14 @@
 
 /* Paragraph Styling */
 .sectionText {
+  margin-top: 18px;
+  margin-bottom: 18px;
   font-size: 14px;
-  color: #666;
+  color: #303030;
   line-height: 1.5;
   word-wrap: break-word;
+  font-style: normal;
+  text-align: left;
 }
 
 
@@ -671,4 +675,113 @@
 .bookingStatus.cancelled {
   background-color: #f5c6cb;
   color: #721c24;
+}
+
+
+
+
+
+.error {
+  color: #d32f2f;
+  background-color: #ffebee;
+}
+
+.noPayments {
+  color: #666;
+  background-color: #f5f5f5;
+}
+
+/* Payment List */
+.paymentList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Reduced line spacing from 22px to 16px */
+  max-height: 500px; /* Reduced container height from 800px to 500px */
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.paymentList::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+/* Hide scrollbar for Firefox */
+.paymentList {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.paymentList {
+  -ms-overflow-style: none;
+}
+
+/* Payment Card */
+.paymentCard {
+  background-color: #fff;
+  border: 1px solid #e0e0e0; /* Light border for separation */
+  border-radius: 8px;
+  padding: 12px; /* Reduced padding from 16px to 12px */
+  transition: transform 0.2s ease; /* Smooth hover effect */
+  overflow: hidden; /* Prevent content from overflowing */
+}
+
+.paymentCard:hover {
+  transform: translateY(-0.5px); /* Subtle hover effect */
+}
+
+/* Payment Title */
+.paymentTitle {
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px; /* Reduced margin from 11px to 8px */
+}
+
+/* Payment Amount */
+.paymentAmount {
+  margin-top: 8px;  
+  font-size: 14px;
+  color: #4caf50; /* Green for amount */
+  margin-bottom: 8px; /* Reduced margin from 11px to 8px */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Payment Date */
+.paymentDate {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px; /* Reduced margin from 11px to 8px */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Payment Status */
+.paymentStatus {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.paymentStatus.completed {
+  background-color: #e8f5e9; /* Light green */
+  color: #2e7d32; /* Dark green */
+}
+
+.paymentStatus.pending {
+  background-color: #fff3e0; /* Light orange */
+  color: #f57c00; /* Dark orange */
+}
+
+.paymentStatus.failed {
+  background-color: #ffebee; /* Light red */
+  color: #d32f2f; /* Dark red */
 }

@@ -26,6 +26,7 @@
     font-size: 30px;
     font-weight: bold;
     margin-bottom: -30px;
+    color: #264262;
   }
   
   .heroText {
@@ -67,9 +68,10 @@
   /* Main Content Container */
   .contentContainer {
     flex-grow: 1;
-    max-width: 1100px;
+    max-width: 900px;
     margin: 80px auto 0; /* Leaves space for fixed header */
-    padding: 20px;
+    padding: 50px;
+    margin-top: -470px;
   }
   
   /* Blog Detail */
@@ -83,12 +85,13 @@
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
+    color: #4d4d4d;
   }
   
   /* Blog Date */
 /* Blog Date */
 .blogDate {
-    color: gray;
+    color: #264262;
     font-size: 14px;
     text-align: right; /* Align text to the right */
   }
@@ -97,6 +100,7 @@
   .blogContentHtml {
     margin-top: 20px;
     text-align: justify;
+    color: #4d4d4d;
   }
   
   /* Icon */
@@ -104,3 +108,41 @@
     font-size: 24px;
     vertical-align: middle;
   }
+
+  .sidebar {
+    margin-left: 80px;
+    width: 250px;
+    padding: 20px;
+  }
+  
+  .sidebarTitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: #264262;
+    margin-bottom: 10px; /* Reduced margin */
+    text-align: left; /* Ensure text is aligned left */
+  }
+  
+  .sidebarList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebarList li {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 8px; /* Reduced margin */
+    cursor: pointer;
+    transition: color 0.3s ease;
+    text-align: left; /* Ensure text is aligned left */
+  }
+  
+  .sidebarList li:hover {
+    color: #007bff;
+  }
+  
+  .mainContent {
+    flex: 1;
+  }
+  

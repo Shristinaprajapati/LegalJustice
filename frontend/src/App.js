@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 // import '@fortawesome/fontawesome-free/css/all.min.css';
+import ProtectedRoute from './components/ProtectedRoute';
 
 import Main from './components/Main/index.jsx'; 
 import Login from './components/Login'; 
@@ -20,6 +21,7 @@ import Bookings from "./components/Admin/Bookings/booking.jsx";
 import Services from "./components/Admin/Services/services.jsx";
 import Document from "./components/Admin/Templates/AdminDocument.jsx";
 import ContactForm from "./components/Admin/Contact/AdminContact.jsx";
+import PaymentHistory from "./components/Admin/Payment/paymentHistory.jsx";
 
 import DivorseFrom from "./components/Admin/htmlTemplates/DivorseAgreementForm.jsx";
 import DivorseTemplate from "./components/Admin/htmlTemplates/ClientCards.jsx";
@@ -64,6 +66,7 @@ function App() {
         <Route path="/blogDetail/:id" element={<BlogPage />} />
 
       
+        <Route element={<ProtectedRoute />}>
         <Route path="/admin/AdminDashboard" element={<AdminPanel />} />
         <Route path ="/booking" element={<Bookings/>}/>
         <Route path ="/services" element={<Services/>}/>
@@ -72,7 +75,8 @@ function App() {
         <Route path="/admin/blogs" element={<AdminBlogList />} />
         <Route path="/blog/:id" element={<BlogDetail />} /> 
         <Route path="/successful/:serviceId/:clientId" element={<PaymentSuccessful />} />
-
+        <Route path="/admin/payment-history" element={<PaymentHistory />} />
+        </Route>
 
         <Route path ="/divorseform" element={<DivorseFrom/>}/>
         <Route path ="/partnerform" element={<PartnerFrom />}/>

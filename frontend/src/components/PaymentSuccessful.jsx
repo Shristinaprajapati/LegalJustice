@@ -61,6 +61,7 @@ const BookingSuccess = () => {
       throw err; // Re-throw the error to handle it in the main function
     }
   };
+  
   // Function to save payment to the database
   const savePayment = async () => {
     try {

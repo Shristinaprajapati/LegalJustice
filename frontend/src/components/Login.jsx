@@ -16,14 +16,22 @@ const Login = () => {
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
+    setError(""); // Clear error when user starts typing
   };
 
   const handleRecaptcha = (value) => {
     setRecaptchaValue(value);
+    setError(""); // Clear error when reCAPTCHA is completed
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate email and password
+    if (!data.email || !data.password) {
+      setError("Please enter both email and password.");
+      return;
+    }
 
     if (!recaptchaValue) {
       setError("Please complete the reCAPTCHA verification.");
@@ -41,8 +49,18 @@ const Login = () => {
 
       if (res.token) {
         console.log("Storing Token:", res.token);
-        localStorage.setItem("token", res.token);
-        localStorage.setItem("email", data.email);
+        console.log("User Role:", res.user.role); // Debugging: Log the role
+
+        // Check if the user is an admin
+        if (res.user.role === "admin") {
+          console.log("Admin login detected. Storing admin token and email.");
+          localStorage.setItem("admin_token", res.token); // Store admin token
+          localStorage.setItem("admin_email", res.user.email); // Store admin email from response
+        } else {
+          console.log("Normal user login detected. Storing token and email.");
+          localStorage.setItem("token", res.token); // Store normal user token
+          localStorage.setItem("email", res.user.email); // Store normal user email from response
+        }
 
         if (res.redirectTo) {
           window.location.href = res.redirectTo; // Redirect to the admin dashboard
@@ -54,10 +72,35 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Login Error:", error);
+
+      // Handle specific error cases
       if (error.code === "ECONNABORTED") {
         setError("Request timed out. Please try again.");
+      } else if (error.response) {
+        // Handle API response errors
+        const { status, data } = error.response;
+        switch (status) {
+          case 400:
+            setError(data.message || "Invalid request. Please check your input.");
+            break;
+          case 401:
+            setError(data.message || "Invalid email or password.");
+            break;
+          case 403:
+            setError(data.message || "reCAPTCHA verification failed.");
+            break;
+          case 500:
+            setError("An internal server error occurred. Please try again later.");
+            break;
+          default:
+            setError("An unexpected error occurred. Please try again.");
+        }
+      } else if (error.request) {
+        // Handle network errors (e.g., server unreachable)
+        setError("Unable to connect to the server. Please check your internet connection.");
       } else {
-        setError(error.response?.data?.message || "An unexpected error occurred. Please try again.");
+        // Handle other errors
+        setError("An unexpected error occurred. Please try again.");
       }
     }
   };

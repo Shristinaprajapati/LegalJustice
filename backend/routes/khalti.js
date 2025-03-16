@@ -10,19 +10,12 @@ require("dotenv").config();
 
 router.post("/khalti-api", async (req, res) => {
   const payload = req.body;
-  const { clientId, serviceId, category } = payload;
 
-  // Log the payload to check if all fields are correct
   console.log("Payload received for Khalti API:", payload);
-
-  // Check if the necessary fields exist in the payload
-  if (!clientId || !serviceId || !category) {
-    return res.status(400).json({ success: false, message: "Missing required fields: clientId, serviceId, or category" });
-  }
 
   try {
     const khaltiResponse = await axios.post(
-      'https://dev.khalti.com/api/v2/epayment/initiate/',
+      "https://dev.khalti.com/api/v2/epayment/initiate/",
       payload,
       {
         headers: {
@@ -30,17 +23,23 @@ router.post("/khalti-api", async (req, res) => {
         },
       }
     );
-    console.log(khaltiResponse)
 
+    console.log("Khalti API Response:", khaltiResponse.data);
 
-    // Respond with the Khalti response data
-    res.json({
-      success: true,
-      data: khaltiResponse.data,
-    });
+    res.json({ success: true, data: khaltiResponse.data });
   } catch (error) {
-    console.error("Error during Khalti API request:", error);
-    res.status(500).json({ message: "Error processing Khalti request", error: error.message });
+    console.log(error.response.data)
+    console.error("Error during Khalti API request:", {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+      headers: error.response?.headers,
+    });
+
+    res.status(500).json({
+      message: "Error processing Khalti request",
+      error: error.response?.data || error.message,
+    });
   }
 });
 
@@ -126,97 +125,6 @@ router.get("/khalti-callback", async (req, res) => {
     });
   }
 });
-
-
-// router.get("/payment-callback", async (req, res) => {
-//   const {
-//     pidx,
-//     status,
-//     transaction_id,
-//     amount,
-//     total_amount,
-//     mobile,
-//     purchase_order_id,
-//     purchase_order_name,
-//     clientId,
-//     serviceId,
-//     category,
-//   } = req.query;
-
-//   // Validate required parameters
-//   if (!pidx || !status || !clientId || !serviceId || !category) {
-//     return res.status(400).json({
-//       success: false,
-//       message: "Invalid callback: Missing required parameters (pidx, status, clientId, serviceId, or category).",
-//     });
-//   }
-
-//   try {
-//     // 🔹 Verify payment with Khalti API
-//     const verificationResponse = await axios.post(
-//       "https://dev.khalti.com/api/v2/epayment/lookup/",
-//       { pidx },
-//       {
-//         headers: {
-//           Authorization: `Key ${process.env.KHALTI_SECRET_KEY}`,
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-
-//     // 🔹 Check if payment is completed
-//     if (verificationResponse.data.status === "Completed") {
-//       // 🔹 Save payment to database
-//       const newPayment = new Payment({
-//         pidx,
-//         transaction_id,
-//         amount: total_amount,
-//         status: verificationResponse.data.status,
-//         mobile,
-//         purchase_order_id,
-//         purchase_order_name,
-//         paymentDate: new Date(),
-//         paymentMethod: "Khalti",
-//         paymentDetails: JSON.stringify(verificationResponse.data),
-//         clientId,
-//         serviceId,
-//         category,
-//       });
-
-//       await newPayment.save();
-
-//       // 🔹 Create booking in database
-//       const newBooking = new Booking({
-//         serviceId,
-//         clientId,
-//         category, // Save the category as it is (e.g., documentation)
-//         status: "Confirmed",
-//         createdAt: new Date(),
-//       });
-
-//       await newBooking.save();
-
-//       console.log("Booking created successfully:", newBooking);
-
-//       // 🔹 Redirect to success page with serviceId and clientId
-//       return res.redirect(`/successful/${serviceId}/${clientId}`);
-//     } else {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Verification failed. Payment status is not completed.",
-//         status: verificationResponse.data.status,
-//       });
-//     }
-//   } catch (error) {
-//     console.error("Error verifying Khalti payment:", error?.response?.data || error.message);
-//     return res.status(500).json({
-//       success: false,
-//       message: "Error verifying payment with Khalti.",
-//       error: error?.response?.data || error.message,
-//     });
-//   }
-// });
-
 
 
 router.get("/payment-status/:serviceId/:clientId", async (req, res) => {
@@ -323,5 +231,82 @@ router.post("/payments", async (req, res) => {
 
 
 
+  router.get("/payments", async (req, res) => {
+    try {
+      const { clientId, serviceId, transaction_id } = req.query;
+  
+      // Build the query object based on provided parameters
+      const query = {};
+      if (clientId) query.clientId = new mongoose.Types.ObjectId(clientId);
+      if (serviceId) query.serviceId = new mongoose.Types.ObjectId(serviceId);
+      if (transaction_id) query.transaction_id = transaction_id;
+  
+      // Fetch payments from the database
+      const payments = await Payment.find(query);
+  
+      // If no payments are found, return a 404 response
+      if (!payments || payments.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No payments found for the given criteria.",
+        });
+      }
+  
+      // Return the payments data
+      res.status(200).json({
+        success: true,
+        message: "Payments retrieved successfully.",
+        data: payments,
+      });
+    } catch (error) {
+      console.error("Error fetching payments:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error fetching payments.",
+        error: error.message,
+      });
+    }
+  });
+
+
+
+  router.get("/payments/:clientId", async (req, res) => {
+    try {
+      const { clientId } = req.params; // Extract clientId from the URL parameters
+  
+      // Validate clientId
+      if (!mongoose.Types.ObjectId.isValid(clientId)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid clientId.",
+        });
+      }
+  
+      // Fetch payments for the given clientId
+      const payments = await Payment.find({ clientId: new mongoose.Types.ObjectId(clientId) });
+  
+      // If no payments are found, return a 404 response
+      if (!payments || payments.length === 0) {
+        return res.status(404).json({
+          success: false,
+          message: "No payments found for the given clientId.",
+        });
+      }
+  
+      // Return the payments data
+      res.status(200).json({
+        success: true,
+        message: "Payments retrieved successfully.",
+        data: payments,
+      });
+    } catch (error) {
+      console.error("Error fetching payments by clientId:", error);
+      res.status(500).json({
+        success: false,
+        message: "Error fetching payments.",
+        error: error.message,
+      });
+    }
+  });
 
 module.exports = router;

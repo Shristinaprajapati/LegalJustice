@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom'; // Import useNavigate
 import { Icon } from '@iconify/react';
 import ReactDOMServer from 'react-dom/server';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import styles from './Sidebar.module.css';
 const Sidebar = () => {
   const [showTemplatesDropdown, setShowTemplatesDropdown] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const toggleDropdown = async () => {
     // Toggle the dropdown visibility
@@ -36,6 +37,15 @@ const Sidebar = () => {
         console.error('Error storing templates:', error);
       }
     }
+  };
+
+  const handleLogout = () => {
+    // Remove admin_token and admin_email from localStorage
+    localStorage.removeItem('admin_token');
+    localStorage.removeItem('admin_email');
+
+    // Redirect to the login page
+    navigate('/login');
   };
 
   const getLinkClass = (path) => {
@@ -110,7 +120,6 @@ const Sidebar = () => {
                   Marriage Proof Agreement Template
                 </Link>
               </li>
-
               <li>
                 <Link to="/propertytransfer" className={getLinkClass('/propertytransfer')}>
                   Property Transfer Agreement Template
@@ -121,8 +130,6 @@ const Sidebar = () => {
                   Employment Contract
                 </Link>
               </li>
-
-              
             </ul>
           )}
         </li>
@@ -147,7 +154,11 @@ const Sidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/login" className={`${styles.link} ${styles.logout}`}>
+          <Link 
+            to="/login" 
+            className={`${styles.link} ${styles.logout}`}
+            onClick={handleLogout} // Add onClick handler for logout
+          >
             <Icon icon="fa-solid:sign-out-alt" className={styles.icon} />
             Logout
           </Link>

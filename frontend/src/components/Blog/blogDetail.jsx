@@ -4,6 +4,7 @@ import axios from "axios";
 import { Icon } from "@iconify/react";
 import styles from "./blogDetail.module.css";
 import Header from "../Main/Header.jsx";
+import Footer from '../Footer.jsx'
 
 const BlogDetail = () => {
   const [blog, setBlog] = useState(null);
@@ -34,6 +35,23 @@ const BlogDetail = () => {
         <div className={styles.heroText}>Legal Justice Blogs</div>
       </div>
 
+            <div className={styles.sidebar}>
+              <h3 className={styles.sidebarTitle}>PRACTICE AREAS</h3>
+              <ul className={styles.sidebarList}>
+                <li>Banking & Finance</li>
+                <li>Corporate & Commercial</li>
+                <li>Litigation & Arbitration</li>
+                <li>Mergers & Acquisitions</li>
+              </ul>
+    
+              <h3 className={styles.sidebarTitle}>LATEST POST</h3>
+              <ul className={styles.sidebarList}>
+                <li>Arbitration law and procedure in Nepal</li>
+                <li>Nepal Project Finance Guide</li>
+                <li>Doing Business in Nepal Guide</li>
+                <li>Overview of the new Foreign Investment Act 2019</li>
+              </ul>
+            </div>
       {/* Blog Content Container */}
       <div className={styles.contentContainer}>
         <div className={styles.blogDetail}>
@@ -52,6 +70,7 @@ const BlogDetail = () => {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 };

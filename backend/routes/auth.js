@@ -56,24 +56,18 @@ router.post("/", async (req, res) => {
 
     // Generate token
     const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
-      expiresIn: "7d", 
+      expiresIn: "7d",
     });
 
-    // If the user is a specific email, send a redirect response
-    if (email === "shristiprajapati339@gmail.com") {
-      return res.status(200).send({
-        token,
-        message: "Logged in successfully.",
-        redirectTo: "http://localhost:3000/admin/AdminDashboard",
-        user: { id: user._id, email: user.email, role: user.role },
-      });
-    }
+    // If the user is the specific admin email, override the role to "admin"
+    const role = email === "shristiprajapati339@gmail.com" ? "admin" : user.role;
 
-    // Normal response for other users
+    // Send response with role included
     res.status(200).send({
       token,
       message: "Logged in successfully.",
-      user: { id: user._id, email: user.email, role: user.role },
+      user: { id: user._id, email: user.email, role }, // Include role here
+      redirectTo: role === "admin" ? "http://localhost:3000/admin/AdminDashboard" : undefined, // Redirect admin to dashboard
     });
   } catch (error) {
     console.error("Error during authentication:", error.message);
