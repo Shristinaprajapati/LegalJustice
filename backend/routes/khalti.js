@@ -13,6 +13,26 @@ router.post("/khalti-api", async (req, res) => {
 
   console.log("Payload received for Khalti API:", payload);
 
+  // Validate required fields
+  if (
+    !payload.return_url ||
+    !payload.website_url ||
+    !payload.amount ||
+    !payload.purchase_order_id ||
+    !payload.purchase_order_name ||
+    !payload.customer_info?.name ||
+    !payload.customer_info?.email ||
+    !payload.customer_info?.phone ||
+    !payload.serviceId ||
+    !payload.clientId ||
+    !payload.category
+  ) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid request: Missing required fields.",
+    });
+  }
+
   try {
     const khaltiResponse = await axios.post(
       "https://dev.khalti.com/api/v2/epayment/initiate/",
@@ -28,7 +48,6 @@ router.post("/khalti-api", async (req, res) => {
 
     res.json({ success: true, data: khaltiResponse.data });
   } catch (error) {
-    console.log(error.response.data)
     console.error("Error during Khalti API request:", {
       message: error.message,
       response: error.response?.data,

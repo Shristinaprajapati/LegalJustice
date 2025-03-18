@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./PopupForm.module.css";
-import { useSearchParams } from "react-router-dom";
-import PaymentPopup from "./PaymentPopup.jsx";
+import { QRCode } from "react-qr-code";
 import MessagePopup from "./MessagePopup.jsx";
 
 const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
@@ -10,10 +9,9 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
   const [isMessagePopupOpen, setIsMessagePopupOpen] = useState(false);
-  const [searchParams] = useSearchParams();
-  const [paymentStatus, setPaymentStatus] = useState(null);
-  const [showPopup, setShowPopup] = useState(false);
-  const [showPaymentPopup, setShowPaymentPopup] = useState(false);
+  const [paymentUrl, setPaymentUrl] = useState("");
+  const [isPaid, setIsPaid] = useState(false);
+  const [returnUrl, setReturnUrl] = useState("");
 
   const email = localStorage.getItem("email");
 
@@ -42,53 +40,89 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
     }
   }, [isOpen, email, setFormData]);
 
-  const resetFormData = () => {
-    setFormData((prevData) => ({
-      ...prevData,
-      date: "",
-      timeSlot: "",
-    }));
-  };
+  // Call initiatePayment only after formData is populated
+  useEffect(() => {
+    if (formData.category === "documentation" && formData.clientId && formData.serviceId) {
+      initiatePayment();
+    }
+  }, [formData]);
 
-  
-  
-
-  const handleKhaltiPayment = async (serviceId, clientId) => {
+  const initiatePayment = async () => {
     setLoading(true);
     setError(null);
-
     try {
-      const paymentPayload = {
-        return_url: `http://localhost:3000/successful/${serviceId}/${clientId}`,
+      console.log("Form Data being sent:", {
+        return_url: `http://localhost:3000/successful/${formData.serviceId}/${formData.clientId}`,
         website_url: "http://localhost:8080/payment-callback",
-        amount: 4 * 100,
-        purchase_order_id: serviceId,
+        amount: 40 * 100,
+        purchase_order_id: formData.serviceId,
         purchase_order_name: `Service for ${formData.clientId}`,
         customer_info: {
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
         },
-        serviceId,
+        serviceId: formData.serviceId,
         clientId: formData.clientId,
         category: formData.category,
-      };
-
-      const khaltiResponse = await axios.post("http://localhost:8080/api/khalti-api", paymentPayload);
-
-      if (khaltiResponse.data.success) {
-        window.location.href = khaltiResponse.data.data.payment_url;
+      });
+  
+      const response = await axios.post("http://localhost:8080/api/khalti-api", {
+        return_url: `http://localhost:3000/successful/${formData.serviceId}/${formData.clientId}`,
+        website_url: "http://localhost:8080/payment-callback",
+        amount: 40 * 100,
+        purchase_order_id: formData.serviceId,
+        purchase_order_name: `Service for ${formData.clientId}`,
+        customer_info: {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+        },
+        serviceId: formData.serviceId,
+        clientId: formData.clientId,
+        category: formData.category,
+      });
+  
+      if (response.data.success) {
+        setPaymentUrl(response.data.data.payment_url);
+        setReturnUrl(`http://localhost:3000/successful/${formData.serviceId}/${formData.clientId}`);
       } else {
-        setError("Failed to initiate Khalti payment.");
+        setError("Failed to get payment URL");
       }
-    } catch (err) {
-      setError("Error processing payment: " + err.response?.data?.message);
+    } catch (error) {
+      console.error("Error during payment initiation:");
+      console.error("Error Message:", error.message);
+      console.error("Error Response Data:", error.response?.data);
+      console.error("Error Status:", error.response?.status);
+      console.error("Error Headers:", error.response?.headers);
+  
+      setError("Error initiating Khalti payment: " + (error.response?.data?.message || error.message));
     } finally {
       setLoading(false);
     }
   };
 
-  
+  const checkPaymentStatus = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/payment-status/${formData.serviceId}/${formData.clientId}`
+      );
+      setIsPaid(response.data.paid);
+      return response.data.paid; // Return the payment status
+    } catch (error) {
+      // setError("Error checking payment status: " + error.message);
+      return false; // Return false in case of an error
+    }
+  };
+
+  const handlePayNow = async () => {
+    const paid = await checkPaymentStatus(); // Wait for the payment status check
+    if (paid) {
+      window.location.href = `http://localhost:3000/successful/${formData.serviceId}/${formData.clientId}`;
+    } else if (paymentUrl) {
+      window.location.href = paymentUrl; // Redirect to the payment URL
+    }
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -106,19 +140,16 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
           category: formData.category,
         };
       } else {
-        const storedFormData = JSON.parse(localStorage.getItem("formData"));
-        const { serviceId, clientId, category } = storedFormData || {};
         bookingData = {
-          serviceId: serviceId,
-          clientId: clientId,
-          category: category,
+          serviceId: formData.serviceId,
+          clientId: formData.clientId,
+          category: formData.category,
         };
       }
 
       const response = await axios.post("http://localhost:8080/api/bookings", bookingData);
       setSuccessMessage("Booking successful!");
       setIsMessagePopupOpen(true);
-      localStorage.removeItem("formData");
       resetFormData();
     } catch (err) {
       setError(err.response?.data?.message || "Failed to create booking");
@@ -138,16 +169,12 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
     setIsMessagePopupOpen(false);
   };
 
-  const popupStyle = {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    background: "white",
-    padding: "20px",
-    boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
-    borderRadius: "8px",
-    textAlign: "center",
+  const resetFormData = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      date: "",
+      timeSlot: "",
+    }));
   };
 
   if (!isOpen) return null;
@@ -198,40 +225,40 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
             </>
           ) : (
             <>
-              <h3>Get Document</h3>
-              <p>Are you sure you want to get the document?</p>
-              {loading && <p>Loading...</p>}
-              <button 
-                onClick={() => {
-                  localStorage.setItem("formData", JSON.stringify({
-                    serviceId: formData.serviceId,
-                    clientId: formData.clientId,
-                    category: formData.category,
-                  }));
-                  setShowPaymentPopup(true);
-                }} 
-                className={styles.submitBtn}>
-                Yes, Pay Rs. 2000
-              </button>
+              <div className={styles.leftSection}>
+                <h3>Payment Details</h3>
+                <div className={styles.clientDetails}>
+                  <p><strong>Name:</strong> {formData.name}</p>
+                  <p><strong>Email:</strong> {formData.email}</p>
+                  <p><strong>Phone:</strong> {formData.phone}</p>
+                </div>
+                {loading && <p>Loading...</p>}
+                {error && <p className={styles.error}>{error}</p>}
+                <div className={styles.paymentOptions}>
+                  <button onClick={handlePayNow} className={styles.submitBtn} disabled={loading}>
+                    Pay Now
+                  </button>
+                </div>
+              </div>
+
+              <div className={styles.rightSection}>
+                {paymentUrl && (
+                  <div className={styles.qrCode}>
+                    <p>OR, Scan to Pay:</p>
+                    <QRCode value={paymentUrl} size={200} />
+                  </div>
+                )}
+                {returnUrl && (
+                  <div className={styles.returnUrl}>
+                    <p>Check the URL after QR payment:</p>
+                    <a href={paymentUrl} target="_blank" rel="noopener noreferrer">{paymentUrl}</a>
+                  </div>
+                )}
+              </div>
             </>
           )}
         </div>
       </div>
-
-      {showPopup && (
-        <div style={popupStyle}>
-          <h3>{paymentStatus}</h3>
-          <button onClick={() => setShowPopup(false)}>Close</button>
-        </div>
-      )}
-
-      {showPaymentPopup && (
-        <PaymentPopup
-          clientDetails={formData}
-          onClose={() => setShowPaymentPopup(false)}
-          onPayNow={() => handleKhaltiPayment(formData.serviceId, formData.clientId)}
-        />
-      )}
 
       {isMessagePopupOpen && (
         <MessagePopup message={successMessage} onClose={closeMessagePopup} />

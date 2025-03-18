@@ -12,6 +12,19 @@ router.get("/", async (req, res) => {
   }
 });
 
+// Get a single service by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const service = await Service.findById(req.params.id);
+    if (!service) {
+      return res.status(404).json({ message: "Service not found" });
+    }
+    res.json(service);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // Add a new service
 router.post("/", async (req, res) => {
   const { title, description, price, category, formTemplate } = req.body;

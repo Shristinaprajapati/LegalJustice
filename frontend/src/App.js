@@ -31,8 +31,11 @@ import PropertytransferTemplate from "./components/Admin/htmlTemplates/PropertyC
 import EmploymentTemplate from "./components/Admin/htmlTemplates/EmploymentCard.jsx";
 import EditDocument from "./components/Admin/Templates/EditDocument.jsx";
 import PartnerTemplate from "./components/Admin/htmlTemplates/PartnershipCard.jsx";
-import PartnerFrom from "./components/Admin/htmlTemplates/PartnershipAgreementForm.jsx";
-import RentalFrom from "./components/Admin/htmlTemplates/RentalAgreementForm.jsx";
+import PartnerForm from "./components/Admin/htmlTemplates/PartnershipAgreementForm.jsx";
+import RentalForm from "./components/Admin/htmlTemplates/RentalAgreementForm.jsx";
+import MarriageForm from "./components/Admin/htmlTemplates/MarriageproofAgreementForm.jsx";
+import PropertyForm from "./components/Admin/htmlTemplates/PropertytransferAgreementForm.jsx";
+import EmploymentForm from "./components/Admin/htmlTemplates/EmploymentcontractForm.jsx";
 import AdminBlogList from "./components/Admin/Blog/AdminBlogList.jsx";
 import BlogDetail from "./components/Admin/Blog/BlogDetail.jsx";
 import PaymentSuccessful from "./components/PaymentSuccessful.jsx";
@@ -40,6 +43,8 @@ import PaymentSuccessful from "./components/PaymentSuccessful.jsx";
 
 
 import BookingPop from "./components/Admin/Bookings/bookingpopup.jsx";
+import { Toaster } from 'react-hot-toast';
+
 
 
 
@@ -49,6 +54,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        
         <Route path="/" element={user ? <Main /> : <Navigate replace to="/main" />} />
 			
         <Route path="/main" element={<Main />} /> 
@@ -79,8 +85,11 @@ function App() {
         </Route>
 
         <Route path ="/divorseform" element={<DivorseFrom/>}/>
-        <Route path ="/partnerform" element={<PartnerFrom />}/>
-        <Route path ="/rentalform" element={<RentalFrom />}/>
+        <Route path ="/partnerform" element={<PartnerForm />}/>
+        <Route path ="/rentalform" element={<RentalForm />}/>
+        <Route path ="/marriageform" element={<MarriageForm />}/>
+        <Route path ="/propertyform" element={<PropertyForm />}/>
+        <Route path ="/employmentform" element={<EmploymentForm />}/>
         <Route path ="/divorsetemplate" element={<DivorseTemplate/>}/>
         <Route path ="/partnershiptemplate" element={<PartnerTemplate/>}/>
         <Route path ="/rentaltemplate" element={<RentalTemplate/>}/>

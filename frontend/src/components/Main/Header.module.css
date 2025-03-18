@@ -681,38 +681,42 @@
 
 
 
-.error {
-  color: #d32f2f;
-  background-color: #ffebee;
-}
 
+
+/* No Payments Message */
 .noPayments {
-  color: #666;
-  background-color: #f5f5f5;
+  color: #666; /* Gray for neutral messages */
+  background-color: #f5f5f5; /* Light gray background */
+  padding: 12px;
+  border-radius: 8px;
+  margin: 12px 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
 }
 
-/* Payment List */
+/* Payment List Container */
 .paymentList {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Reduced line spacing from 22px to 16px */
-  max-height: 500px; /* Reduced container height from 800px to 500px */
+  gap: 16px; /* Spacing between payment cards */
+  max-height: 900px; /* Fixed height with scroll */
   overflow-y: auto;
   padding-right: 8px;
 }
 
-/* Hide scrollbar for Chrome, Safari, and Opera */
+/* Hide Scrollbar for Chrome, Safari, and Opera */
 .paymentList::-webkit-scrollbar {
-  width: 0;
-  background: transparent;
+  width: 0; /* Hide scrollbar width */
+  background: transparent; /* Hide scrollbar background */
 }
 
-/* Hide scrollbar for Firefox */
+/* Hide Scrollbar for Firefox */
 .paymentList {
   scrollbar-width: none;
 }
 
-/* Hide scrollbar for IE and Edge */
+/* Hide Scrollbar for IE and Edge */
 .paymentList {
   -ms-overflow-style: none;
 }
@@ -721,31 +725,29 @@
 .paymentCard {
   background-color: #fff;
   border: 1px solid #e0e0e0; /* Light border for separation */
-  border-radius: 8px;
-  padding: 12px; /* Reduced padding from 16px to 12px */
-  transition: transform 0.2s ease; /* Smooth hover effect */
+  border-radius: 12px;
+  padding: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
   overflow: hidden; /* Prevent content from overflowing */
 }
 
 .paymentCard:hover {
-  transform: translateY(-0.5px); /* Subtle hover effect */
+  transform: translateY(-0.2px); /* Subtle hover effect */
 }
 
 /* Payment Title */
 .paymentTitle {
-  margin-top: 8px;
+  margin: 0 0 12px 0;
   font-size: 16px;
   font-weight: 600;
   color: #333;
-  margin-bottom: 8px; /* Reduced margin from 11px to 8px */
 }
 
 /* Payment Amount */
 .paymentAmount {
-  margin-top: 8px;  
+  margin: 0 0 12px 0;
   font-size: 14px;
   color: #4caf50; /* Green for amount */
-  margin-bottom: 8px; /* Reduced margin from 11px to 8px */
   display: flex;
   align-items: center;
   gap: 8px;
@@ -753,10 +755,9 @@
 
 /* Payment Date */
 .paymentDate {
-  margin-top: 8px;
+  margin: 0 0 12px 0;
   font-size: 14px;
   color: #666;
-  margin-bottom: 8px; /* Reduced margin from 11px to 8px */
   display: flex;
   align-items: center;
   gap: 8px;
@@ -766,8 +767,8 @@
 .paymentStatus {
   font-size: 14px;
   font-weight: 500;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 6px 12px;
+  border-radius: 6px;
   display: inline-block;
 }
 
@@ -784,4 +785,174 @@
 .paymentStatus.failed {
   background-color: #ffebee; /* Light red */
   color: #d32f2f; /* Dark red */
+}
+
+/* Toggle Sidebar Button */
+.toggleSidebarButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  width: 100%; /* Full width */
+}
+
+.toggleSidebarButton:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Complete Button */
+.completeButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  width: 100%; /* Full width */
+}
+
+.completeButton:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+.paymentHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px;  
+  background-color: #ffffff;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.progressBarContainer {
+  width: 100%;
+  height: 10px;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  margin: 10px 0;
+  overflow: hidden;
+}
+
+.progressBar {
+  height: 100%;
+  background-color: #4caf50;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.slidebarText{
+  margin-left: 10px;
+  font-size: 16px;
+  font-style: normal;
+  text-align: left;
+  margin-top: -16px;
+}
+
+
+
+
+
+.modalOverlay {
+  margin-top: 400px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px; /* Increased max-width to accommodate both sections */
+  width: 100%;
+  z-index: 1001;
+  display: flex; /* Use flexbox to create a two-column layout */
+  gap: 20px; /* Add spacing between the left and right sections */
+}
+
+.leftSection {
+  flex: 1; /* Take up 50% of the available space */
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* Add 18px spacing between elements */
+}
+
+.rightSection {
+  flex: 1; /* Take up 50% of the available space */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the QR code */
+  gap: 18px; /* Add 18px spacing between elements */
+}
+
+.clientDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* Add 18px spacing between client details */
+}
+
+.clientDetails p {
+  margin: 0; /* Remove default margin for paragraphs */
+  font-size: 18px; /* Set font size to 18px */
+  line-height: 1.5; /* Improve readability with line height */
+}
+
+.qrCode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px; /* Add 18px spacing between the QR code and text */
+}
+
+.qrCode p {
+  margin: 0; /* Remove default margin for paragraphs */
+  font-size: 18px; /* Set font size to 18px */
+  line-height: 1.5; /* Improve readability with line height */
+}
+
+.closeIcon {
+  align-self: flex-end; /* Position the close icon to the top-right */
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.submitBtn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 18px; /* Add 18px spacing above the button */
+}
+
+.submitBtn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  margin-top: 18px; /* Add 18px spacing above the error message */
 }

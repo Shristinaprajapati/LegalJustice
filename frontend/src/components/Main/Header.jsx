@@ -7,6 +7,7 @@ import { MdAccountCircle, MdCalendarToday, MdCreditCard, MdClose } from "react-i
 import { FaMoneyBillAlt, FaFileInvoiceDollar } from "react-icons/fa"; // React Icons
 import 'font-awesome/css/font-awesome.min.css'; 
 import { Icon } from "@iconify/react";
+import PaymentTab from './PaymentTab'; // Import the PaymentTab component
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,8 +18,6 @@ const Header = () => {
   const navigate = useNavigate();
   const socket = useRef(null); 
   const [activeTab, setActiveTab] = useState("profile"); 
-  const [payments, setPayments] = useState([]);
-
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -94,27 +93,6 @@ const Header = () => {
             .catch((error) => {
               console.error('Error fetching bookings:', error.response ? error.response.data : error.message);
             });
-
-
-            axios
-            .get(`http://localhost:8080/api/payments/${user.clientId}`)
-            .then((response) => {
-              console.log("Backend response:", response.data); // Log the response
-              const paymentsFromDb = response.data.data || []; // Default to an empty array
-          
-              // Deduplicate payments
-              setPayments((prevPayments) => {
-                const newPayments = paymentsFromDb.filter((newPayment) =>
-                  !prevPayments.some((existingPayment) => existingPayment._id === newPayment._id)
-                );
-          
-                return [...newPayments, ...prevPayments]; // Add new ones first
-              });
-            })
-            .catch((error) => {
-              console.error('Error fetching payments:', error.response ? error.response.data : error.message);
-            });
-
         })
         .catch((error) => {
           console.error('Error fetching user details:', error.response ? error.response.data : error.message);
@@ -129,7 +107,6 @@ const Header = () => {
     };
   }, [setShowNotifications, setNotifications]);
 
-  
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -151,9 +128,6 @@ const Header = () => {
   const handleClose = () => {
     setIsOpen(false); // Assuming isOpen is controlled by state
   };
-
-  
-  
 
   return (
     <header className={styles.header}>
@@ -196,38 +170,36 @@ const Header = () => {
       </nav>
 
       <div className={styles.notificationIcon} onClick={toggleNotifications}>
-  <i className={`fa fa-bell ${styles.bellIcon}`} />
-  {notifications.length > 0 && (
-    <span className={styles.notificationBadge}>
-      {notifications.length}
-    </span>
-  )}
-  {showNotifications && (
-    <div className={`${styles.notificationsDropdown} ${showNotifications ? styles.show : ''}`}>
-      <ul className={styles.notificationList}>
-        {notifications.slice(0, 5).map((notification, index) => (
-          <li key={index} className={styles.notificationItem}>
-            <p className={styles.notificationMessage}>{notification.message}</p> 
-            {notification.redirectUrl && ( 
-              <a 
-                href={notification.redirectUrl} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className={styles.notificationLink}
-              >
-                <button className={styles.notificationButton}>
-                  {notification.buttonText || 'View'}
-                </button>
-              </a>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
-  )}
-</div>
-
-
+        <i className={`fa fa-bell ${styles.bellIcon}`} />
+        {notifications.length > 0 && (
+          <span className={styles.notificationBadge}>
+            {notifications.length}
+          </span>
+        )}
+        {showNotifications && (
+          <div className={`${styles.notificationsDropdown} ${showNotifications ? styles.show : ''}`}>
+            <ul className={styles.notificationList}>
+              {notifications.slice(0, 5).map((notification, index) => (
+                <li key={index} className={styles.notificationItem}>
+                  <p className={styles.notificationMessage}>{notification.message}</p> 
+                  {notification.redirectUrl && ( 
+                    <a 
+                      href={notification.redirectUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={styles.notificationLink}
+                    >
+                      <button className={styles.notificationButton}>
+                        {notification.buttonText || 'View'}
+                      </button>
+                    </a>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
 
       {isLoggedIn ? (
         <div
@@ -239,157 +211,118 @@ const Header = () => {
           </div>
 
           {isOpen && (
-  <div className={styles.overlay} onClick={handleClose}>
-    <div className={styles.sidebar} onClick={(e) => e.stopPropagation()}>
-      {/* Transparent Icon Bar */}
-      <div className={styles.iconBarWrapper}>
-        <div className={styles.iconBar}>
-          <div className={styles.icon} onClick={handleClose}>
-            <Icon icon="mdi:close" />
-          </div>
-          <div className={styles.icon} onClick={() => setActiveTab("profile")}>
-            <Icon icon="mdi:account-circle-outline" />
-          </div>
-          <div className={styles.icon} onClick={() => setActiveTab("booking")}>
-            <Icon icon="mdi:calendar-check-outline" />
-          </div>
-          <div className={styles.icon} onClick={() => setActiveTab("payment")}>
-            <Icon icon="mdi:credit-card-outline" />
-          </div>
-        </div>
-      </div>
-
-      {/* Sidebar Content */}
-      <div className={styles.content}>
-
-{/* Profile Tab (Includes Settings) */}
-{activeTab === "profile" && (
-        <ul className={styles.menu}>
-          {/* Profile Section */}
-          <li className={styles.profileSection}>
-            <div className={styles.profileContent}>
-              <Icon icon="mdi:account-circle-outline" className={styles.profileIcon} />
-              <div className={styles.profileText}>
-                <strong className={styles.profileName}>{userData.name}</strong>
-                <p className={styles.profileEmail}>{userData.email}</p>
-              </div>
-            </div>
-          </li>
-
-          {/* Settings Section */}
-          <li
-            className={styles.settingsSection}
-            onClick={() => setActiveSubTab(activeSubTab === "settings" ? null : "settings")} // Toggle logic
-          >
-            <div className={styles.settingsContent}>
-              <div className={styles.settingsTitle}>
-                <Icon icon="mdi:cog-outline" className={styles.settingsIcon} />
-                <h2 className={styles.sectionTitle}>Settings</h2>
-              </div>
-            </div>
-          </li>
-
-          {/* Reset Password (Toggles when Settings is clicked) */}
-          {activeSubTab === "settings" && (
-            <li className={styles.settingsDetails}>
-              <div className={styles.settingsText}>
-                <label className={styles.inputLabel}>Reset Password:</label>
-                <input type="password" placeholder="Enter new password" className={styles.inputField} />
-                <button className={styles.saveBtn}>Change Password</button>
-              </div>
-            </li>
-          )}
-
-          {/* Logout Button */}
-          <li onClick={handleLogout} className={styles.logout}>
-            Logout
-          </li>
-        </ul>
-      )}
-
-
-
-
-        {/* Booking Tab */}
-        {activeTab === "booking" && (
-          <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Your Bookings</h2>
-            {loading ? (
-              <p className={styles.loading}>Loading bookings...</p>
-            ) : error ? (
-              <p className={styles.error}>{error}</p>
-            ) : bookings.length === 0 ? (
-              <p className={styles.noBookings}>No bookings found.</p>
-            ) : (
-              <div className={styles.bookingList}>
-                {bookings.map((booking) => (
-                  <div key={booking._id} className={styles.bookingCard}>
-                    <h3 className={styles.serviceTitle}>
-                      {booking.service?.title || "Consulting Appointment"}
-                    </h3>
-                    {booking.date && (
-                      <p className={styles.bookingDate}>
-                        <Icon icon="mdi:calendar-month-outline" /> {new Date(booking.date).toDateString()}
-                      </p>
-                    )}
-                    {booking.timeSlot && (
-                      <p className={styles.bookingTime}>
-                        <Icon icon="mdi:clock-outline" /> {booking.timeSlot}
-                      </p>
-                    )}
-                    <p className={`${styles.bookingStatus} ${styles[booking.status.toLowerCase()]}`}>
-                      {booking.status}
-                    </p>
+            <div className={styles.overlay} onClick={handleClose}>
+              <div className={styles.sidebar} onClick={(e) => e.stopPropagation()}>
+                {/* Transparent Icon Bar */}
+                <div className={styles.iconBarWrapper}>
+                  <div className={styles.iconBar}>
+                    <div className={styles.icon} onClick={handleClose}>
+                      <Icon icon="mdi:close" />
+                    </div>
+                    <div className={styles.icon} onClick={() => setActiveTab("profile")}>
+                      <Icon icon="mdi:account-circle-outline" />
+                    </div>
+                    <div className={styles.icon} onClick={() => setActiveTab("booking")}>
+                      <Icon icon="mdi:calendar-check-outline" />
+                    </div>
+                    <div className={styles.icon} onClick={() => setActiveTab("payment")}>
+                      <Icon icon="mdi:credit-card-outline" />
+                    </div>
                   </div>
-                ))}
+                </div>
+
+                {/* Sidebar Content */}
+                <div className={styles.content}>
+                  {/* Profile Tab (Includes Settings) */}
+                  {activeTab === "profile" && (
+                    <ul className={styles.menu}>
+                      {/* Profile Section */}
+                      <li className={styles.profileSection}>
+                        <div className={styles.profileContent}>
+                          <Icon icon="mdi:account-circle-outline" className={styles.profileIcon} />
+                          <div className={styles.profileText}>
+                            <strong className={styles.profileName}>{userData.name}</strong>
+                            <p className={styles.profileEmail}>{userData.email}</p>
+                          </div>
+                        </div>
+                      </li>
+
+                      {/* Settings Section */}
+                      <li
+                        className={styles.settingsSection}
+                        onClick={() => setActiveSubTab(activeSubTab === "settings" ? null : "settings")} // Toggle logic
+                      >
+                        <div className={styles.settingsContent}>
+                          <div className={styles.settingsTitle}>
+                            <Icon icon="mdi:cog-outline" className={styles.settingsIcon} />
+                            <h2 className={styles.sectionTitle}>Settings</h2>
+                          </div>
+                        </div>
+                      </li>
+
+                      {/* Reset Password (Toggles when Settings is clicked) */}
+                      {activeSubTab === "settings" && (
+                        <li className={styles.settingsDetails}>
+                          <div className={styles.settingsText}>
+                            <label className={styles.inputLabel}>Reset Password:</label>
+                            <input type="password" placeholder="Enter new password" className={styles.inputField} />
+                            <button className={styles.saveBtn}>Change Password</button>
+                          </div>
+                        </li>
+                      )}
+
+                      {/* Logout Button */}
+                      <li onClick={handleLogout} className={styles.logout}>
+                        Logout
+                      </li>
+                    </ul>
+                  )}
+
+                  {/* Booking Tab */}
+                  {activeTab === "booking" && (
+                    <div className={styles.section}>
+                      <h2 className={styles.sectionTitle}>Your Bookings</h2>
+                      {loading ? (
+                        <p className={styles.loading}>Loading bookings...</p>
+                      ) : error ? (
+                        <p className={styles.error}>{error}</p>
+                      ) : bookings.length === 0 ? (
+                        <p className={styles.noBookings}>No bookings found.</p>
+                      ) : (
+                        <div className={styles.bookingList}>
+                          {bookings.map((booking) => (
+                            <div key={booking._id} className={styles.bookingCard}>
+                              <h3 className={styles.serviceTitle}>
+                                {booking.service?.title || "Consulting Appointment"}
+                              </h3>
+                              {booking.date && (
+                                <p className={styles.bookingDate}>
+                                  <Icon icon="mdi:calendar-month-outline" /> {new Date(booking.date).toDateString()}
+                                </p>
+                              )}
+                              {booking.timeSlot && (
+                                <p className={styles.bookingTime}>
+                                  <Icon icon="mdi:clock-outline" /> {booking.timeSlot}
+                                </p>
+                              )}
+                              <p className={`${styles.bookingStatus} ${styles[booking.status.toLowerCase()]}`}>
+                                {booking.status}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Payment Tab */}
+                  {activeTab === "payment" && (
+                    <PaymentTab clientId={userData.clientId} />
+                  )}
+                </div>
               </div>
-            )}
-          </div>
-        )}
-
-{/* Payment Tab */}
-{activeTab === "payment" && (
-  <div className={styles.section}>
-    <h2 className={styles.sectionTitle}>Payment History</h2>
-    <p className={styles.sectionText}>Here are your past transactions.</p>
-
-    {loading ? (
-      <p className={styles.loading}>Loading payments...</p>
-    ) : error ? (
-      <p className={styles.error}>{error}</p>
-    ) : payments.length === 0 ? (
-      <p className={styles.noPayments}>No payments found.</p>
-    ) : (
-      <div className={styles.paymentList}>
-        {payments.map((payment) => (
-          <div key={payment._id} className={styles.paymentCard}>
-            <h3 className={styles.paymentTitle}>
-              {payment.service?.title || "Payment"}
-            </h3>
-            <p className={styles.paymentAmount}>
-                <FaMoneyBillAlt /> NPR {payment.amount}
-              </p>
-              <p className={styles.paymentDate}>
-                <FaFileInvoiceDollar /> {payment.purchase_order_name}
-              </p>
-              <p className={styles.paymentDate}>
-                <MdCalendarToday /> {new Date(payment.date).toDateString()}
-              </p>
-              <p className={`${styles.paymentStatus} ${styles[payment.status.toLowerCase()]}`}>
-                {payment.status}
-              </p>
-          </div>
-        ))}
-      </div>
-    )}
-  </div>
-)}
-      </div>
-    </div>
-  </div>
-)}
-
-
+            </div>
+          )}
         </div>
       ) : (
         <div className={styles.authButtons}>
