@@ -62,6 +62,83 @@ router.post("/khalti-api", async (req, res) => {
   }
 });
 
+router.put("/payments/:paymentId/complete", async (req, res) => {
+  try {
+    const { paymentId } = req.params;
+    const { paid_amount: paidAmountInRs, transaction_id } = req.body; // Amount is already in Rs
+
+    console.log("Received request to complete payment:", { paymentId, paidAmountInRs, transaction_id });
+
+    // Validate required fields
+    if (paidAmountInRs === undefined || !transaction_id) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields: paid_amount or transaction_id.",
+      });
+    }
+
+    // Fetch the payment record using the custom ID (e.g., pidx)
+    const payment = await Payment.findOne({ pidx: paymentId });
+    if (!payment) {
+      console.error("Payment not found for ID:", paymentId);
+      return res.status(404).json({
+        success: false,
+        message: "Payment not found.",
+      });
+    }
+
+    console.log("Found payment record:", payment);
+
+    // Validate the paid amount
+    if (paidAmountInRs < 0) {
+      console.error("Invalid paid amount:", paidAmountInRs);
+      return res.status(400).json({
+        success: false,
+        message: "Paid amount cannot be negative.",
+      });
+    }
+
+    // Calculate the new paid amount by adding the existing paid_amount and the new paidAmountInRs
+    const newPaidAmount = payment.paid_amount + paidAmountInRs;
+
+    if (newPaidAmount > payment.amount) {
+      console.error("Paid amount exceeds total amount:", newPaidAmount);
+      return res.status(400).json({
+        success: false,
+        message: "Paid amount cannot exceed the total amount.",
+      });
+    }
+
+    // Update the payment record atomically
+    const updatedPayment = await Payment.findOneAndUpdate(
+      { pidx: paymentId },
+      {
+        $set: {
+          paid_amount: newPaidAmount, // Add to the existing paid_amount
+          transaction_id,
+          status: newPaidAmount === payment.amount ? "Completed" : "Partial",
+        },
+      },
+      { new: true } // Return the updated document
+    );
+
+    console.log("Payment updated successfully:", updatedPayment);
+
+    res.status(200).json({
+      success: true,
+      message: "Payment updated successfully.",
+      data: updatedPayment,
+    });
+  } catch (error) {
+    console.error("Error completing payment:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error completing payment.",
+      error: error.message,
+    });
+  }
+});
+
 
 router.get("/khalti-callback", async (req, res) => {
   const {
@@ -170,6 +247,7 @@ router.post("/payments", async (req, res) => {
       pidx,
       transaction_id,
       amount,
+      paid_amount,
       fee,
       status,
       refunded,
@@ -188,6 +266,7 @@ router.post("/payments", async (req, res) => {
       !pidx ||
       !transaction_id ||
       !amount ||
+      !paid_amount ||
       !status ||
       !purchase_order_id ||
       !purchase_order_name ||
@@ -211,12 +290,25 @@ router.post("/payments", async (req, res) => {
         message: "Invalid ObjectId format for clientId or serviceId",
       });
     }
+       // Determine payment status
+       if (paid_amount < amount) {
+        status = "Partial"; // Set status to Partial if paid amount is less than total amount
+      } else if (paid_amount === amount) {
+        status = "Completed"; // Set status to Completed if full amount is paid
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: "Paid amount cannot exceed total amount.",
+        });
+      }
+  
 
     // Create and save new payment record
     const newPayment = new Payment({
       pidx,
       transaction_id,
       amount,
+      paid_amount,
       fee: fee || 0,
       status,
       refunded: refunded || false,

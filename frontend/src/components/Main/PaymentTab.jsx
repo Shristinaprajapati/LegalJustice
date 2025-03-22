@@ -65,22 +65,22 @@ const PaymentTab = ({ clientId }) => {
   const calculateRemainingPayment = (payment) => {
     const service = serviceDetails[payment._id];
     if (!service) return 'Loading...';
-    const remaining = service.price - payment.amount;
+    const remaining = service.price - payment.paid_amount; // Already in rupees
     return remaining > 0 ? `NPR ${remaining}` : 'Fully Paid';
   };
 
   const calculatePaymentProgress = (payment) => {
     const service = serviceDetails[payment._id];
     if (!service || service.price === 0) return 0;
-    return (payment.amount / service.price) * 100;
+    return (payment.paid_amount / service.price) * 100; // Calculate progress based on paid_amount
   };
 
   const handleCompleteClick = async (payment) => {
-    console.log("Complete button clicked for payment:", payment); // Log the payment data
+    console.log("Complete button clicked for payment:", payment);
 
     const service = serviceDetails[payment._id];
     if (service) {
-      const remainingAmount = service.price - payment.amount;
+      const remainingAmount = service.price - payment.paid_amount; // Already in rupees
       if (remainingAmount > 0) {
         // Fetch client details using the clientId from the payment
         const email = localStorage.getItem("email"); // Get email from local storage
@@ -94,7 +94,7 @@ const PaymentTab = ({ clientId }) => {
           const clientResponse = await axios.get(`http://localhost:8080/api/users?email=${email}`);
           const clientData = clientResponse.data;
 
-          console.log("Fetched client details:", clientData); // Log the client details
+          console.log("Fetched client details:", clientData);
 
           // Set selected payment with client details
           const updatedPayment = {
@@ -107,7 +107,7 @@ const PaymentTab = ({ clientId }) => {
             },
           };
 
-          console.log("Updated payment data for popup:", updatedPayment); // Log the data passed to the popup
+          console.log("Updated payment data for popup:", updatedPayment);
 
           setSelectedPayment(updatedPayment);
           setShowPaymentPopup(true);
@@ -116,9 +116,9 @@ const PaymentTab = ({ clientId }) => {
           setIsLoadingPayment(true);
           setPaymentError(null);
           const khaltiResponse = await axios.post("http://localhost:8080/api/khalti-api", {
-            return_url: `http://localhost:3000/successful/${payment.serviceId}/${payment.clientId}`,
+            return_url: `http://localhost:3000/successfull/${payment.serviceId}/${payment.clientId}`,
             website_url: "http://localhost:8080/payment-callback",
-            amount: remainingAmount * 100, // Convert to paisa
+            amount: remainingAmount * 100, // Convert to paisa for Khalti
             purchase_order_id: payment.serviceId,
             purchase_order_name: `Service for ${payment.clientId}`,
             customer_info: {
@@ -174,7 +174,7 @@ const PaymentTab = ({ clientId }) => {
                   {payment.service?.title || "Payment"}
                 </h3>
                 <p className={styles.paymentAmount}>
-                  <FaMoneyBillAlt /> NPR {payment.amount}
+                  <FaMoneyBillAlt /> NPR {payment.paid_amount}
                 </p>
                 <p className={styles.paymentDate}>
                   <MdCalendarToday /> {new Date(payment.date).toDateString()}
@@ -193,7 +193,7 @@ const PaymentTab = ({ clientId }) => {
                     <strong>Total Price:</strong> NPR {serviceDetails[payment._id]?.price || 'Loading...'}
                   </p>
                   <p className={styles.slidebarText}>
-                    <strong>Amount Paid:</strong> NPR {payment.amount}
+                    <strong>Amount Paid:</strong> NPR {payment.paid_amount}
                   </p>
                   <p className={styles.slidebarText}>
                     <strong>Remaining Payment:</strong> {calculateRemainingPayment(payment)}
@@ -209,7 +209,7 @@ const PaymentTab = ({ clientId }) => {
                   <button
                     className={styles.completeButton}
                     onClick={() => {
-                      console.log("Complete button clicked"); // Log button click
+                      console.log("Complete button clicked");
                       handleCompleteClick(payment);
                     }}
                   >

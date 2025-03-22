@@ -9,6 +9,7 @@ const BookingSuccess = () => {
   const [error, setError] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState("");
   const bookingCreated = useRef(false); // Track whether the booking has been created
+  const [servicePrice, setServicePrice] = useState(null);
 
   console.log("Service ID:", serviceId);
   console.log("Client ID:", clientId);
@@ -34,7 +35,24 @@ const BookingSuccess = () => {
     paymentMethod: "Khalti",
     paymentDetails: {},
   }), [searchParams, clientId, serviceId]);
-  
+
+  // Fetch service details (including price) from the database
+  useEffect(() => {
+    const fetchServicePrice = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/services/${serviceId}`);
+        const service = response.data;
+        setServicePrice(service.price); // Set the service price from the response
+      } catch (err) {
+        console.error("Error fetching service details:", err);
+        setError("Failed to fetch service details.");
+      }
+    };
+
+    if (serviceId) {
+      fetchServicePrice();
+    }
+  }, [serviceId]);
 
   // Function to create a new booking
   const createBooking = async () => {
@@ -61,13 +79,35 @@ const BookingSuccess = () => {
       throw err; // Re-throw the error to handle it in the main function
     }
   };
-  
+
   // Function to save payment to the database
   const savePayment = async () => {
     try {
+      if (!servicePrice) {
+        throw new Error("Service price not available.");
+      }
+
+      const paymentData = {
+        pidx: transactionData.pidx,
+        transaction_id: transactionData.transaction_id,
+        amount: servicePrice, // Use the fetched service price
+        paid_amount: transactionData.amount/100, 
+        fee: transactionData.fee,
+        status: "Partial", // Set status to Partial
+        refunded: transactionData.refunded,
+        mobile: transactionData.mobile,
+        purchase_order_id: transactionData.purchase_order_id,
+        purchase_order_name: transactionData.purchase_order_name,
+        clientId: transactionData.clientId,
+        serviceId: transactionData.serviceId,
+        category: transactionData.category,
+        paymentMethod: transactionData.paymentMethod,
+        paymentDetails: transactionData.paymentDetails,
+      };
+
       const response = await axios.post(
         "http://localhost:8080/api/payments",
-        transactionData,
+        paymentData,
         {
           headers: {
             "Content-Type": "application/json",
@@ -81,7 +121,6 @@ const BookingSuccess = () => {
       throw err; // Re-throw the error to handle it in the main function
     }
   };
-  
 
   useEffect(() => {
     const handlePaymentStatus = async () => {
@@ -99,10 +138,10 @@ const BookingSuccess = () => {
         ) {
           throw new Error("Missing required transaction data.");
         }
-  
+
         // Set payment status
         setPaymentStatus(transactionData.status);
-  
+
         // Prevent duplicate bookings
         if (transactionData.status === "Completed" && !bookingCreated.current) {
           bookingCreated.current = true; // Mark as created before async call
@@ -120,10 +159,12 @@ const BookingSuccess = () => {
         setLoading(false);
       }
     };
-  
-    handlePaymentStatus();
-  }, []); // Empty dependency array ensures this runs only once when mounted
-  
+
+    // Only run handlePaymentStatus if servicePrice is available
+    if (servicePrice !== null) {
+      handlePaymentStatus();
+    }
+  }, [servicePrice]); // Run effect when servicePrice changes
 
   // Styles
   const styles = {

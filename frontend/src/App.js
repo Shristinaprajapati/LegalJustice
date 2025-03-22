@@ -22,6 +22,7 @@ import Services from "./components/Admin/Services/services.jsx";
 import Document from "./components/Admin/Templates/AdminDocument.jsx";
 import ContactForm from "./components/Admin/Contact/AdminContact.jsx";
 import PaymentHistory from "./components/Admin/Payment/paymentHistory.jsx";
+import PaymentComplete from "./components/Main/completepayment.jsx";
 
 import DivorseFrom from "./components/Admin/htmlTemplates/DivorseAgreementForm.jsx";
 import DivorseTemplate from "./components/Admin/htmlTemplates/ClientCards.jsx";
@@ -81,6 +82,7 @@ function App() {
         <Route path="/admin/blogs" element={<AdminBlogList />} />
         <Route path="/blog/:id" element={<BlogDetail />} /> 
         <Route path="/successful/:serviceId/:clientId" element={<PaymentSuccessful />} />
+        <Route path="/successfull/:serviceId/:clientId" element={<PaymentComplete />} />
         <Route path="/admin/payment-history" element={<PaymentHistory />} />
         </Route>
 

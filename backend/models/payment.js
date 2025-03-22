@@ -5,6 +5,7 @@ const paymentSchema = new mongoose.Schema({
   pidx: { type: String, required: true }, // Payment ID from Khalti
   transaction_id: { type: String, required: true }, // Transaction ID from Khalti
   amount: { type: Number, required: true }, // Amount in paisa
+  paid_amount: { type: Number, required: true }, // Amount paid so far
   fee: { type: Number, default: 0 }, // Transaction fee
   status: { type: String, required: true }, // Payment status (e.g., "Completed")
   refunded: { type: Boolean, default: false }, // Whether the payment is refunded
