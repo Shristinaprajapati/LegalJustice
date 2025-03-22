@@ -16,6 +16,7 @@ const htmlTemplates = require("./routes/htmlTemplates");
 const blogRoutes = require("./routes/blogRoutes");
 
 const khaltiRoutes = require("./routes/khalti");  
+const content = require("./routes/contentRoutes")
 
 
 const divorseAgreement = require("./routes/divorceAgreementRoutes");
@@ -72,6 +73,7 @@ app.use("/api/employment", EmploymentAgreement);
 app.use("/api/document", document);
 app.use('/api', htmlTemplates);
 app.use('/payment-callback', paymentCallbackRouter);
+app.use("/api/post", content);  
 
 app.use("/api/notifications", notificationRoutes);
 

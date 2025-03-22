@@ -2,32 +2,52 @@
 .sidebar {
   width: 250px;
   height: 100vh;
-  background-color: #111827; /* Dark background for the sidebar */
-  color: #ffffff; /* White text color */
+  background-color: #111827;
+  color: #ffffff;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for the sidebar */
-  border-right: 1px solid #e5e7eb; /* Light gray border */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #e5e7eb;
   position: fixed;
   padding-top: 20px;
-  transition: all 0.3s ease; /* Smooth transition */
-  overflow-y: auto; /* Ensures scrolling if content overflows */
+  transition: all 0.3s ease;
 }
 
-/* Sidebar Heading */
-.sidebar h2 {
-  margin: 0;
+/* Fixed Section for Logo */
+.fixedSection {
+  margin-top: -20px;
   padding: 20px;
-  font-size: 22px;
-  font-weight: 600;
-  color: #b9b9b9; /* Lighter gray for heading */
-  border-bottom: 1px solid #e5e7eb; /* Light gray separator */
-  text-transform: uppercase; /* Makes the header more prominent */
-  letter-spacing: 1px; /* Slight letter spacing for readability */
-  background-color: #1f2937; /* Dark background for the header */
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #19212c;
 }
 
-/* Menu Styling */
+.logo {
+  margin-top: 10px;
+  width: 200px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.fixedSection h2 {
+  margin: 0;
+}
+
+/* Scrollable Section for Menu Items */
+.scrollableSection {
+  flex: 1;
+  overflow-y: auto; /* Enable scrolling */
+  padding: 10px 0;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.scrollableSection::-webkit-scrollbar {
+  display: none;
+}
+
+/* Rest of the CSS remains the same */
 .sidebar ul {
   list-style: none;
   padding: 0;
@@ -37,91 +57,84 @@
 .sidebar ul li {
   padding: 15px 20px;
   transition: all 0.3s ease;
-  position: relative; /* Allows absolute positioning for badges */
+  position: relative;
 }
 
-/* Links and Buttons */
 .sidebar ul li a, .sidebar ul li button {
   text-decoration: none;
-  color: #ffffff; /* White text for links */
+  color: #ffffff;
   font-size: 16px;
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 12px 20px; /* Increased padding for better spacing */
-  border-radius: 5px; /* Rounded corners for a more modern look */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition on hover */
+  padding: 12px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Hover Effects - Menu Items */
 .sidebar ul li:hover {
   cursor: pointer;
-  transform: translateX(4px); /* Subtle shift effect for more depth */
+  transform: translateX(4px);
 }
 
 .sidebar ul li a:hover, .sidebar ul li button:hover {
-  background-color: #2e4150; /* Darker background on hover */
-  color: #dfdede; /* Light text on hover */
+  background-color: #2e4150;
+  color: #dfdede;
 }
 
-/* Active state for Links */
 .sidebar ul li a.active, .sidebar ul li button.active {
-  background-color: #2c3e50; /* Darker active background */
-  color: #d1d5db; /* Light text for active state */
+  background-color: #2c3e50;
+  color: #d1d5db;
 }
 
-/* Dropdown Button */
 .dropdownToggle {
   background: none;
   border: none;
   padding: 0;
   font-size: 16px;
   font-weight: 500;
-  color: #ffffff; /* White text for button */
+  color: #ffffff;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   text-align: left;
-  padding: 12px 20px; /* Increased padding */
-  border-radius: 5px; /* Rounded corners */
-  transition: background-color 0.3s, color 0.3s; /* Smooth transitions for hover */
+  padding: 12px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .dropdownToggle.active {
-  background-color: #2c3e50; /* Darker background when active */
-  color: #d1d5db; /* Light text color when active */
+  background-color: #2c3e50;
+  color: #d1d5db;
 }
 
-/* Dropdown Menu */
 .dropdownMenu {
   list-style: none;
   margin: 0;
   padding: 0;
-  
 }
 
 .dropdownMenu li {
-  padding: 12px 30px; /* Indented padding for dropdown items */
+  padding: 12px 30px;
 }
 
 .dropdownMenu li a {
   text-decoration: none;
-  color: #ffffff; /* White text for links */
+  color: #ffffff;
   font-size: 14px;
   font-weight: 400;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .dropdownMenu li:hover {
-  color: #d1d5db; /* Light text color on hover */
+  color: #d1d5db;
 }
 
-/* Logout Button */
 .sidebar ul li:last-child {
-  margin-top: auto; /* Push logout button to the bottom */
-  border-top: 1px solid #e5e7eb; /* Separator above logout */
+  margin-top: auto;
+  border-top: 1px solid #e5e7eb;
 }
 
 .logout-button {
@@ -133,26 +146,24 @@
 }
 
 .logout-button:hover {
-  background-color: #9e2a2f; /* Red shade for logout button */
+  background-color: #9e2a2f;
 }
 
-/* Link Style */
 .link {
   display: flex;
   align-items: center;
   padding: 12px 20px;
   text-decoration: none;
   color: inherit;
-  border-radius: 5px; /* Rounded corners for links */
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .icon {
-  margin-right: 12px; /* Space between icon and text */
-  font-size: 18px; /* Slightly bigger icons */
+  margin-right: 12px;
+  font-size: 18px;
 }
 
-/* Custom Scrollbar */
 .sidebar::-webkit-scrollbar {
   width: 8px;
 }

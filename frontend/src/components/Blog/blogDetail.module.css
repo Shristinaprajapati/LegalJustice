@@ -22,7 +22,7 @@
     text-align: center;
   }
   .TitleText{
-    margin-top: -50px;
+    margin-top: 10px;
     font-size: 30px;
     font-weight: bold;
     margin-bottom: -30px;
@@ -113,6 +113,7 @@
     margin-left: 80px;
     width: 250px;
     padding: 20px;
+    margin-top: 30px;
   }
   
   .sidebarTitle {

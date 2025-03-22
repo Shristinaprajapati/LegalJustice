@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import Header from "../Main/Header.jsx";
+import Footer from "../Footer.jsx"; // Import the Footer component
 import styles from "./contact.module.css"; // Import the CSS file
 
 const ContactForm = () => {
@@ -34,11 +35,13 @@ const ContactForm = () => {
   };
 
   return (
-    <div>
+    <div className={styles.pageContainer}>
       <Header />
-
       <div className={styles.contactFormContainer}>
         <h2 className={styles.title}>Contact Us</h2>
+        <p className={styles.subtitle}>
+          Have questions or need assistance? We're here to help!
+        </p>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
             <input
@@ -81,9 +84,18 @@ const ContactForm = () => {
             </button>
           </div>
 
-          {status && <p className={styles.status}>{status}</p>}
+          {status && (
+            <p
+              className={`${styles.status} ${
+                status.includes("Error") ? styles.error : styles.success
+              }`}
+            >
+              {status}
+            </p>
+          )}
         </form>
       </div>
+      <Footer />
     </div>
   );
 };

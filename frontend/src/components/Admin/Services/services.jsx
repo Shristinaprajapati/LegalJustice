@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './AdminServices.module.css';
 import Sidebar from '../Sidebar';
-import { FaEllipsisV } from 'react-icons/fa';
-import DivorceAgreementForm from '..//htmlTemplates/DivorseAgreementForm';
-import RentalAgreementForm from '..//htmlTemplates/RentalAgreementForm';
-import MarriageproofAgreement from '..//htmlTemplates/MarriageproofAgreementForm';
-import PropertytransferAgreement from '..//htmlTemplates/PropertytransferAgreementForm';
-import EmploymentContract from '..//htmlTemplates/EmploymentcontractForm';
+import { FaEdit, FaTrash } from 'react-icons/fa'; // Import icons
+import DivorceAgreementForm from '../htmlTemplates/DivorseAgreementForm';
+import RentalAgreementForm from '../htmlTemplates/RentalAgreementForm';
+import MarriageproofAgreement from '../htmlTemplates/MarriageproofAgreementForm';
+import PropertytransferAgreement from '../htmlTemplates/PropertytransferAgreementForm';
+import EmploymentContract from '../htmlTemplates/EmploymentcontractForm';
 
 const AdminServices = () => {
   const [services, setServices] = useState([]);
@@ -19,7 +19,6 @@ const AdminServices = () => {
     formTemplate: '',
   });
   const [editService, setEditService] = useState(null);
-  const [menuVisible, setMenuVisible] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -162,23 +161,21 @@ const AdminServices = () => {
                         Save
                       </button>
                     ) : (
-                      <button className={styles.editButton} onClick={() => handleEditClick(service)}>
-                        Edit
-                      </button>
+                      <div className={styles.actions}>
+                        <button
+                          className={styles.editButton}
+                          onClick={() => handleEditClick(service)}
+                        >
+                          <FaEdit /> Edit
+                        </button>
+                        <button
+                          className={styles.deleteButton}
+                          onClick={() => handleDeleteService(service._id)}
+                        >
+                          <FaTrash /> Delete
+                        </button>
+                      </div>
                     )}
-                    <div className={styles.menuWrapper}>
-                      <FaEllipsisV
-                        className={styles.menuIcon}
-                        onClick={() => setMenuVisible(menuVisible === service._id ? null : service._id)}
-                      />
-                      {menuVisible === service._id && (
-                        <div className={styles.menu}>
-                          <button className={styles.deleteButton} onClick={() => handleDeleteService(service._id)}>
-                            Delete
-                          </button>
-                        </div>
-                      )}
-                    </div>
                   </td>
                 </tr>
               ))}

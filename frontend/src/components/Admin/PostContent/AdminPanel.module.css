@@ -1,0 +1,166 @@
+/* Admin Panel Container */
+.adminPanel {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa; /* Light gray background */
+  }
+  
+  /* Main Content Area */
+  .mainContent {
+    flex: 1;
+    margin-left: 250px; /* Leave space for the sidebar */
+    padding: 20px; /* Reduced padding */
+    background-color: #ffffff; /* White background for main content */
+  }
+  
+  /* Headings */
+  .heading {
+    font-size: 28px;
+    margin-bottom: 20px; /* Reduced margin */
+    color: #2c3e50; /* Dark blue-gray for headings */
+    font-weight: 600;
+  }
+  
+  /* Tabs Styling (Unchanged) */
+  .tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e9ecef; /* Light border below tabs */
+  }
+  
+  .tabButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px 6px 0 0;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: 500;
+    color: #6c757d; /* Gray color for inactive tabs */
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .tabButton:hover {
+    background-color: #f8f9fa; /* Light gray on hover */
+    color: #007bff; /* Blue text on hover */
+  }
+  
+  .activeTab {
+    background-color: #007bff; /* Blue background for active tab */
+    color: #fff; /* White text for active tab */
+    border-bottom: 2px solid #007bff; /* Blue border for active tab */
+  }
+  
+  .activeTab:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    color: #fff; 
+  }
+  
+  /* Single Container for Content */
+  .container {
+    background-color: #ffffff;
+    padding: 20px; /* Consistent padding */
+    border-radius: 8px;
+  }
+  
+  /* Section Styling */
+  .section {
+    margin-bottom: 20px; /* Reduced margin */
+  }
+  
+  /* Header with Subheading and Buttons */
+  .header {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    align-items: center;
+    margin-bottom: 15px; /* Reduced margin */
+  }
+  
+  .subHeading {
+    font-size: 22px;
+    color: #34495e; /* Slightly lighter blue-gray */
+    font-weight: 500;
+    margin-right: auto; /* Push buttons to the right */
+  }
+  
+  /* Actions Container */
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  /* Button Styling */
+  .button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .editButton {
+    background-color: #28a745;
+    color: #fff;
+  }
+  
+  .editButton:hover {
+    background-color: #218838;
+  }
+  
+  .deleteButton {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  
+  .deleteButton:hover {
+    background-color: #c82333;
+  }
+  
+  /* Content Text Styling */
+  .contentText {
+    font-family: "'Arial', sans-serif"; /* Match editor font */
+    font-size: 16px; /* Match editor font size */
+    line-height: 1.6; /* Match editor line height */
+    color: #333; /* Match editor text color */
+  }
+  
+  /* Ensure headings, paragraphs, and lists are styled properly */
+  .contentText h1,
+  .contentText h2,
+  .contentText h3,
+  .contentText h4,
+  .contentText h5,
+  .contentText h6 {
+    margin-top: 1.2em; /* Reduced margin */
+    margin-bottom: 0.5em;
+    font-weight: bold;
+  }
+  
+  .contentText p {
+    margin-bottom: 1em;
+  }
+  
+  .contentText ul,
+  .contentText ol {
+    margin-bottom: 1em;
+    padding-left: 1.5em; /* Reduced padding */
+  }
+  
+  .contentText table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1em;
+  }
+  
+  .contentText table th,
+  .contentText table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }

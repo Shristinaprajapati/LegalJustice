@@ -23,6 +23,9 @@ import Document from "./components/Admin/Templates/AdminDocument.jsx";
 import ContactForm from "./components/Admin/Contact/AdminContact.jsx";
 import PaymentHistory from "./components/Admin/Payment/paymentHistory.jsx";
 import PaymentComplete from "./components/Main/completepayment.jsx";
+import PrivacyPolicy from "./components/privacyPolicy.jsx";
+import TermsCondition from "./components/TermsCondition.jsx";
+
 
 import DivorseFrom from "./components/Admin/htmlTemplates/DivorseAgreementForm.jsx";
 import DivorseTemplate from "./components/Admin/htmlTemplates/ClientCards.jsx";
@@ -40,6 +43,7 @@ import EmploymentForm from "./components/Admin/htmlTemplates/EmploymentcontractF
 import AdminBlogList from "./components/Admin/Blog/AdminBlogList.jsx";
 import BlogDetail from "./components/Admin/Blog/BlogDetail.jsx";
 import PaymentSuccessful from "./components/PaymentSuccessful.jsx";
+import PostContent from "./components/Admin/PostContent/PostContent.jsx";
 
 
 
@@ -71,7 +75,8 @@ function App() {
         <Route path="/contact" element={<Contact />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blogDetail/:id" element={<BlogPage />} />
-
+        <Route path="/privacypolicy" element={<PrivacyPolicy />} />
+        <Route path="/terms&condition" element={<TermsCondition />} />
       
         <Route element={<ProtectedRoute />}>
         <Route path="/admin/AdminDashboard" element={<AdminPanel />} />
@@ -84,6 +89,7 @@ function App() {
         <Route path="/successful/:serviceId/:clientId" element={<PaymentSuccessful />} />
         <Route path="/successfull/:serviceId/:clientId" element={<PaymentComplete />} />
         <Route path="/admin/payment-history" element={<PaymentHistory />} />
+        <Route path="/admin/post" element={<PostContent />} />
         </Route>
 
         <Route path ="/divorseform" element={<DivorseFrom/>}/>

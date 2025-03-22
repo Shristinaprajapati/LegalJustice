@@ -1,0 +1,105 @@
+/* Main Container */
+.container {
+    display: flex;
+    min-height: 100vh;
+    font-family: "Georgia", serif;
+    color: #333;
+    line-height: 1.6;
+    flex-direction: column;
+    background-color: #ffffff;
+  }
+  
+  /* Hero Section */
+  .heroSection {
+    margin-top: -100px;
+    background-image: url('/public/Images/book-lot.jpg'); /* Add the path to your image */
+    background-size: cover;
+    background-position: center;
+    height: 350px; /* Adjust height as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(255, 255, 255);
+    text-align: center;
+  }
+  
+  .heroText {
+    font-size: 48px; /* Adjust font size as needed */
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow for better readability */
+  }
+  
+  /* Main Content Container */
+  .contentContainer {
+    flex-grow: 1;
+    max-width: 1200px;
+    margin: 50px auto 0; /* Leaves space for fixed header */
+    padding: 50px;
+    margin-top: -500px;
+  }
+  
+  /* Privacy Policy Content */
+  .privacyPolicyContent {
+    margin-top: 450px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+  }
+  
+  .privacyPolicyHtml {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #4d4d4d;
+  }
+  
+  .privacyPolicyHtml h1,
+  .privacyPolicyHtml h2,
+  .privacyPolicyHtml h3,
+  .privacyPolicyHtml h4,
+  .privacyPolicyHtml h5,
+  .privacyPolicyHtml h6 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    color: #264262;
+  }
+  
+  .privacyPolicyHtml p {
+    margin-bottom: 1.5em;
+  }
+  
+  .privacyPolicyHtml ul,
+  .privacyPolicyHtml ol {
+    margin-bottom: 1.5em;
+    padding-left: 2em;
+  }
+  
+  .privacyPolicyHtml ul li,
+  .privacyPolicyHtml ol li {
+    margin-bottom: 0.5em;
+  }
+  
+  .privacyPolicyHtml table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5em;
+  }
+  
+  .privacyPolicyHtml table th,
+  .privacyPolicyHtml table td {
+    border: 1px solid #ffffff;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  /* Loading and Error Messages */
+  .loading,
+  .errorMessage {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 50px;
+  }
+  
+  .errorMessage {
+    color: #e74c3c;
+  }

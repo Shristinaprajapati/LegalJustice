@@ -14,27 +14,6 @@ body {
 .container {
   display: flex;
   height: 100vh;
-} 
-
-.sidebar h2 {
-  text-align: center;
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
-.sidebar a {
-  text-decoration: none;
-  color: white;
-  padding: 12px 16px;
-  border-radius: 6px;
-  transition: background 0.3s ease-in-out;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.sidebar a:hover {
-  background: rgba(255, 255, 255, 0.2);
 }
 
 /* Main content area */
@@ -46,7 +25,25 @@ body {
   overflow-y: auto;
 }
 
-/* Booking Table */
+/* Title */
+.title {
+  font-size: 24px;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+/* Error Message */
+.errorMessage {
+  color: #e74c3c;
+  text-align: center;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  background: #fdecea;
+  margin-bottom: 15px;
+}
+
+/* Services List */
 .servicesList {
   margin-bottom: 30px;
   background: white;
@@ -94,30 +91,46 @@ body {
   background-color: #f1f1f1;
 }
 
-.servicesList th:nth-child(2),
-.servicesList td:nth-child(2) {
-  width: 60%;
-}
-
 .servicesList th:last-child,
 .servicesList td:last-child {
-  width: 20%;
+  width: 150px; /* Fixed width for actions column */
 }
 
-/* Action Button */
-.servicesList button {
-  background-color: #e74c3c;
-  color: white;
+/* Action Buttons */
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.editButton,
+.deleteButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   padding: 8px 12px;
   border: none;
-  cursor: pointer;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 14px;
-  transition: all 0.3s ease;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.servicesList button:hover {
-  background-color: #c0392b;
+.editButton {
+  background-color: #28a745;
+  color: white;
+}
+
+.editButton:hover {
+  background-color: #218838;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+}
+
+.deleteButton:hover {
+  background-color: #c82333;
 }
 
 /* Add Service Form */
@@ -186,33 +199,8 @@ body {
   cursor: pointer;
 }
 
-/* Error Message Styling */
-.errorMessage {
-  color: #e74c3c;
-  text-align: center;
-  font-weight: bold;
-  padding: 10px;
-  border-radius: 5px;
-  background: #fdecea;
-  margin-bottom: 15px;
-}
-
-/* Text Area Customization */
-.textSpace {
-  width: 100%;
-  min-height: 100px;
-  resize: vertical;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
-  .sidebar {
-    width: 220px;
-  }
-  
   .content {
     margin-left: 220px;
     width: calc(100% - 220px);
@@ -229,10 +217,6 @@ body {
 }
 
 @media (max-width: 576px) {
-  .sidebar {
-    width: 200px;
-  }
-
   .content {
     margin-left: 200px;
     width: calc(100% - 200px);
@@ -244,4 +228,45 @@ body {
     font-size: 14px;
     padding: 10px;
   }
+}
+
+/* Edit Mode Styling */
+.servicesList input[type="text"],
+.servicesList input[type="number"],
+.servicesList textarea {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+.servicesList input[type="text"]:focus,
+.servicesList input[type="number"]:focus,
+.servicesList textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+.servicesList textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Save Button in Edit Mode */
+.saveButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.saveButton:hover {
+  background-color: #218838;
 }
