@@ -3,7 +3,8 @@ import axios from "axios";
 import styles from "./Service.module.css";
 import Header from "./Main/Header.jsx";
 import PopupForm from "./PopupForm.jsx";
-import { FaGavel, FaFileContract, FaBalanceScale, FaBriefcase } from "react-icons/fa";
+import { FaGavel, FaFileContract, FaBalanceScale, FaBriefcase, FaFileAlt } from "react-icons/fa";
+import dividerImage2 from "./assets/profile1.jpg";
 
 const serviceIcons = {
   consulting: <FaGavel className={styles.serviceIcon} />, 
@@ -95,6 +96,9 @@ const Service = () => {
   >
     Guiding You Through Legal Complexities
   </div>
+  <div className="divider-container">
+            <img src={dividerImage2} alt="Divider line" className="divider-image" />
+          </div>
 </div>
 
      
@@ -102,100 +106,158 @@ const Service = () => {
         <div
   style={{
     display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
-    gap: "20px",
+    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+    gap: "30px",
     maxWidth: "1500px",
-    margin: "auto",
+    margin: "40px auto",
+    padding: "0 20px"
   }}
 >
   {services.filter(service => service.category === "consulting").length === 0 ? (
     <div
       style={{
+        gridColumn: "1 / -1",
         textAlign: "center",
-        fontSize: "16px",
-        color: "#666",
-        margin: "20px auto",
-        fontWeight: "bold",
+        padding: "40px",
+        backgroundColor: "#f8f9fa",
+        borderRadius: "12px",
+        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)"
       }}
     >
-      No consulting services available.
+      <p style={{
+        fontSize: "18px",
+        color: "#555",
+        margin: "0",
+        fontWeight: "500"
+      }}>
+        No consulting services available at the moment.
+      </p>
+      <p style={{
+        fontSize: "14px",
+        color: "#777",
+        marginTop: "10px"
+      }}>
+        Check back later or explore our other services.
+      </p>
     </div>
   ) : (
     services.filter(service => service.category === "consulting").map(service => (
       <div
         key={service._id}
         style={{
-          backgroundColor: "#ffffff",
-          borderRadius: "10px",
-          boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
-          padding: "20px",
-          textAlign: "center",
+          backgroundColor: "#fff",
+          borderRadius: "12px",
+          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.08)",
+          padding: "25px",
           transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          border: "1px solid rgba(0, 0, 0, 0.05)",
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          position: "relative",
+          overflow: "hidden",
+          ":hover": {
+            transform: "translateY(-5px)",
+            boxShadow: "0 15px 35px rgba(0, 74, 173, 0.12)"
+          }
         }}
       >
         <div
           style={{
-            backgroundColor: "#e3f2fd",
-            padding: "15px",
+            backgroundColor: "rgba(0, 74, 173, 0.08)",
+            padding: "20px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             borderRadius: "10px",
-            width: "100%",
-            height: "100px",
-            marginBottom: "-35px",
+            width: "80px",
+            height: "80px",
+            marginBottom: "20px"
           }}
         >
           {serviceIcons[service.category] || (
-            <FaBalanceScale style={{ fontSize: "28px", color: "#004aad" }} />
+            <FaBalanceScale style={{ fontSize: "32px", color: "#004aad" }} />
           )}
         </div>
 
         <h3
           style={{
             fontSize: "20px",
-            fontWeight: "700",
-            color: "#0a0a0a",
-            marginBottom: "-40px",
+            fontWeight: "600",
+            color: "#111",
+            margin: "0 0 15px 0",
+            lineHeight: "1.4"
           }}
         >
           {service.title}
         </h3>
+        
         <p
           style={{
-            fontSize: "14px",
-            color: "#444",
-            marginBottom: "-15px",
+            fontSize: "15px",
+            color: "#555",
+            margin: "0 0 20px 0",
+            lineHeight: "1.6",
+            flexGrow: "1"
           }}
         >
           {service.description}
         </p>
-        <p
-          style={{
-            fontSize: "16px",
-            fontWeight: "bold",
-            color: "#0a0a0a",
-            marginBottom: "15px",
-          }}
-        >
-          Rs. {service.price}
-        </p>
-        <button
-          style={{
-            backgroundColor: "#004aad",
-            color: "#fff",
-            fontSize: "16px",
-            padding: "12px 20px",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            fontWeight: "bold",
-            transition: "background-color 0.3s ease",
-          }}
-          onClick={() => openModal(service._id, service.title, service.category)}
-        >
-          BOOK NOW
-        </button>
+        
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "auto"
+        }}>
+          <p
+            style={{
+              fontSize: "18px",
+              fontWeight: "600",
+              color: "#004aad",
+              margin: "0"
+            }}
+          >
+            Rs. {service.price.toLocaleString()}
+          </p>
+          
+          <button
+            style={{
+              backgroundColor: "#004aad",
+              color: "#fff",
+              fontSize: "15px",
+              padding: "12px 25px",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: "500",
+              transition: "all 0.3s ease",
+              ":hover": {
+                backgroundColor: "#003d8f",
+                transform: "translateY(-2px)"
+              }
+            }}
+            onClick={() => openModal(service._id, service.title, service.category)}
+          >
+            Book Now
+          </button>
+        </div>
+        
+        {service.popular && (
+          <div style={{
+            position: "absolute",
+            top: "15px",
+            right: "15px",
+            backgroundColor: "#ff6b6b",
+            color: "white",
+            padding: "4px 12px",
+            borderRadius: "20px",
+            fontSize: "12px",
+            fontWeight: "600"
+          }}>
+            Popular
+          </div>
+        )}
       </div>
     ))
   )}
@@ -206,100 +268,158 @@ const Service = () => {
         <div
   style={{
     display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
-    gap: "20px",
+    gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+    gap: "30px",
     maxWidth: "1500px",
-    margin: "auto",
+    margin: "40px auto",
+    padding: "0 20px"
   }}
 >
   {services.filter(service => service.category === "documentation").length === 0 ? (
     <div
       style={{
+        gridColumn: "1 / -1",
         textAlign: "center",
-        fontSize: "16px",
-        color: "#666",
-        margin: "20px auto",
-        fontWeight: "bold",
+        padding: "40px",
+        backgroundColor: "#f8f9fa",
+        borderRadius: "12px",
+        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.05)"
       }}
     >
-      No documentation services available.
+      <p style={{
+        fontSize: "18px",
+        color: "#555",
+        margin: "0",
+        fontWeight: "500"
+      }}>
+        No documentation services available at the moment.
+      </p>
+      <p style={{
+        fontSize: "14px",
+        color: "#777",
+        marginTop: "10px"
+      }}>
+        Check back later or explore our other services.
+      </p>
     </div>
   ) : (
     services.filter(service => service.category === "documentation").map(service => (
       <div
         key={service._id}
         style={{
-          backgroundColor: "#ffffff",
-          borderRadius: "10px",
-          boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
-          padding: "20px",
-          textAlign: "center",
+          backgroundColor: "#fff",
+          borderRadius: "12px",
+          boxShadow: "0 10px 30px rgba(0, 0, 0, 0.08)",
+          padding: "25px",
           transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          border: "1px solid rgba(0, 0, 0, 0.05)",
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          position: "relative",
+          overflow: "hidden",
+          ":hover": {
+            transform: "translateY(-5px)",
+            boxShadow: "0 15px 35px rgba(0, 74, 173, 0.12)"
+          }
         }}
       >
         <div
           style={{
-            backgroundColor: "#EDF2FB",
-            padding: "15px",
+            backgroundColor: "rgba(0, 74, 173, 0.08)",
+            padding: "20px",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
             borderRadius: "10px",
-            width: "100%",
-            height: "100px",
-            marginBottom: "15px",
+            width: "80px",
+            height: "80px",
+            marginBottom: "20px"
           }}
         >
           {serviceIcons[service.category] || (
-            <FaBalanceScale style={{ fontSize: "28px", color: "#004aad" }} />
+            <FaFileAlt style={{ fontSize: "32px", color: "#004aad" }} />
           )}
         </div>
 
         <h3
           style={{
             fontSize: "20px",
-            fontWeight: "700",
-            color: "#0a0a0a",
-            marginBottom: "-40px",
+            fontWeight: "600",
+            color: "#111",
+            margin: "0 0 15px 0",
+            lineHeight: "1.4"
           }}
         >
           {service.title}
         </h3>
+        
         <p
           style={{
-            fontSize: "14px",
-            color: "#444",
-            marginBottom: "-15px",
+            fontSize: "15px",
+            color: "#555",
+            margin: "0 0 20px 0",
+            lineHeight: "1.6",
+            flexGrow: "1"
           }}
         >
           {service.description}
         </p>
-        <p
-          style={{
-            fontSize: "16px",
-            fontWeight: "bold",
-            color: "#0a0a0a",
-            marginBottom: "15px",
-          }}
-        >
-          Rs. {service.price}
-        </p>
-        <button
-          style={{
-            backgroundColor: "#004aad",
-            color: "#fff",
-            fontSize: "16px",
-            padding: "12px 20px",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            fontWeight: "bold",
-            transition: "background-color 0.3s ease",
-          }}
-          onClick={() => openModal(service._id, service.title, service.category)}
-        >
-          GET DOCUMENT
-        </button>
+        
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: "auto"
+        }}>
+          <p
+            style={{
+              fontSize: "18px",
+              fontWeight: "600",
+              color: "#004aad",
+              margin: "0"
+            }}
+          >
+            Rs. {service.price.toLocaleString()}
+          </p>
+          
+          <button
+            style={{
+              backgroundColor: "#004aad",
+              color: "#fff",
+              fontSize: "15px",
+              padding: "12px 25px",
+              border: "none",
+              borderRadius: "6px",
+              cursor: "pointer",
+              fontWeight: "500",
+              transition: "all 0.3s ease",
+              ":hover": {
+                backgroundColor: "#003d8f",
+                transform: "translateY(-2px)"
+              }
+            }}
+            onClick={() => openModal(service._id, service.title, service.category)}
+          >
+            Get Document
+          </button>
+        </div>
+        
+        {service.popular && (
+          <div style={{
+            position: "absolute",
+            top: "15px",
+            right: "15px",
+            backgroundColor: "#ff6b6b",
+            color: "white",
+            padding: "4px 12px",
+            borderRadius: "20px",
+            fontSize: "12px",
+            fontWeight: "600"
+          }}>
+            Popular
+          </div>
+        )}
       </div>
     ))
   )}

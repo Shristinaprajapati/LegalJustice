@@ -1,7 +1,7 @@
-/* Header Styles */
+/* Base Header Styles */
 .header {
-  background-color: rgba(26, 26, 26, 0.5);
-  backdrop-filter: blur(0px);
+  background-color: rgba(26, 26, 26, 0.9); /* Solid by default on desktop */
+  backdrop-filter: blur(10px);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9,45 +9,136 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
 
+/* Transparent at top when not scrolled */
+.header:not(.scrolled) {
+  background-color: rgba(26, 26, 26, 0.7);
+}
+
+/* Filled after scroll */
 .scrolled {
-  background-color: #f8f9fa;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  background-color: rgba(26, 26, 26, 0.95) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .logo img {
   width: 185px;
   height: 44px;
   object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.05);
 }
 
 .navLinks {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 25px;
 }
 
 .navLinks li a {
   text-decoration: none;
-  font-size: 1.09rem;
+  font-size: 1.1rem;
   color: #ffffff;
   font-weight: 500;
-  padding: 8px 15px;
-  transition: color 0.3s ease;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
 .navLinks li a:hover {
-  color: #ffffff;
+  color: #cdd8ff;
 }
 
+/* Active link styling */
+.activeLink {
+  color: #2f89fc !important;
+  font-weight: 600;
+}
+
+.activeLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2px;
+  background-color: #2f89fc;
+  border-radius: 2px;
+}
+
+/* Mobile menu styles */
 .hamburger {
   display: none;
   flex-direction: column;
   cursor: pointer;
 }
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #ffffff;
+  margin: 5px 0;
+  transition: all 0.3s ease;
+}
+
+/* Responsive styles */
+@media (max-width: 992px) {
+  .header {
+    padding: 15px 20px;
+  }
+  
+  .navLinks {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    background-color: rgba(26, 26, 26, 0.95);
+  }
+  
+  .navLinks {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1a;
+    padding: 20px 0;
+    gap: 15px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+  }
+
+  .navOpen .navLinks {
+    display: flex;
+  }
+
+  .navLinks li a {
+    padding: 12px 30px;
+    display: block;
+  }
+
+  .activeLink::after {
+    left: 30px;
+    transform: none;
+    width: calc(100% - 60px);
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+/* Rest of your existing styles for notifications, profile section etc. */
 
 .bar {
   width: 25px;
@@ -375,6 +466,9 @@
   justify-content: flex-end;
   z-index: 1000;
 }
+
+
+
 
 /* Sidebar Container */
 .sidebar {

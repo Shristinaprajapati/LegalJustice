@@ -15,6 +15,8 @@ import Contact from "./components/contact/contact.jsx";
 import Blog from "./components/Blog/blogclient.jsx";
 import BlogPage from "./components/Blog/blogDetail.jsx";
 
+import Desktop from "./components/Desktop/Desktop.jsx";
+
 
 import AdminPanel from "./components/Admin/AdminDashboard";
 import Bookings from "./components/Admin/Bookings/booking.jsx";
@@ -25,6 +27,7 @@ import PaymentHistory from "./components/Admin/Payment/paymentHistory.jsx";
 import PaymentComplete from "./components/Main/completepayment.jsx";
 import PrivacyPolicy from "./components/privacyPolicy.jsx";
 import TermsCondition from "./components/TermsCondition.jsx";
+import About from "./components/about.jsx";
 
 
 import DivorseFrom from "./components/Admin/htmlTemplates/DivorseAgreementForm.jsx";
@@ -58,6 +61,7 @@ function App() {
   const user = localStorage.getItem("token");
   return (
     <Router>
+      
       <Routes>
         
         <Route path="/" element={user ? <Main /> : <Navigate replace to="/main" />} />
@@ -77,6 +81,7 @@ function App() {
         <Route path="/blogDetail/:id" element={<BlogPage />} />
         <Route path="/privacypolicy" element={<PrivacyPolicy />} />
         <Route path="/terms&condition" element={<TermsCondition />} />
+        <Route path="/about" element={<About />} />
       
         <Route element={<ProtectedRoute />}>
         <Route path="/admin/AdminDashboard" element={<AdminPanel />} />
@@ -92,6 +97,8 @@ function App() {
         <Route path="/admin/post" element={<PostContent />} />
         </Route>
 
+        <Route path ="/desk" element={<Desktop/>}/>
+        
         <Route path ="/divorseform" element={<DivorseFrom/>}/>
         <Route path ="/partnerform" element={<PartnerForm />}/>
         <Route path ="/rentalform" element={<RentalForm />}/>

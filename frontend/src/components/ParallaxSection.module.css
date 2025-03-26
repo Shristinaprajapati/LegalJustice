@@ -19,7 +19,7 @@
   background-attachment: fixed; /* Parallax effect */
   background-position: center;
   background-repeat: no-repeat;
-  background-size: 58.625rem 42.5625rem; /* Set specific size */
+  background-size: 92.625rem 50.5625rem; /* Set specific size */
   z-index: -1; /* Place behind other content */
 }
 
@@ -37,12 +37,26 @@
   box-sizing: border-box; /* Ensures padding and border are included in the size */
 }
 
-.parallaxContent h1 {
-  font-size: 2.5rem;
-  margin-bottom: 2.125rem;
-  color: white; /* Make the heading white */
-  text-align: left; /* Align heading to the left */
+
+.subheading {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #BDD1F5;
+  margin-bottom: 1rem;
+  text-align: left; /* Add this line */
 }
+
+.heading {
+  font-size: 1.9rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  color: white;
+  text-align: left; /* Changed from align-items to text-align */
+}
+
 
 .parallaxContent p {
   color: #FFF;
@@ -69,9 +83,11 @@
 
 .logoContainer img {
   margin-top: 50px;
-  height: 2.5rem; /* Adjust height as needed */
+  height: 2.1rem; /* Adjust height as needed */
   margin: 0 3rem; /* Space between logos */
 }
+
+
 
 @keyframes scroll {
   0% {
@@ -102,3 +118,5 @@
 .contactButton:hover {
   background-color: rgba(189, 209, 245, 0.2); /* Slight background change on hover */
 }
+
+

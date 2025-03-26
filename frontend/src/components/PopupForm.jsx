@@ -3,6 +3,7 @@ import axios from "axios";
 import styles from "./PopupForm.module.css";
 import { QRCode } from "react-qr-code";
 import MessagePopup from "./MessagePopup.jsx";
+import toast, { Toaster } from 'react-hot-toast';
 
 const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
   const [loading, setLoading] = useState(false);
@@ -148,11 +149,31 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
       }
 
       const response = await axios.post("http://localhost:8080/api/bookings", bookingData);
-      setSuccessMessage("Booking successful!");
+      toast.success("Booking successful!", {
+        position: "top-right",
+        duration: 4000,
+        style: {
+          margin: '10px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          background: '#4BB543', // Green background for success
+          color: '#fff',
+        },
+      });
       setIsMessagePopupOpen(true);
       resetFormData();
+
     } catch (err) {
       setError(err.response?.data?.message || "Failed to create booking");
+      toast.error(err.response?.data?.message || "Failed to create booking", {
+        position: "top-right",
+        duration: 4000,
+        style: {
+          margin: '10px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          background: '#FF3333', // Red background for error
+          color: '#fff',
+        },
+      });
     } finally {
       setLoading(false);
     }
@@ -181,6 +202,17 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
 
   return (
     <>
+    <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            margin: '10px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+          },
+        }}
+      />
+      
       <div className={styles.modalOverlay}>
         <div className={styles.modalContent}>
           <div className={styles.modalHeader}>
@@ -219,12 +251,22 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
                   </select>
                 </label>
                 <div className={styles.modalActions}>
-                  <button type="submit" className={styles.submitBtn}>Submit</button>
+                <button 
+  type="submit" 
+  className={styles.submitBtn}
+  style={{
+    backgroundColor: "#003d8f",
+    color: "#fff",
+  }}
+>
+  Submit
+</button>
                 </div>
               </form>
             </>
           ) : (
             <>
+            <div className={styles.paynow}>
               <div className={styles.leftSection}>
                 <h3>Payment Details</h3>
                 <div className={styles.clientDetails}>
@@ -254,6 +296,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
                     <a href={paymentUrl} target="_blank" rel="noopener noreferrer">{paymentUrl}</a>
                   </div>
                 )}
+              </div>
               </div>
             </>
           )}

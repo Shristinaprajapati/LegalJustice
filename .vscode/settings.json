@@ -3,6 +3,7 @@
       "*.jsx": "javascriptreact",
       "*.css": "css",
       "*.js": "javascript"
-    }
+    },
+    "liveServer.settings.port": 5501
   }
   
