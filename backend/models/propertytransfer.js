@@ -9,13 +9,13 @@ const PropertyTransferAgreementSchema = new mongoose.Schema({
   propertyAddress: { type: String, required: true },
   propertyDescription: { type: String, required: true },
   transferDate: { type: Date, required: false },
-  considerationAmount: { type: String, required: true },
-  paymentTerms: { type: String, required: true },
+  considerationAmount: { type: String, required: false },
+  paymentTerms: { type: String, required: false },
   transferorSignatureDate: { type: Date, required: false},
   transfereeSignatureDate: { type: Date, required: false },
   witnessSignatureDate: { type: Date, required: false },
   notarySignatureDate: { type: Date, required: false},
-  jurisdiction: { type: String, required: true },
+  jurisdiction: { type: String, required: false },
   additionalTerms: { type: String, required: false },
 });
 

@@ -20,10 +20,6 @@ router.post(
     check('spouse1Name', 'Spouse1 name is required').notEmpty(),
     check('spouse2Name', 'Spouse2 name is required').notEmpty(),
     check('jurisdiction', 'Jurisdiction is required').notEmpty(),
-    check('spouse1SignatureDate', 'Spouse1 signature date is required').notEmpty(),
-    check('spouse2SignatureDate', 'Spouse2 signature date is required').notEmpty(),
-    check('witnessSignatureDate', 'Witness signature date is required').notEmpty(),
-    check('notarySignatureDate', 'Notary signature date is required').notEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);

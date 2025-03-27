@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './ScrollableFrame.module.css'; // Use the specific CSS module for this component
 import ServiceComponent from './ServiceComponent.jsx';
+import Practicearea from './about.jsx';
 import Footer from './Footer.jsx'
 import { Icon } from "@iconify/react";
 
@@ -67,7 +68,6 @@ const ScrollableFrame = () => {
       <div className={styles.servicesContainer}>
         <ServiceComponent />
       </div>
-
       
 
       {/* Manage Cases Section */}
@@ -81,9 +81,11 @@ const ScrollableFrame = () => {
           <button className={styles.secondaryButton}>Talk to Us</button>
         </div>
         <div className={styles.image}>
-          <img src="/Images/office2.jpg" alt="office2" />
+          <img src="/Images/hero3.png" alt="office2" />
         </div>
       </div>
+
+      <Practicearea/>
 
       <section
   style={{
@@ -219,7 +221,7 @@ const ScrollableFrame = () => {
             <h2 className={styles.subheading}>
               Your partner in digital growth, from strategy to work
             </h2>
-            <img  className={styles.partnerimg} src="/Images/office2.jpg" alt="office2" />
+            <img  className={styles.partnerimg} src="/Images/hero3.png" alt="office2" />
           </div>
           <div className={styles.partnerText}>
             <p className={styles.paragraph}>
@@ -235,7 +237,7 @@ const ScrollableFrame = () => {
         </div>
       </div>
 
-
+     
 
   {/* Trusted Partner Section */}
   <section className={styles.trustedPartner}>

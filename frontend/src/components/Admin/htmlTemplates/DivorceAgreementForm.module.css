@@ -1,101 +1,169 @@
-/* Official CSS for Divorce Agreement Form */
+.pageContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
 
-body {
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-  }
-  
+.mainContent {
+  flex: 1;
+  padding: 2rem 0;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+}
+
+.heading {
+  font-size: 2.2rem;
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.subheading {
+  text-align: center;
+  color: #7f8c8d;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+  font-style: normal;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.fieldGroup {
+  background: #f8fafc;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #3498db;
+}
+
+.groupTitle {
+  font-size: 1.4rem;
+  color: #2c3e50;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e6ed;
+}
+
+.groupFields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.2rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 0.95rem;
+  color: #34495e;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.required {
+  color: #e74c3c;
+}
+
+.input {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #dfe6e9;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+  background-color: #fff;
+}
+
+.input:focus {
+  border-color: #003d8f;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.input[type="date"] {
+  padding: 0.7rem 1rem;
+}
+
+.submitContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.submitButton {
+  background-color: #003d8f;
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  width: auto;
+  min-width: 220px;
+}
+
+.submitButton:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+.submitButton:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@media (max-width: 768px) {
   .container {
-    max-width: 800px;
-    margin: 50px auto;
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin: 0 1rem;
   }
-  
-  h1 {
+
+  .heading {
     font-size: 1.8rem;
-    color: #333;
-    text-align: center;
-    margin-bottom: 20px;
   }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+
+  .groupFields {
+    grid-template-columns: 1fr;
   }
-  
-  form div {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  label {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 8px;
-  }
-  
-  input[type="text"],
-  input[type="date"] {
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+
+  .submitButton {
     width: 100%;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
   }
-  
-  input[type="text"]:focus,
-  input[type="date"]:focus {
-    border-color: #4CAF50;
-    outline: none;
-    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
   }
-  
-  button[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    padding: 12px 20px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    align-self: center;
-    width: 150px;
+
+  .heading {
+    font-size: 1.5rem;
   }
-  
-  button[type="submit"]:hover {
-    background-color: #45a049;
-    transform: scale(1.05);
+
+  .groupTitle {
+    font-size: 1.2rem;
   }
-  
-  button[type="submit"]:active {
-    background-color: #3e8e41;
-  }
-  
-  @media (max-width: 768px) {
-    .container {
-      padding: 20px;
-    }
-  
-    h1 {
-      font-size: 1.5rem;
-    }
-  
-    input[type="text"],
-    input[type="date"] {
-      font-size: 0.9rem;
-    }
-  
-    button[type="submit"] {
-      width: 100%;
-      font-size: 0.9rem;
-    }
-  }
-  
+}
