@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./Login.module.css"; // Make sure the path is correct
+import styles from "./Login.module.css";
 import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Icon } from "@iconify/react";
+import Loader from "./Loader";
 
 const SITE_KEY = "6Lc5D6IqAAAAAMu0jayEUodrDJOuDInq1lAMKLNw";
 
@@ -11,30 +12,34 @@ const Login = () => {
   const [recaptchaValue, setRecaptchaValue] = useState("");
   const [data, setData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // Added loading state
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
-    setError(""); // Clear error when user starts typing
+    setError("");
   };
 
   const handleRecaptcha = (value) => {
     setRecaptchaValue(value);
-    setError(""); // Clear error when reCAPTCHA is completed
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading when form is submitted
 
     // Validate email and password
     if (!data.email || !data.password) {
       setError("Please enter both email and password.");
+      setLoading(false);
       return;
     }
 
     if (!recaptchaValue) {
       setError("Please complete the reCAPTCHA verification.");
+      setLoading(false);
       return;
     }
 
@@ -44,40 +49,32 @@ const Login = () => {
 
       const response = await axios.post(url, payload, { timeout: 10000 });
       const res = response.data;
-
-      console.log("Login Response:", res);
+      setLoading(false); // Stop loading on success
 
       if (res.token) {
-        console.log("Storing Token:", res.token);
-        console.log("User Role:", res.user.role); // Debugging: Log the role
-
-        // Check if the user is an admin
         if (res.user.role === "admin") {
-          console.log("Admin login detected. Storing admin token and email.");
-          localStorage.setItem("admin_token", res.token); // Store admin token
-          localStorage.setItem("admin_email", res.user.email); // Store admin email from response
+          localStorage.setItem("admin_token", res.token);
+          localStorage.setItem("admin_email", res.user.email);
         } else {
-          console.log("Normal user login detected. Storing token and email.");
-          localStorage.setItem("token", res.token); // Store normal user token
-          localStorage.setItem("email", res.user.email); // Store normal user email from response
+          localStorage.setItem("token", res.token);
+          localStorage.setItem("email", res.user.email);
         }
 
         if (res.redirectTo) {
-          window.location.href = res.redirectTo; // Redirect to the admin dashboard
+          window.location.href = res.redirectTo;
         } else {
-          navigate("/"); // Normal user, redirect to home page
+          navigate("/");
         }
       } else {
         setError("Authentication failed. No token received.");
       }
     } catch (error) {
+      setLoading(false); // Stop loading on error
       console.error("Login Error:", error);
 
-      // Handle specific error cases
       if (error.code === "ECONNABORTED") {
         setError("Request timed out. Please try again.");
       } else if (error.response) {
-        // Handle API response errors
         const { status, data } = error.response;
         switch (status) {
           case 400:
@@ -96,10 +93,8 @@ const Login = () => {
             setError("An unexpected error occurred. Please try again.");
         }
       } else if (error.request) {
-        // Handle network errors (e.g., server unreachable)
         setError("Unable to connect to the server. Please check your internet connection.");
       } else {
-        // Handle other errors
         setError("An unexpected error occurred. Please try again.");
       }
     }
@@ -107,6 +102,8 @@ const Login = () => {
 
   return (
     <div className={styles.loginContainer}>
+      {loading && <Loader />} {/* Loader positioned here to overlay the entire form */}
+      
       <div className={styles.loginContent}>
         <h1 className={styles.mainHeading}>Welcome to Legal Justice Platform!</h1>
         <p className={styles.subheading}>Sign in to access your account and manage your cases.</p>
@@ -126,6 +123,7 @@ const Login = () => {
               placeholder="Enter your email"
               required
               className={styles.inputField}
+              disabled={loading} // Disable inputs during loading
             />
           </div>
           <div className={styles.formGroup}>
@@ -139,11 +137,13 @@ const Login = () => {
                 placeholder="Enter your password"
                 required
                 className={styles.inputField}
+                disabled={loading}
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className={styles.passwordToggle}
+                disabled={loading}
               >
                 <Icon
                   icon={showPassword ? "mdi:eye-off" : "mdi:eye"}
@@ -156,10 +156,19 @@ const Login = () => {
             Forgot Password?
           </Link>
           <div className={styles.captchaContainer}>
-            <ReCAPTCHA sitekey={SITE_KEY} onChange={handleRecaptcha} />
+            <ReCAPTCHA 
+              sitekey={SITE_KEY} 
+              onChange={handleRecaptcha}
+              className={loading ? styles.disabledCaptcha : ""}
+            />
           </div>
-          <button type="submit" className={styles.loginButtonSubmit}>
-            Login
+          <button 
+            type="submit" 
+            className={styles.loginButtonSubmit}
+            style={{ backgroundColor: '#1e40af' }}
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <div className={styles.signupLinkContainer}>

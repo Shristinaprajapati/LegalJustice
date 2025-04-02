@@ -1,0 +1,149 @@
+.aboutUsContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: #333;
+  }
+  
+  .heroSection {
+    text-align: center;
+    padding: 4rem 0;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+  }
+  
+  .heroSection h1 {
+    font-size: 2.5rem;
+    color: #1a365d;
+    margin-bottom: 1rem;
+  }
+  
+  .heroSection p {
+    font-size: 1.2rem;
+    color: #4a5568;
+  }
+  
+  .contentSection {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+  
+  .companyInfo {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .companyInfo h2 {
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+  }
+  
+  .contactInfo {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: #f8fafc;
+    border-radius: 6px;
+  }
+  
+  .contactInfo h3 {
+    margin-bottom: 1rem;
+    color: #2d3748;
+  }
+  
+  .contactInfo p {
+    margin: 0.5rem 0;
+  }
+  
+  .mapSection {
+    margin-top: 2rem;
+  }
+  
+  .mapSection h3 {
+    margin-bottom: 1rem;
+    color: #2d3748;
+  }
+  
+  .mapContainer {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .socialMedia {
+    margin-top: 2rem;
+  }
+  
+  .socialMedia h3 {
+    margin-bottom: 1rem;
+    color: #2d3748;
+  }
+  
+  .socialLinks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .socialLinks a {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #4299e1;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  
+  .socialLinks a:hover {
+    background-color: #3182ce;
+  }
+  
+  .missionSection {
+    margin-top: 3rem;
+    padding: 2rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .missionSection h3 {
+    color: #2d3748;
+    margin-bottom: 1rem;
+  }
+  
+  .missionSection p {
+    line-height: 1.6;
+  }
+  
+  .loading,
+  .error {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+  }
+  
+  .error {
+    color: #e53e3e;
+  }
+  
+  @media (max-width: 768px) {
+    .heroSection {
+      padding: 2rem 1rem;
+    }
+    
+    .heroSection h1 {
+      font-size: 2rem;
+    }
+    
+    .contentSection {
+      padding: 0 1rem;
+    }
+    
+    .socialLinks {
+      flex-direction: column;
+    }
+  }

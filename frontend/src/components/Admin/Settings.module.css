@@ -1,0 +1,160 @@
+.adminContainer {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f7fa;
+  }
+  
+  .settingsContent {
+    flex: 1;
+    padding: 2rem;
+    margin-left: 250px;
+    max-width: 1200px;
+  }
+  
+  .title {
+    font-size: 2rem;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+  }
+  
+  .subtitle {
+    color: #718096;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
+  
+  .companyHeader {
+    margin: 2rem 0;
+  }
+  
+  .companyName {
+    font-size: 1.5rem;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+  }
+  
+  .divider {
+    height: 2px;
+    background-color: #e2e8f0;
+    margin: 1rem 0;
+  }
+  
+  .settingsSection {
+    background: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sectionTitle {
+    font-size: 1.25rem;
+    color: #4a5568;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #edf2f7;
+  }
+  
+  .formGroup {
+    margin-bottom: 1.5rem;
+  }
+  
+  .label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #4a5568;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+  }
+  
+  .input:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+  }
+  
+  .mapPreview {
+    display: flex;
+    gap: 2rem;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .mapInfo,
+  .mapAddress {
+    flex: 1;
+  }
+  
+  .mapTitle {
+    font-size: 1.125rem;
+    margin-bottom: 0.5rem;
+    color: #2d3748;
+  }
+  
+  .mapText {
+    margin-bottom: 0.5rem;
+  }
+  
+  .rating {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+    color: #4a5568;
+  }
+  
+  .stars {
+    color: #f6ad55;
+  }
+  
+  .mapLink,
+  .reportLink {
+    color: #3182ce;
+    cursor: pointer;
+    text-decoration: underline;
+    margin: 0.5rem 0;
+  }
+  
+  .updateTime {
+    color: #718096;
+    font-size: 0.875rem;
+  }
+  
+  .saveButton {
+    background-color: #4299e1;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 1rem;
+  }
+  
+  .saveButton:hover {
+    background-color: #3182ce;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .settingsContent {
+      margin-left: 0;
+      padding: 1rem;
+    }
+  
+    .mapPreview {
+      flex-direction: column;
+    }
+  }

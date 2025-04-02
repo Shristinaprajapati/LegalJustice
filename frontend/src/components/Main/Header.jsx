@@ -2,19 +2,19 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Header.module.css';
 import axios from 'axios';
-import io from 'socket.io-client'; // Import Socket.IO
-import { MdAccountCircle, MdCalendarToday, MdCreditCard, MdClose } from "react-icons/md"; // React Icons
-import { FaMoneyBillAlt, FaFileInvoiceDollar } from "react-icons/fa"; // React Icons
+import io from 'socket.io-client';
+import { MdAccountCircle, MdCalendarToday, MdCreditCard, MdClose } from "react-icons/md";
+import { FaMoneyBillAlt, FaFileInvoiceDollar } from "react-icons/fa";
 import 'font-awesome/css/font-awesome.min.css'; 
 import { Icon } from "@iconify/react";
-import PaymentTab from './PaymentTab'; // Import the PaymentTab component
+import PaymentTab from './PaymentTab';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState({ name: '', email: '', clientId: '' });
-  const [notifications, setNotifications] = useState([]); // State to hold notifications
-  const [showNotifications, setShowNotifications] = useState(false); // State to control dropdown visibility
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
   const navigate = useNavigate();
   const socket = useRef(null); 
   const [activeTab, setActiveTab] = useState("profile"); 
@@ -24,82 +24,62 @@ const Header = () => {
   const [activeSubTab, setActiveSubTab] = useState(null);
 
   useEffect(() => {
-    // Check if there's a token in localStorage, meaning the user is logged in
     const token = localStorage.getItem('token');
     if (token) {
       setIsLoggedIn(true);
   
-      // Fetch user details using the token for authentication
       axios
         .get('http://localhost:8080/api/auth/me', {
-          headers: { Authorization: `Bearer ${token}` }, // Pass the token in the request header
+          headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          const user = response.data; // The user object returned from authentication
-          setUserData({ name: user.name, email: user.email, clientId: user.clientId });  // Explicitly set clientId
+          const user = response.data;
+          setUserData({ name: user.name, email: user.email, clientId: user.clientId });
   
-          // Connect to the socket server after fetching user data
           socket.current = io('ws://localhost:8080');
-          console.log(socket.current);
   
-          // Register clientId with socket on login
-          socket.current.emit('register', user.clientId);  // Emit the clientId to register the socket
+          socket.current.emit('register', user.clientId);
   
-          // Listen for 'receiveNotification' event from the backend
           socket.current.on('receiveNotification', (notificationData) => {
-            console.log('Received notification:', notificationData);
-  
-            // Deduplicate: Check if the notification is already in the list
             setNotifications((prevNotifications) => {
               const isDuplicate = prevNotifications.some(
                 (notification) => notification.message === notificationData.message
               );
-  
-              if (isDuplicate) {
-                return prevNotifications;
-              } else {
-                return [notificationData, ...prevNotifications];
-              }
+              return isDuplicate ? prevNotifications : [notificationData, ...prevNotifications];
             });
           });
   
-          // Fetch notifications for the logged-in user using the clientId
           axios
             .get(`http://localhost:8080/api/notifications/${user.clientId}`)
             .then((response) => {
-              // Assuming notifications are returned as an array
               const notificationsFromDb = response.data.notifications;
-  
-              // Deduplicate: Check if notifications are already in the state before adding
               setNotifications((prevNotifications) => {
                 const newNotifications = notificationsFromDb.filter((newNotification) =>
-                  !prevNotifications.some((existingNotification) => existingNotification.message === newNotification.message)
+                  !prevNotifications.some((existingNotification) => 
+                    existingNotification.message === newNotification.message
+                  )
                 );
-  
-                return [...newNotifications, ...prevNotifications]; // Add new ones first
+                return [...newNotifications, ...prevNotifications];
               });
             })
             .catch((error) => {
-              console.error('Error fetching notifications:', error.response ? error.response.data : error.message);
+              console.error('Error fetching notifications:', error);
             });
   
-          // Fetch bookings for the logged-in user using the clientId
           axios
             .get(`http://localhost:8080/api/bookings/client/${user.clientId}`)
             .then((response) => {
-              const bookingsFromDb = response.data.bookings;
-              setBookings(bookingsFromDb);
+              setBookings(response.data.bookings);
             })
             .catch((error) => {
-              console.error('Error fetching bookings:', error.response ? error.response.data : error.message);
+              console.error('Error fetching bookings:', error);
             });
         })
         .catch((error) => {
-          console.error('Error fetching user details:', error.response ? error.response.data : error.message);
+          console.error('Error fetching user details:', error);
         });
     }
   
-    // Cleanup socket connection on unmount
     return () => {
       if (socket.current) {
         socket.current.disconnect();
@@ -116,17 +96,22 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    // Clear token, user data, and specific email from local storage
     localStorage.removeItem('token');
     localStorage.removeItem('userData');
-    localStorage.removeItem('email'); // Remove specific email
+    localStorage.removeItem('email');
     setIsLoggedIn(false);
     setIsOpen(false);
-    navigate('/login'); // Redirect to login after logout
+    navigate('/login');
   };
 
   const handleClose = () => {
-    setIsOpen(false); // Assuming isOpen is controlled by state
+    setIsOpen(false);
+  };
+
+  const handleViewAllNotifications = () => {
+    setIsOpen(true); // Open the sidebar
+    setActiveTab("notification"); // Switch to notification tab
+    setShowNotifications(false); // Close the dropdown
   };
 
   return (
@@ -136,36 +121,12 @@ const Header = () => {
       </div>
       <nav className={isOpen ? styles.navOpen : ''}>
         <ul className={styles.navLinks}>
-          <li>
-            <Link to="/" onClick={() => setIsOpen(false)}>
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link to="/service" onClick={() => setIsOpen(false)}>
-              Services
-            </Link>
-          </li>
-          <li>
-            <Link to="/practice-areas" onClick={() => setIsOpen(false)}>
-              Practice Areas
-            </Link>
-          </li>
-          <li>
-            <Link to="/about" onClick={() => setIsOpen(false)}>
-              About
-            </Link>
-          </li>
-          <li>
-            <Link to="/blog" onClick={() => setIsOpen(false)}>
-              Blog
-            </Link>
-          </li>
-          <li>
-            <Link to="/contact" onClick={() => setIsOpen(false)}>
-              Contact
-            </Link>
-          </li>
+          <li><Link to="/" onClick={() => setIsOpen(false)}>Home</Link></li>
+          <li><Link to="/service" onClick={() => setIsOpen(false)}>Services</Link></li>
+          <li><Link to="/practice-areas" onClick={() => setIsOpen(false)}>Practice Areas</Link></li>
+          <li><Link to="/about" onClick={() => setIsOpen(false)}>About</Link></li>
+          <li><Link to="/blog" onClick={() => setIsOpen(false)}>Blog</Link></li>
+          <li><Link to="/contact" onClick={() => setIsOpen(false)}>Contact</Link></li>
         </ul>
       </nav>
 
@@ -178,25 +139,72 @@ const Header = () => {
         )}
         {showNotifications && (
           <div className={`${styles.notificationsDropdown} ${showNotifications ? styles.show : ''}`}>
+            <div className={styles.notificationHeader}>
+              <span className={styles.notificationTitle}>Notifications 🔔</span>
+            </div>
             <ul className={styles.notificationList}>
-              {notifications.slice(0, 5).map((notification, index) => (
-                <li key={index} className={styles.notificationItem}>
-                  <p className={styles.notificationMessage}>{notification.message}</p> 
-                  {notification.redirectUrl && ( 
-                    <a 
-                      href={notification.redirectUrl} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className={styles.notificationLink}
-                    >
-                      <button className={styles.notificationButton}>
-                        {notification.buttonText || 'View'}
-                      </button>
-                    </a>
-                  )}
-                </li>
-              ))}
+              {notifications.slice(0, 5).map((notification, index) => {
+                let formattedDate = '';
+                try {
+                  if (notification.timestamp) {
+                    const dateObj = new Date(notification.timestamp);
+                    formattedDate = dateObj.toLocaleString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true
+                    });
+                  }
+                } catch (e) {
+                  formattedDate = new Date().toLocaleString();
+                }
+
+                return (
+                  <li 
+                    key={index} 
+                    className={`${styles.notificationItem} ${!notification.read ? styles.unread : ''}`}
+                  >
+                    <div className={styles.notificationContent}>
+                      <p className={styles.notificationMessage}>
+                        {notification.message}
+                        {notification.type === 'document' && (
+                          <span className={styles.documentBadge}>Document</span>
+                        )}
+                      </p>
+                      <div className={styles.notificationMeta}>
+                        <span className={styles.notificationTime}>
+                          {formattedDate}
+                        </span>
+                        {notification.redirectUrl && (
+                          <div className={styles.notificationActions}>
+                            <a 
+                              href={notification.redirectUrl} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className={styles.notificationLink}
+                            >
+                              <button className={styles.notificationButton}>
+                                {notification.buttonText || 'View'}
+                              </button>
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
             </ul>
+            <div className={styles.notificationFooter}>
+              <button 
+                className={styles.notificationViewAll}
+                onClick={handleViewAllNotifications}
+              >
+                View All Notifications
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -213,7 +221,6 @@ const Header = () => {
           {isOpen && (
             <div className={styles.overlay} onClick={handleClose}>
               <div className={styles.sidebar} onClick={(e) => e.stopPropagation()}>
-                {/* Transparent Icon Bar */}
                 <div className={styles.iconBarWrapper}>
                   <div className={styles.iconBar}>
                     <div className={styles.icon} onClick={handleClose}>
@@ -228,15 +235,15 @@ const Header = () => {
                     <div className={styles.icon} onClick={() => setActiveTab("payment")}>
                       <Icon icon="mdi:credit-card-outline" />
                     </div>
+                    <div className={styles.icon} onClick={() => setActiveTab("notification")}>
+                      <Icon icon="mdi:bell-outline" />
+                    </div>
                   </div>
                 </div>
 
-                {/* Sidebar Content */}
                 <div className={styles.content}>
-                  {/* Profile Tab (Includes Settings) */}
                   {activeTab === "profile" && (
                     <ul className={styles.menu}>
-                      {/* Profile Section */}
                       <li className={styles.profileSection}>
                         <div className={styles.profileContent}>
                           <Icon icon="mdi:account-circle-outline" className={styles.profileIcon} />
@@ -247,10 +254,9 @@ const Header = () => {
                         </div>
                       </li>
 
-                      {/* Settings Section */}
                       <li
                         className={styles.settingsSection}
-                        onClick={() => setActiveSubTab(activeSubTab === "settings" ? null : "settings")} // Toggle logic
+                        onClick={() => setActiveSubTab(activeSubTab === "settings" ? null : "settings")}
                       >
                         <div className={styles.settingsContent}>
                           <div className={styles.settingsTitle}>
@@ -260,7 +266,6 @@ const Header = () => {
                         </div>
                       </li>
 
-                      {/* Reset Password (Toggles when Settings is clicked) */}
                       {activeSubTab === "settings" && (
                         <li className={styles.settingsDetails}>
                           <div className={styles.settingsText}>
@@ -271,14 +276,12 @@ const Header = () => {
                         </li>
                       )}
 
-                      {/* Logout Button */}
                       <li onClick={handleLogout} className={styles.logout}>
                         Logout
                       </li>
                     </ul>
                   )}
 
-                  {/* Booking Tab */}
                   {activeTab === "booking" && (
                     <div className={styles.section}>
                       <h2 className={styles.sectionTitle}>Your Bookings</h2>
@@ -315,10 +318,76 @@ const Header = () => {
                     </div>
                   )}
 
-                  {/* Payment Tab */}
                   {activeTab === "payment" && (
                     <PaymentTab clientId={userData.clientId} />
                   )}
+
+{activeTab === "notification" && (
+  <div className={styles.notificationTab}>
+    <h2 className={styles.sectionTitle}>All Notifications</h2>
+    {notifications.length === 0 ? (
+      <p className={styles.noNotifications}>No notifications found.</p>
+    ) : (
+      <div className={styles.notificationScrollContainer}>
+        <ul className={styles.fullNotificationList}>
+          {notifications.map((notification, index) => {
+            let formattedDate = '';
+            try {
+              if (notification.timestamp) {
+                const dateObj = new Date(notification.timestamp);
+                formattedDate = dateObj.toLocaleString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: true
+                });
+              }
+            } catch (e) {
+              formattedDate = new Date().toLocaleString();
+            }
+
+            return (
+              <li 
+                key={index} 
+                className={`${styles.notificationItem} ${!notification.read ? styles.unread : ''}`}
+              >
+                <div className={styles.notificationContent}>
+                  <p className={styles.notificationMessage}>
+                    {notification.message}
+                    {notification.type === 'document' && (
+                      <span className={styles.documentBadge}>Document</span>
+                    )}
+                  </p>
+                  <div className={styles.notificationMeta}>
+                    <span className={styles.notificationTime}>
+                      {formattedDate}
+                    </span>
+                    {notification.redirectUrl && (
+                      <div className={styles.notificationActions}>
+                        <a 
+                          href={notification.redirectUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className={styles.notificationLink}
+                        >
+                          <button className={styles.notificationButton}>
+                            {notification.buttonText || 'View'}
+                          </button>
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    )}
+  </div>
+)}
                 </div>
               </div>
             </div>

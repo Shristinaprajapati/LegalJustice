@@ -5,102 +5,130 @@
   min-height: 100vh;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 2rem;
+  background-color: #f8fafc;
+}
+
+.loginContent {
+  max-width: 500px;
+  padding-right: 3rem;
 }
 
 .loginForm {
   background: #ffffff;
-  padding: 40px;
-  border-radius: 12px;
+  padding: 2.5rem;
+  border-radius: 16px;
   width: 100%;
-  max-width: 400px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  max-width: 420px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
 }
 
 .mainHeading {
-  font-size: 28px;
+  font-size: 2rem;
   font-weight: 700;
-  color: #1f2937;
+  color: #1a365d;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.subheading {
+  font-size: 1rem;
+  color: #4a5568;
+  line-height: 1.5;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
   text-align: center;
-  margin-bottom: 10px;
 }
 
 .errorMessage {
   background: #fee2e2;
   color: #b91c1c;
-  padding: 12px;
+  padding: 0.75rem 1rem;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 0.875rem;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #fecaca;
 }
 
 .formGroup {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-right: 25px;
-  margin-bottom: -15px;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .label {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
-  color: #4b5563;
+  color: #4a5568;
 }
 
 .inputField {
-  padding: 12px;
-  border: 1px solid #d1d5db;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 0.9375rem;
   outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
 }
 
 .inputField:focus {
   border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  background-color: #ffffff;
 }
 
 .forgotPassword {
+  display: block;
   text-align: right;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #2563eb;
   text-decoration: none;
-  margin-top: -5px;
+  margin-top: -0.75rem;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s ease;
 }
 
 .forgotPassword:hover {
   text-decoration: underline;
+  color: #1e40af;
 }
 
 .captchaContainer {
   display: flex;
   justify-content: center;
+  margin: 1rem 0;
 }
 
 .loginButtonSubmit {
   background-color: #2563eb;
-  margin-top: -25px;
   color: white;
-  padding: 1px;
+  padding: 0.75rem;
   border: none;
   border-radius: 8px;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
 }
 
-.loginButton:hover {
-  background-color: #2563eb;
+.loginButtonSubmit:hover {
+  background-color: #1e40af;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
-.loginButton:active {
+.loginButtonSubmit:active {
   transform: translateY(0);
 }
 
@@ -108,69 +136,92 @@
   display: none;
 }
 
-/* Styles for the password toggle button */
+/* Password toggle styles */
 .passwordContainer {
   position: relative;
-  display: flex;
-  align-items: center;
 }
 
 .passwordToggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
   background: transparent;
   border: none;
   cursor: pointer;
-  position: absolute;
-  right: 10px; /* Adjust this value to position the eye icon */
-  top: 40%;
-  transform: translateY(-50%);
+  padding: 0.15rem;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+}
+
+.passwordToggle:hover {
+  background-color: #edf2f7;
 }
 
 .eyeIcon {
-  font-size: 20px; /* Adjust the size of the eye icon */
-  color: #888; /* Set the color of the eye icon */
-  transition: color 0.3s ease; /* Smooth transition effect */
+  font-size: 1.25rem;
+  color: #718096;
 }
 
-.passwordToggle:hover .eyeIcon {
-  color: #333; /* Darker color when the eye icon is hovered */
+/* Sign up link section */
+.signupLinkContainer {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
 }
 
+.paragraph {
+  font-size: 0.875rem;
+  color: #4a5568;
+}
 
+.signupLink {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.signupLink:hover {
+  text-decoration: underline;
+  color: #1e40af;
+}
+
+/* Responsive styles */
 @media (min-width: 768px) {
   .loginContainer {
-    gap: 60px;
+    gap: 4rem;
   }
 
   .loginImage {
     display: block;
     background: url('/public/Images/office.jpg') no-repeat center center/cover;
-    width: 400px;
-    height: 520px;
-    border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    width: 420px;
+    height: 580px;
+    border-radius: 16px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
   }
 }
 
-.signupLinkContainer {
-  text-align: center;
-  margin-top: -40px;
-  
-}
+@media (max-width: 767px) {
+  .loginContainer {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
 
-.paragraph {
-  font-size: 14px;
-  color: #333;
-  font-style: normal;
-}
+  .loginContent {
+    padding-right: 0;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
 
-.signupLink {
-  color: #1e40af;
-  text-decoration: none;
-  font-weight: normal;
-  font-style: normal;
+  .loginForm {
+    padding: 1.75rem;
+  }
 }
-
-.signupLink:hover {
-  text-decoration: underline;
-}
-

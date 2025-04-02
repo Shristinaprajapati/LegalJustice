@@ -32,6 +32,7 @@ const sendEmailRoute = require("./routes/sendDocumentMail");
 const paymentCallbackRouter = require('./routes/paymentCallback');
 
 const notificationRoutes = require("./routes/notificationRoutes");
+const settingsRoutes = require('./routes/settingsRoutes');
 
 
 
@@ -76,6 +77,7 @@ app.use('/payment-callback', paymentCallbackRouter);
 app.use("/api/post", content);  
 
 app.use("/api/notifications", notificationRoutes);
+app.use('/api/settings', settingsRoutes);
 
 // Create an HTTP server using Express app
 const server = http.createServer(app);
@@ -93,6 +95,8 @@ const Notification = require("./models/notificationModdel");
 
 const clients = {}; // To store the clientId and associated socket ID
 
+
+
 io.on('connection', (socket) => {
   console.log('a user connected');
 
@@ -101,6 +105,39 @@ io.on('connection', (socket) => {
     clients[clientId] = socket.id;
     console.log(`Client ${clientId} connected with socket ID: ${socket.id}`);
   });
+
+
+    // Add this new handler for booking notifications
+    socket.on('sendNotification', async (notificationData) => {
+      const { userId, message, type } = notificationData;
+  
+      try {
+        // Save the notification to the database
+        const newNotification = new Notification({
+          clientId: userId,
+          message: message,
+          type: type || 'booking' // Default to 'booking' type if not specified
+        });
+  
+        await newNotification.save();
+        console.log("Booking notification saved to DB");
+  
+        // Check if we have a socket connection for this user
+        if (clients[userId]) {
+          io.to(clients[userId]).emit('receiveNotification', {
+            message: message,
+            type: type || 'booking',
+            timestamp: new Date()
+          });
+          console.log(`Booking notification sent to user ${userId}`);
+        } else {
+          console.log(`User ${userId} is not currently connected`);
+        }
+      } catch (error) {
+        console.error('Error handling booking notification:', error);
+      }
+    });
+    
 
   // Listen for the 'sendFormNotification' event from admin side
   socket.on('sendFormNotification', async (notificationData) => {
@@ -134,6 +171,33 @@ io.on('connection', (socket) => {
       }
     } catch (error) {
       console.error('Error saving notification to DB:', error.message);
+    }
+  });
+
+
+  socket.on('sendDocumentNotification', async (notificationData) => {
+    const { clientId, message, timestamp } = notificationData;
+  
+    try {
+      const newNotification = new Notification({
+        clientId,
+        message,
+        timestamp,
+        type: 'document' // serviceId is now optional
+      });
+      
+      await newNotification.save();
+      console.log("Document notification saved to DB");
+  
+      if (clients[clientId]) {
+        io.to(clients[clientId]).emit('receiveNotification', {
+          message,
+          timestamp,
+          type: 'document'
+        });
+      }
+    } catch (error) {
+      console.error('Error handling document notification:', error);
     }
   });
 

@@ -34,6 +34,7 @@ h2 {
 }
 
 .categorySelector button {
+  margin-top: 30px;
   padding: 12px 25px;
   font-size: 1rem;
   background-color: #e9ecef;
@@ -47,7 +48,7 @@ h2 {
 .categorySelector button:hover {
   background-color: #007bff;
   color: white;
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .categorySelector .active {

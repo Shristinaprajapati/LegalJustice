@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { AiOutlineArrowLeft } from "react-icons/ai"; // Importing the back icon
+import { AiOutlineArrowLeft } from "react-icons/ai";
 import JoditEditor from "jodit-react";
 import Sidebar from "../Sidebar";
 import axios from "axios";
@@ -9,15 +9,15 @@ import styles from "./EditDocument.module.css";
 import SendDocumentPopup from "./SendDocument"; 
 
 const EditDocument = () => {
-  
   const location = useLocation();
   const navigate = useNavigate();
   const document = location.state?.document;
   const { email } = location.state || {};
 
   const [content, setContent] = useState(document?.agreementContent || "");
-  const [clientEmail, setClientEmail] = useState(null); // Store fetched email
-  const [showPopup, setShowPopup] = useState(false); // Show/hide popup
+  const [clientEmail, setClientEmail] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [clientID, setClientID] = useState(null);
 
   if (!document) {
     return <p className={styles.noDocument}>No document data found.</p>;
@@ -30,7 +30,7 @@ const EditDocument = () => {
         title: document.title,
         clientId: document.clientId,
         clientName: document.clientName,
-        agreementContent: content, // Send the updated content
+        agreementContent: content,
       };
 
       const response = await axios.post(
@@ -55,15 +55,18 @@ const EditDocument = () => {
   };
 
   const handleSendDocument = () => {
-    const clientEmail = email || document?.clientEmail;
-    if (clientEmail) {
-      setClientEmail(clientEmail);
-      setShowPopup(true); // Show the popup
+    // Use the document's clientId if available, otherwise use the state clientID
+    const currentClientID = document?.clientId || clientID;
+    const currentClientEmail = email || document?.clientEmail;
+    
+    if (currentClientEmail && currentClientID) {
+      setClientEmail(currentClientEmail);
+      setClientID(currentClientID); // Update state if using document's clientId
+      setShowPopup(true);
     } else {
-      alert("Client email not found.");
+      alert("Client email or clientId not found.");
     }
   };
-  
   
   
 
@@ -145,17 +148,16 @@ const EditDocument = () => {
           <h2 className={styles.title}>Edit Document</h2>
         </div>
 
-<div className={styles.documentDetails}>
-  <div className={styles.documentInfo}>
-    <p className={styles.documentText}><strong>Title:</strong> {document.title}</p>
-    <p className={styles.documentText}><strong>Client ID:</strong> {document.clientId}</p>
-    <p className={styles.documentText}><strong>Client Name:</strong> {document.clientName}</p>
-  </div>
-  <button className={styles.sendButton} onClick={handleSendDocument}>
+        <div className={styles.documentDetails}>
+          <div className={styles.documentInfo}>
+            <p className={styles.documentText}><strong>Title:</strong> {document.title}</p>
+            <p className={styles.documentText}><strong>Client ID:</strong> {document.clientId}</p>
+            <p className={styles.documentText}><strong>Client Name:</strong> {document.clientName}</p>
+          </div>
+          <button className={styles.sendButton} onClick={handleSendDocument}>
             Send Document
           </button>
-</div>
-
+        </div>
 
         <div className={styles.editorContainer}>
           <p className={styles.editorLabel}><strong>Agreement Content:</strong></p>
@@ -166,33 +168,27 @@ const EditDocument = () => {
         </div>
 
         <div className={styles.buttonsWrapper}>
-  {/* Save Button Container */}
-  <div className={styles.saveButtonContainer}>
-    <button className={styles.saveButton} onClick={handleSave}>
-      Save Document
-    </button>
-  </div>
+          <div className={styles.saveButtonContainer}>
+            <button className={styles.saveButton} onClick={handleSave}>
+              Save Document
+            </button>
+          </div>
 
-  {/* Convert to PDF Button Container */}
-  <div className={styles.convertButtonContainer}>
-    <button className={styles.convertButton} onClick={handleConvertToPDF}>
-      Convert to PDF
-    </button>
-  </div>
-</div>
-
+          <div className={styles.convertButtonContainer}>
+            <button className={styles.convertButton} onClick={handleConvertToPDF}>
+              Convert to PDF
+            </button>
+          </div>
+        </div>
       </div>
-      {showPopup && clientEmail && (
-  <SendDocumentPopup 
-    email={clientEmail} 
-    onClose={() => setShowPopup(false)} 
-  />
-)}
 
-
-
-
-
+      {showPopup && clientEmail && clientID && (
+        <SendDocumentPopup 
+          email={clientEmail}
+          clientId={clientID} // Pass the clientID to the popup
+          onClose={() => setShowPopup(false)} 
+        />
+      )}
     </div>
   );
 };

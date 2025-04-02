@@ -4,19 +4,20 @@ import axios from 'axios';
 import styles from './booking.module.css';
 import AdminCalendar from './AdminCalendar';
 import BookingPopup from './bookingpopup';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:8080'); // Connect to your socket.io server
 
 const Booking = () => {
   const [bookings, setBookings] = useState({});
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeBookingId, setActiveBookingId] = useState(null); // For tracking the booking with active "dots menu"
-  const [refreshCalendar, setRefreshCalendar] = useState(false); // New state for refresh
-
-   // New state for popup
-   const [showPopup, setShowPopup] = useState(false);
-   const [selectedBookingId, setSelectedBookingId] = useState(null);
-   const [popupCategory, setPopupCategory] = useState('');
+  const [activeBookingId, setActiveBookingId] = useState(null);
+  const [refreshCalendar, setRefreshCalendar] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedBookingId, setSelectedBookingId] = useState(null);
+  const [popupCategory, setPopupCategory] = useState('');
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -43,13 +44,17 @@ const Booking = () => {
     fetchBookings();
   }, []);
 
+  const sendNotification = (clientId, message) => {
+    socket.emit('sendNotification', {
+      userId: clientId,
+      message: message,
+      type: 'booking'
+    });
+  };
 
   const handleStatusChange = async (_id, newStatus, category, bypassPopup = false) => {
-    console.log(`Category: ${category}, New Status: ${newStatus}`);  // Debug log
     try {
-      // Ensure _id is the correct booking ID, not the whole booking object
-      const bookingId = _id._id || _id;  // If _id is an object, extract the actual ID
-  
+      const bookingId = _id._id || _id;
       const response = await axios.patch(`http://localhost:8080/api/bookings/${bookingId}`, { status: newStatus });
   
       if (response.status === 200) {
@@ -60,34 +65,43 @@ const Booking = () => {
           ),
         }));
         setRefreshCalendar((prev) => !prev);
+
+        // Find the updated booking to get client details
+        const updatedBooking = bookings[category].find(booking => booking._id === bookingId);
+        
+        if (updatedBooking && updatedBooking.clientId) {
+          const serviceTitle = updatedBooking.serviceId?.title || 'your service';
+          
+          if (newStatus === 'Confirmed') {
+            sendNotification(
+              updatedBooking.clientId._id || updatedBooking.clientId,
+              `Your booking has been confirmed for ${serviceTitle}`
+            );
+          } else if (newStatus === 'Pending') {
+            sendNotification(
+              updatedBooking.clientId._id || updatedBooking.clientId,
+              `Your booking has been cancelled for ${serviceTitle}`
+            );
+          }
+        }
+  
+        if (category === 'documentation' && newStatus === 'Confirmed' && !bypassPopup) {
+          setSelectedBookingId(updatedBooking);
+          setShowPopup(true);
+          setPopupCategory(category);
+        }
       } else {
         throw new Error(response.data.message || 'Failed to update status');
-      }
-  
-      if (category === 'documentation' && newStatus === 'Confirmed' && !bypassPopup) {
-        // Find the booking data using the bookingId
-        const bookingData = bookings[category].find((booking) => booking._id === bookingId);
-        
-        // Set the full booking data in state
-        setSelectedBookingId(bookingData);  // Pass the entire booking data
-  
-        // Show the popup
-        setShowPopup(true);
-        setPopupCategory(category);
       }
     } catch (err) {
       setError(`Error updating booking status: ${err.message}`);
     }
   };
-  
-  
-  
 
   const handlePopupConfirm = () => {
     handleStatusChange(selectedBookingId, 'Confirmed', popupCategory, true);
     setShowPopup(false);
   };
-  
 
   const handlePopupCancel = () => {
     setShowPopup(false);
@@ -101,7 +115,7 @@ const Booking = () => {
           ...prevBookings,
           [category]: prevBookings[category].filter((booking) => booking._id !== _id),
         }));
-        setActiveBookingId(null); // Hide the delete button after successful delete
+        setActiveBookingId(null);
       } else {
         throw new Error('Failed to delete booking');
       }
@@ -118,10 +132,8 @@ const Booking = () => {
   const handleTabClick = (category) => setSelectedCategory(category);
 
   const handleDotsClick = (bookingId) => {
-    setActiveBookingId((prevId) => (prevId === bookingId ? null : bookingId)); // Toggle visibility of delete button
+    setActiveBookingId((prevId) => (prevId === bookingId ? null : bookingId));
   };
-
-  
 
   if (loading) return <div>Loading bookings...</div>;
 
@@ -130,6 +142,7 @@ const Booking = () => {
       <Sidebar />
 
       <div className={styles.content}>
+
         <h2 className={styles.pageTitle}>Booking Management</h2>
 
         {error && <div className={styles.errorMessage}>{error}</div>}
@@ -150,6 +163,18 @@ const Booking = () => {
               {category}
             </div>
           ))}
+        </div>
+
+        <div className={styles.calendarSection}>
+          {(selectedCategory === "Consulting" || selectedCategory === "All") && (
+            <AdminCalendar refreshCalendar={refreshCalendar} />
+          )}
+          <BookingPopup 
+            show={showPopup} 
+            onConfirm={handlePopupConfirm} 
+            onCancel={handlePopupCancel} 
+            bookingData={selectedBookingId}
+          />
         </div>
 
         <div className={styles.bookingList}>
@@ -314,21 +339,7 @@ const Booking = () => {
             )}
         </div>
 
-        <div className={styles.calendarSection}>
-        {(selectedCategory === "Consulting" || selectedCategory === "All") && (
-            <AdminCalendar refreshCalendar={refreshCalendar} />
-          )}
-
-  <BookingPopup 
-  show={showPopup} 
-  onConfirm={handlePopupConfirm} 
-  onCancel={handlePopupCancel} 
-  bookingData={selectedBookingId} // Pass the selected booking data
-/>
-
-      
-</div>
-
+    
       </div>
     </div>
   );

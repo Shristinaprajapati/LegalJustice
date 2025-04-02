@@ -65,12 +65,7 @@ const Sidebar = () => {
               Dashboard
             </Link>
           </li>
-          <li>
-            <Link to="/services" className={getLinkClass('/services')}>
-              <Icon icon="bx:bxs-server" className={styles.icon} />
-              Services
-            </Link>
-          </li>
+
           <li>
             <Link to="/booking" className={getLinkClass('/booking')}>
               <Icon icon="fa-solid:book" className={styles.icon} />
@@ -133,6 +128,12 @@ const Sidebar = () => {
               Blog Post
             </Link>
           </li>
+          <li>
+            <Link to="/services" className={getLinkClass('/services')}>
+              <Icon icon="bx:bxs-server" className={styles.icon} />
+              Services
+            </Link>
+          </li>
 
           <li>
             <Link to="/admin/payment-history" className={getLinkClass('/admin/payment-history')}>
@@ -153,6 +154,12 @@ const Sidebar = () => {
               Post Contents
             </Link>
           </li>
+          <li>
+  <Link to="/settings" className={getLinkClass('/settings')}>
+    <Icon icon="material-symbols:settings" className={styles.icon} />
+    Settings
+  </Link>
+</li>
 
           <li>
             <Link 

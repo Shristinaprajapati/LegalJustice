@@ -1,12 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import styles from "./SendDocument.module.css";
+import io from 'socket.io-client';
 
-const SendDocumentPopup = ({ email, onClose }) => {
+const SendDocumentPopup = ({ email, onClose, clientId }) => {
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
+  const socket = useRef(null);
+
+  useEffect(() => {
+    // Initialize socket connection
+    socket.current = io('http://localhost:8080');
+
+    // Cleanup on unmount
+    return () => {
+      if (socket.current) {
+        socket.current.disconnect();
+      }
+    };
+  }, []);
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -28,7 +42,6 @@ const SendDocumentPopup = ({ email, onClose }) => {
 
     setLoading(true);
     try {
-      // Updated URL to match the backend route
       const response = await axios.post("http://localhost:8080/sendemail/mail", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -36,6 +49,17 @@ const SendDocumentPopup = ({ email, onClose }) => {
       });
 
       if (response.status === 200) {
+        console.log(clientId)
+        // Send socket notification upon successful email
+        if (socket.current && clientId) {
+          const notificationData = {
+            message: `The document has been sent to your email (${email}). Please check your inbox.`,
+            clientId: clientId, // Target specific client
+            timestamp: new Date().toISOString()
+          };
+          socket.current.emit('sendDocumentNotification', notificationData);
+        }
+
         alert("Email sent successfully!");
         onClose();
       } else {

@@ -103,7 +103,7 @@
     padding: 12px 20px;
     font-size: 16px;
     font-weight: 600;
-    background: #28a745;
+    background: #4169E1;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -113,7 +113,7 @@
   }
   
   .sendButton:hover {
-    background: #218838;
+    background: #4169E1;
   }
   
   .sendButton:disabled {

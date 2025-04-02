@@ -47,6 +47,10 @@ import AdminBlogList from "./components/Admin/Blog/AdminBlogList.jsx";
 import BlogDetail from "./components/Admin/Blog/BlogDetail.jsx";
 import PaymentSuccessful from "./components/PaymentSuccessful.jsx";
 import PostContent from "./components/Admin/PostContent/PostContent.jsx";
+import Settings from "./components/Admin/Settings.jsx";
+import Aboutus from "./components/AboutUs.jsx";
+
+import Loader from "./components/Loader.jsx";
 
 
 
@@ -116,6 +120,11 @@ function App() {
 
 
         <Route path ="/booking-pop" element={<BookingPop/>}/>
+        <Route path ="/loader" element={<Loader/>}/>
+        <Route path ="/settings" element={<Settings/>}/>
+        <Route path ="/aboutus" element={<Aboutus/>}/>
+
+
 
         
       </Routes>

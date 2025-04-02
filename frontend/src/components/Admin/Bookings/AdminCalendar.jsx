@@ -85,7 +85,6 @@ const AdminCalendar = ({ refreshCalendar }) => {
 
   return (
     <div className={styles.calendarContainer}>
-      <h2>Admin Calendar</h2>
       <Calendar
         onChange={handleDateChange}
         value={selectedDate}
