@@ -190,51 +190,66 @@ const MarriageProofDocument = ({
   };
 
   return (
-    <div>
-      {/* Display Editable Agreement */}
+    <div
+    style={{
+      fontFamily: "Arial, sans-serif",
+      minHeight: "100vh",
+    }}
+  >
+  
+    {/* Editable Agreement Section */}
+    <div
+      style={{
+        marginTop: "20px",
+        borderRadius: "8px",
+        marginLeft: "0px",
+        maxWidth: "100rem",
+      }}
+    >
+      <JoditEditor
+        ref={editor}
+        value={filledAgreement}
+        config={{
+          readonly: false,
+          height: 800,
+          width: "100%",
+          toolbarSticky: false,
+          iframe: false,
+          style: false,
+          defaultFontSizePoints: "12",
+          defaultFont: "Arial",
+        }}
+      />
+  
+      {/* Action Buttons */}
       <div
         style={{
-          border: "1px solid #ccc",
-          padding: "20px",
           marginTop: "20px",
-          borderRadius: "10px",
-          backgroundColor: "#f9f9f9",
-          boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
-          marginLeft: "250px",
+          display: "flex",
+          justifyContent: "center",
+          gap: "15px",
         }}
       >
-        <JoditEditor
-          ref={editor}
-          value={filledAgreement}
-          config={{
-            readonly: false, // Allow editing
-            height: 500,
-            toolbarSticky: false,
-            iframe: false, // Use direct content without iframe isolation
-            style: false, // Allow inline styles
-            defaultFontSizePoints: "12",
-            defaultFont: "Arial",
+        <button
+          onClick={handleSaveContent}
+          style={{
+            padding: "12px 20px",
+            backgroundColor: "#007BFF",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            fontSize: "16px",
+            transition: "background 0.3s",
           }}
-        />
-
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <button
-            onClick={handleSaveContent}
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "#4CAF50",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              marginRight: "10px",
-            }}
-          >
-            Save Changes
-          </button>
-        </div>
+          onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+          onMouseOut={(e) => (e.target.style.backgroundColor = "#007BFF")}
+        >
+          Save Changes
+        </button>
       </div>
     </div>
+  </div>
   );
 };
 

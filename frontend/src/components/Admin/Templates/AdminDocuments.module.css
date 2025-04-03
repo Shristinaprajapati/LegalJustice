@@ -1,17 +1,21 @@
-/* AdminDocuments.module.css */
+/* Main Layout */
 .wrapper {
   display: flex;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #f8f9fa;
 }
 
+.sidebarContainer {
+  width: 250px;
+  flex-shrink: 0;
+}
+
 .sidebarContainer a:hover {
-  background-color: #007bff;
+  background-color: #4169E1;
 }
 
 .content {
-  margin-left: 250px;
   flex-grow: 1;
   padding: 30px;
   overflow-y: auto;
@@ -19,132 +23,186 @@
 }
 
 h2 {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 30px;
-  margin-left: 0px;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
 }
 
+/* Search Container */
+.searchContainer {
+  margin-bottom: 1.5rem;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 500px;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #4169E1;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Category Selector */
 .categorySelector {
   display: flex;
-  justify-content: flex-start;
-  gap: 20px;
-  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .categorySelector button {
-  margin-top: 30px;
-  padding: 12px 25px;
-  font-size: 1rem;
-  background-color: #e9ecef;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  color: #495057;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  background-color: #e2e8f0;
+  border: none;
+  border-radius: 9999px;
+  color: #334155;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .categorySelector button:hover {
-  background-color: #007bff;
-  color: white;
-  transform: scale(1.02);
+  background-color: #cbd5e1;
 }
 
 .categorySelector .active {
-  background-color: #007bff;
+  background-color: #4169E1;
   color: white;
 }
 
-.documentGrid {
+/* Documents Grid */
+.documentsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 30px;
-  margin-top: 20px;
-  width: 100%;  /* Ensure the grid spans the full width */
-  box-sizing: border-box;  /* Make sure padding and gap don't affect the width */
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
 }
 
+/* Document Card */
 .documentCard {
   background-color: white;
-  padding: 25px;
-  border-radius: 14px;
-  box-shadow: 0 6px 15px rgba(61, 61, 61, 0.1);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  width: 100%;  /* Make sure each card fills the grid cell */
-  box-sizing: border-box;
+  align-items: center;
+  text-align: center;
 }
 
 .documentCard:hover {
   transform: translateY(-1px);
-  box-shadow: 0 7px 15px rgba(66, 66, 66, 0.15);
+  box-shadow: 0 10px 15px -3px rgba(135, 135, 135, 0.1), 0 4px 6px -2px rgba(131, 131, 131, 0.05);
+  border-color: #cbd5e1;
 }
 
-.documentCard span {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #333;
+.cardIcon {
+  margin-bottom: 1rem;
+  color: #4169E1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.documentCard button {
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  margin-top: 15px;
+.cardIcon svg {
+  width: 36px;
+  height: 36px;
 }
 
-.documentCard button:hover {
-  background-color: #218838;
-  transform: scale(1.05);
+.fileTypeBadge {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  background-color: #e0e7ff;
+  color: #4169E1;
+  border-radius: 9999px;
 }
 
-.docName {
-  margin-bottom: 15px;
-}
-
-.documentInfo p {
+.cardContent {
   width: 100%;
-  margin-top: 5px;
-  padding: 5px;
-  background-color: transparent; /* Removed background color */
-  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.cardTitle {
+  color: #1e293b;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  
+}
+
+.cardMeta {
+  color: #64748b;
+  font-size: 0.8125rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
   text-align: left;
 }
 
-.documentInfo p {
-  margin: 5px 0;
-  font-size: 14px; /* Increased font size to 14px */
-  color: #333;  /* Ensuring it's readable */
+/* Edit Icon Button */
+.editIconButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.documentInfo .value {
-  font-size: 14px; /* Increased font size to 14px */
-  color: black;
+.editIconButton:hover {
+  background-color: #f1f5f9;
+  color: #4169E1;
 }
 
+.editIcon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Empty State */
+.emptyState {
+  color: #64748b;
+  padding: 2rem;
+  text-align: center;
+  background-color: white;
+  border-radius: 0.75rem;
+  border: 1px dashed #e2e8f0;
+  grid-column: 1 / -1;
+}
+
+/* Error Message */
 .errorMessage {
-  color: #ff4d4d;
+  color: #ef4444;
   font-size: 1rem;
   text-align: center;
-  margin-top: 20px;
+  margin-top: 1rem;
+  grid-column: 1 / -1;
 }
 
-p {
-  font-size: 1.2rem;
-  color: #6c757d;
-  text-align: center;
-  font-style: italic;
-  margin-top: 50px;
-}
-
+/* Responsive Design */
 @media (max-width: 768px) {
   .wrapper {
     flex-direction: column;
@@ -153,24 +211,13 @@ p {
   .sidebarContainer {
     width: 100%;
     height: auto;
-    padding: 15px;
   }
 
   .content {
-    padding: 20px;
+    padding: 1.5rem;
   }
 
-  .categorySelector {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .documentCard {
-    padding: 20px;
-  }
-
-  .documentGrid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px; /* Reduce gap for better spacing */
+  .documentsGrid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
 }

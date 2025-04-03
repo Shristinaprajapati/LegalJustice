@@ -448,7 +448,7 @@
 
 .notificationHeader {
   padding: 16px 20px;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e3e4e6;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -473,7 +473,7 @@
 
 .notificationItem {
   padding: 16px 20px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid #e7e7e7;
   transition: background 0.15s ease;
 }
 
@@ -575,12 +575,12 @@
 }
 
 .notificationList::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: white;
   border-radius: 3px;
 }
 
 .notificationList::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: white;
   border-radius: 3px;
 }
 
@@ -597,12 +597,11 @@
   background-color: white;
   flex: 1;
   overflow-y: auto;
-  padding-right: 8px; /* Prevents scrollbar from overlapping content */
-  max-height: calc(100vh); /* Adjust based on your header height */
+  padding-right: 8px; 
+  max-height: calc(100vh); 
 }
 
 .fullNotificationList {
-  
   list-style: none;
   padding: 0;
   margin: 0;
@@ -870,70 +869,111 @@
   font-size: 14px;
   color: #555;
 }
+/* .section {
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+} */
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16px;
+  text-align: center;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 8px;
+}
 
 .bookingList {
-  margin-top: 24px;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  max-height: 660px;
+  gap: 12px;
+  max-height: 600px;
   overflow-y: auto;
-  scrollbar-width: none; 
+  padding-right: 5px;
 }
 
 .bookingList::-webkit-scrollbar {
-  display: none; 
+  width: 0px; /* Makes scrollbar invisible */
 }
-
 
 .bookingCard {
   background: white;
-  padding: 12px;
+  padding: 16px;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
- 
+  transition: transform 0.2s ease-in-out;
+  border: 1px solid #e0e0e0;
+}
+
+.bookingCard:hover {
+  transform: scale(1);
 }
 
 .serviceTitle {
-  font-size: 18px;
-  font-weight: bold;
-  text-align: left;
-  margin-bottom: -26px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 18px;
 }
 
-.bookingDate, .bookingTime {
+.bookingDate,
+.bookingTime {
   display: flex;
   align-items: center;
-  gap: 5px;
-  color: gray;
+  gap: 6px;
   font-size: 14px;
-  margin-bottom: -30px;
+  color: #555;
+  margin-bottom: 18px;
 }
 
 .bookingStatus {
   font-size: 14px;
-  font-weight: bold;
-  padding: 5px 8px;
+  font-weight: 600;
+  padding: 6px 12px;
   border-radius: 5px;
   width: fit-content;
+  text-transform: capitalize;
+  margin-bottom: 5px;
+
 }
 
 .bookingStatus.pending {
-  background-color: #ffeeba;
+  background-color: #fff3cd;
   color: #856404;
 }
 
 .bookingStatus.confirmed {
-  background-color: #c3e6cb;
+  background-color: #d4edda;
   color: #155724;
 }
 
 .bookingStatus.cancelled {
-  background-color: #f5c6cb;
+  background-color: #f8d7da;
   color: #721c24;
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .bookingCard {
+    padding: 12px;
+  }
+
+  .serviceTitle {
+    font-size: 15px;
+  }
+
+  .bookingDate,
+  .bookingTime {
+    font-size: 13px;
+  }
+}
+
+
 
 
 

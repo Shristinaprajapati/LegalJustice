@@ -124,7 +124,7 @@ const Header = () => {
           <li><Link to="/" onClick={() => setIsOpen(false)}>Home</Link></li>
           <li><Link to="/service" onClick={() => setIsOpen(false)}>Services</Link></li>
           <li><Link to="/practice-areas" onClick={() => setIsOpen(false)}>Practice Areas</Link></li>
-          <li><Link to="/about" onClick={() => setIsOpen(false)}>About</Link></li>
+          <li><Link to="/aboutus" onClick={() => setIsOpen(false)}>About</Link></li>
           <li><Link to="/blog" onClick={() => setIsOpen(false)}>Blog</Link></li>
           <li><Link to="/contact" onClick={() => setIsOpen(false)}>Contact</Link></li>
         </ul>
@@ -283,39 +283,40 @@ const Header = () => {
                   )}
 
                   {activeTab === "booking" && (
-                    <div className={styles.section}>
-                      <h2 className={styles.sectionTitle}>Your Bookings</h2>
-                      {loading ? (
-                        <p className={styles.loading}>Loading bookings...</p>
-                      ) : error ? (
-                        <p className={styles.error}>{error}</p>
-                      ) : bookings.length === 0 ? (
-                        <p className={styles.noBookings}>No bookings found.</p>
-                      ) : (
-                        <div className={styles.bookingList}>
-                          {bookings.map((booking) => (
-                            <div key={booking._id} className={styles.bookingCard}>
-                              <h3 className={styles.serviceTitle}>
-                                {booking.service?.title || "Consulting Appointment"}
-                              </h3>
-                              {booking.date && (
-                                <p className={styles.bookingDate}>
-                                  <Icon icon="mdi:calendar-month-outline" /> {new Date(booking.date).toDateString()}
-                                </p>
-                              )}
-                              {booking.timeSlot && (
-                                <p className={styles.bookingTime}>
-                                  <Icon icon="mdi:clock-outline" /> {booking.timeSlot}
-                                </p>
-                              )}
-                              <p className={`${styles.bookingStatus} ${styles[booking.status.toLowerCase()]}`}>
-                                {booking.status}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+   <div className={styles.section}>
+   <h2 className={styles.sectionTitle}>Your Bookings</h2>
+   {loading ? (
+     <p className={styles.loading}>Loading bookings...</p>
+   ) : error ? (
+     <p className={styles.error}>{error}</p>
+   ) : bookings.length === 0 ? (
+     <p className={styles.noBookings}>No bookings found.</p>
+   ) : (
+     <div className={styles.bookingList}>
+       {bookings.map((booking) => (
+         <div key={booking._id} className={styles.bookingCard}>
+           <h3 className={styles.serviceTitle}>
+             {booking.service?.title || "Consulting Appointment"}
+           </h3>
+           {booking.date && (
+             <p className={styles.bookingDate}>
+               <Icon icon="mdi:calendar-month-outline" /> {new Date(booking.date).toDateString()}
+             </p>
+           )}
+           {booking.timeSlot && (
+             <p className={styles.bookingTime}>
+               <Icon icon="mdi:clock-outline" /> {booking.timeSlot}
+             </p>
+           )}
+           <p className={`${styles.bookingStatus} ${styles[booking.status.toLowerCase()]}`}>
+             {booking.status}
+           </p>
+         </div>
+       ))}
+     </div>
+   )}
+ </div>
+ 
                   )}
 
                   {activeTab === "payment" && (

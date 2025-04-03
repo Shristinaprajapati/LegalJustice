@@ -3,6 +3,7 @@ import Sidebar from "../Sidebar";
 import styles from "./AdminDocuments.module.css";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { FiEdit2 } from 'react-icons/fi';
 
 const AdminDocument = () => {
   const [documents, setDocuments] = useState([]);
@@ -135,27 +136,46 @@ const AdminDocument = () => {
           ))}
         </div>
         
-        <div className={styles.documentGrid}>
+        <div className={styles.documentsGrid}>
           {loading && <p>Loading documents...</p>}
           {error && <p className={styles.errorMessage}>{error}</p>}
           
           {!loading && filteredDocuments.length === 0 && (
-            <p>No documents found matching your criteria.</p>
+            <div className={styles.emptyState}>No documents found matching your criteria.</div>
           )}
           
           {filteredDocuments.map((doc) => (
             <div key={doc._id} className={styles.documentCard}>
-              <span className={styles.docName}>{doc.title}</span>
-              <div className={styles.documentInfo}>
-                <p><strong>Client ID:</strong> {doc.clientId}</p>
-                <p><strong>Client Name:</strong> {doc.clientName || 'N/A'}</p>
-                {/* <p><strong>Category:</strong> {doc.category || 'Uncategorized'}</p> */}
+              <div className={styles.cardIcon}>
+              <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="24"
+    height="24"
+  >
+    <path
+      fill="#4A90E2"
+      d="M6 2C4.9 2 4 2.9 4 4v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6H6z"
+    />
+    <path fill="#FFF" d="M14 3.5V9h5.5L14 3.5z" />
+    <rect x="7" y="12" width="10" height="2" rx="1" fill="#FFF" />
+    <rect x="7" y="16" width="7" height="2" rx="1" fill="#FFF" />
+  </svg>
+                <span className={styles.fileTypeBadge}>{doc.title.split(' ')[0]}</span>
+              </div>
+              <div className={styles.cardContent}>
+                <div className={styles.cardTitle}>{doc.title}</div>
+                <div className={styles.cardMeta}>
+                  <span>Client: {doc.clientName || 'N/A'}</span>
+                  <span>ID: {doc.clientId}</span>
+                </div>
               </div>
               <button 
                 onClick={() => handleEditDocument(doc)}
-                className={styles.editButton} 
+                className={styles.editIconButton} 
+                aria-label="Edit document"
               >
-                Edit
+                <FiEdit2 className={styles.editIcon} />
               </button>
             </div>
           ))}

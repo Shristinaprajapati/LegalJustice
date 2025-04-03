@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import RentalTemplate from "./RentalTemplate"; // Import the RentalTemplate component
+import RentalTemplate from "./RentalTemplate";
 import Sidebar from '../Sidebar';
-import styles from './ClientCards.module.css'; // Reuse the same styles or create a new one
+import styles from './ClientCards.module.css';
+import { FiArrowLeft } from 'react-icons/fi';
 
 const RentalCard = () => {
   const [rentalAgreements, setRentalAgreements] = useState([]);
@@ -10,18 +11,17 @@ const RentalCard = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showDocument, setShowDocument] = useState(false);
 
-  // Fetch all rental agreements from the backend
   useEffect(() => {
     const fetchRentalAgreements = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/rental/rental-agreements");
-        setRentalAgreements(response.data); // Assuming the response returns an array of rental agreements
+        setRentalAgreements(response.data);
       } catch (err) {
         setError("Failed to load rental agreements.");
       }
     };
-
     fetchRentalAgreements();
   }, []);
 
@@ -29,19 +29,13 @@ const RentalCard = () => {
     setLoading(true);
     setError(null);
 
-    // Log clientId when the button is clicked
-    console.log("Selected Client ID:", clientId);
-
     const fetchAgreementData = async () => {
       try {
         const response = await axios.get(`http://localhost:8080/api/rental/rental-agreements/${clientId}`);
         
-        // Log the fetched data
-        console.log("Fetched Rental Agreement Data:", response.data);
-
-        // Check if there's any data and set the first item of the array
         if (response.data && response.data.length > 0) {
-          setSelectedAgreement(response.data[0]); // Access the first agreement data in the array
+          setSelectedAgreement(response.data[0]);
+          setShowDocument(true);
         } else {
           setError("No rental agreement data found.");
         }
@@ -55,6 +49,11 @@ const RentalCard = () => {
     fetchAgreementData();
   };
 
+  const handleBackClick = () => {
+    setShowDocument(false);
+    setSelectedAgreement(null);
+  };
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
@@ -65,70 +64,80 @@ const RentalCard = () => {
   );
 
   return (
-    <div className={styles.maindiv}>
+    <div className={styles.container}>
       <Sidebar />
-      <h1 className={styles.divorceheading}>Rental Agreements</h1>
+      <div className={styles.content}>
+        {!showDocument ? (
+          <>
+            <div className={styles.header}>
+              <h1>Rental Agreements</h1>
+              <div className={styles.searchContainer}>
+                <input
+                  type="text"
+                  placeholder="Search by Name or ID"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+              </div>
+            </div>
 
-      {/* Search Bar in the Right Section */}
-      <div className={styles.searchContainer}>
-        <input
-          type="text"
-          className={styles.searchBar}
-          placeholder="Search by Name or ID"
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-      </div>
+            <div className={styles.clientCardsContainer}>
+              {filteredAgreements.map((agreement) => (
+                <div key={agreement._id} className={styles.clientCard}>
+                  <div className={styles.cardHeader}>
+                    <h3>{agreement.clientName}</h3>
+                    <p>Client ID: {agreement.clientId}</p>
+                  </div>
+                  <button
+                    onClick={() => handleCreateDocument(agreement.clientId)}
+                    className={styles.viewButton}
+                  >
+                    View Agreement
+                  </button>
+                </div>
+              ))}
+            </div>
 
-      <div className={styles.clientCardsContainer}>
-        {filteredAgreements.map((agreement) => (
-          <div key={agreement._id} className={styles.clientCard}>
-            <h3>{agreement.clientName}</h3>
-            <p className={styles.clientIdStyle}>Client ID: {agreement.clientId}</p>
-            <button
-              onClick={() => handleCreateDocument(agreement.clientId)} // Pass the client ID to fetch agreement data
-              className={styles.createDocumentButton}
-            >
-              See Document
+            {loading && <div className={styles.loading}>Loading...</div>}
+            {error && <div className={styles.error}>{error}</div>}
+            {filteredAgreements.length === 0 && !loading && (
+              <div className={styles.empty}>No rental agreements found</div>
+            )}
+          </>
+        ) : (
+          <>
+            <button onClick={handleBackClick} className={styles.backButton}>
+              <FiArrowLeft /> Back to Agreements
             </button>
-          </div>
-        ))}
+            {selectedAgreement && (
+              <RentalTemplate
+                clientName={selectedAgreement.clientName}
+                clientId={selectedAgreement.clientId}
+                landlordName={selectedAgreement.landlordName}
+                tenantName={selectedAgreement.tenantName}
+                propertyAddress={selectedAgreement.propertyAddress}
+                rentalStartDate={selectedAgreement.rentalStartDate}
+                rentalEndDate={selectedAgreement.rentalEndDate}
+                monthlyRent={selectedAgreement.monthlyRent}
+                securityDeposit={selectedAgreement.securityDeposit}
+                leaseTerm={selectedAgreement.leaseTerm}
+                landlordSignature={selectedAgreement.landlordSignature}
+                tenantSignature={selectedAgreement.tenantSignature}
+                witnessSignature={selectedAgreement.witnessSignature}
+                notarySignature={selectedAgreement.notarySignature}
+                landlordContact={selectedAgreement.landlordContact}
+                tenantContact={selectedAgreement.tenantContact}
+                propertyDescription={selectedAgreement.propertyDescription}
+                utilitiesIncluded={selectedAgreement.utilitiesIncluded}
+                lateFeePolicy={selectedAgreement.lateFeePolicy}
+                maintenanceResponsibilities={selectedAgreement.maintenanceResponsibilities}
+                petPolicy={selectedAgreement.petPolicy}
+                terminationClause={selectedAgreement.terminationClause}
+              />
+            )}
+          </>
+        )}
       </div>
-
-      {/* Show loading spinner while fetching agreement data */}
-      {loading && <p className={styles.loadingMessage}>Loading rental agreement data...</p>}
-      {error && <p className={styles.errorMessage}>{error}</p>}
-
-      {/* Pass selected agreement data as props to RentalTemplate */}
-      {selectedAgreement && (
-        <>
-          {/* Render RentalTemplate with the props */}
-          <RentalTemplate
-            clientName={selectedAgreement.clientName}
-            clientId={selectedAgreement.clientId}
-            landlordName={selectedAgreement.landlordName}
-            tenantName={selectedAgreement.tenantName}
-            propertyAddress={selectedAgreement.propertyAddress}
-            rentalStartDate={selectedAgreement.rentalStartDate}
-            rentalEndDate={selectedAgreement.rentalEndDate}
-            monthlyRent={selectedAgreement.monthlyRent}
-            securityDeposit={selectedAgreement.securityDeposit}
-            leaseTerm={selectedAgreement.leaseTerm}
-            landlordSignature={selectedAgreement.landlordSignature}
-            tenantSignature={selectedAgreement.tenantSignature}
-            witnessSignature={selectedAgreement.witnessSignature}
-            notarySignature={selectedAgreement.notarySignature}
-            landlordContact={selectedAgreement.landlordContact}
-            tenantContact={selectedAgreement.tenantContact}
-            propertyDescription={selectedAgreement.propertyDescription}
-            utilitiesIncluded={selectedAgreement.utilitiesIncluded}
-            lateFeePolicy={selectedAgreement.lateFeePolicy}
-            maintenanceResponsibilities={selectedAgreement.maintenanceResponsibilities}
-            petPolicy={selectedAgreement.petPolicy}
-            terminationClause={selectedAgreement.terminationClause}
-          />
-        </>
-      )}
     </div>
   );
 };

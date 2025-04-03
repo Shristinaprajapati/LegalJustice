@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './AdminServices.module.css';
 import Sidebar from '../Sidebar';
-import { FaEdit, FaTrash } from 'react-icons/fa'; // Import icons
+import { FaEdit, FaTrash, FaPlus, FaArrowLeft } from 'react-icons/fa';
 import DivorceAgreementForm from '../htmlTemplates/DivorseAgreementForm';
 import RentalAgreementForm from '../htmlTemplates/RentalAgreementForm';
 import MarriageproofAgreement from '../htmlTemplates/MarriageproofAgreementForm';
@@ -21,6 +21,7 @@ const AdminServices = () => {
   const [editService, setEditService] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -45,6 +46,7 @@ const AdminServices = () => {
       const response = await axios.post('http://localhost:8080/api/services', newService);
       setServices([...services, response.data]);
       setNewService({ title: '', description: '', price: '', category: '', formTemplate: '' });
+      setShowAddForm(false);
     } catch (err) {
       setError('Failed to add service');
     }
@@ -97,165 +99,192 @@ const AdminServices = () => {
     }
   };
 
-  if (loading) return <div>Loading services...</div>;
+  if (loading) return <div className={styles.loading}>Loading services...</div>;
 
   return (
-    <div className={styles.container}>
+    <div className={styles.adminContainer}>
       <Sidebar />
-      <div className={styles.content}>
-        <h2 className={styles.title}>Manage Services</h2>
-        {error && <div className={styles.errorMessage}>{error}</div>}
+      <div className={styles.adminContent}>
+        <h2 className={styles.adminTitle}>Manage Services</h2>
+        {error && <div className={styles.adminErrorMessage}>{error}</div>}
 
-        <div className={styles.servicesList}>
-          <h3>Existing Services</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Price (Rs.)</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {services.map((service) => (
-                <tr key={service._id}>
-                  <td>
-                    {editService?._id === service._id ? (
-                      <input
-                        type="text"
-                        name="title"
-                        value={editService.title}
-                        onChange={handleEditChange}
-                      />
-                    ) : (
-                      service.title
-                    )}
-                  </td>
-                  <td>
-                    {editService?._id === service._id ? (
-                      <textarea
-                        name="description"
-                        value={editService.description}
-                        onChange={handleEditChange}
-                      />
-                    ) : (
-                      service.description
-                    )}
-                  </td>
-                  <td>
-                    {editService?._id === service._id ? (
-                      <input
-                        type="number"
-                        name="price"
-                        value={editService.price}
-                        onChange={handleEditChange}
-                      />
-                    ) : (
-                      service.price
-                    )}
-                  </td>
-                  <td>
-                    {editService?._id === service._id ? (
-                      <button className={styles.saveButton} onClick={handleUpdateService}>
-                        Save
-                      </button>
-                    ) : (
-                      <div className={styles.actions}>
-                        <button
-                          className={styles.editButton}
-                          onClick={() => handleEditClick(service)}
-                        >
-                          <FaEdit /> Edit
-                        </button>
-                        <button
-                          className={styles.deleteButton}
-                          onClick={() => handleDeleteService(service._id)}
-                        >
-                          <FaTrash /> Delete
-                        </button>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className={styles.addServiceForm}>
-          <h3>Add New Service</h3>
-          <input
-            className={styles.input}
-            type="text"
-            name="title"
-            placeholder="Service Title"
-            value={newService.title}
-            onChange={handleInputChange}
-          />
-          <textarea
-            className={styles.textarea}
-            name="description"
-            placeholder="Service Description"
-            value={newService.description}
-            onChange={handleInputChange}
-          />
-          <input
-            className={styles.input}
-            type="number"
-            name="price"
-            placeholder="Price (Rs.)"
-            value={newService.price}
-            onChange={handleInputChange}
-          />
-          <div className={styles.serviceType}>
-            <label>
-              <input
-                type="radio"
-                name="category"
-                value="consulting"
-                checked={newService.category === 'consulting'}
-                onChange={handleInputChange}
-              />
-              Consulting Service
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="category"
-                value="documentation"
-                checked={newService.category === 'documentation'}
-                onChange={handleInputChange}
-              />
-              Documentation Service
-            </label>
-          </div>
-
-          {newService.category === 'documentation' && (
-            <div className={styles.formTemplate}>
-              <label>Select a form template:</label>
-              <select
-                name="formTemplate"
-                value={newService.formTemplate}
-                onChange={handleInputChange}
+        {!showAddForm ? (
+          <>
+            <div className={styles.adminHeaderActions}>
+              <button 
+                className={styles.adminAddButton}
+                onClick={() => setShowAddForm(true)}
               >
-                <option value="">Select a form</option>
-                <option value="form1">Divorce Agreement Form</option>
-                <option value="form2">Form 2</option>
-                <option value="form3">Rental Agreement Form</option>
-                <option value="form4">Marriage Proof Form</option>
-                <option value="form5">Property Transfer Form</option>
-                <option value="form6">Employment Contract Form</option>
-              </select>
+                <FaPlus /> Add New Service
+              </button>
             </div>
-          )}
 
-          {newService.category === 'documentation' && renderFormTemplate()}
+            <div className={styles.adminServicesList}>
+              <table className={styles.adminTable}>
+                <thead>
+                  <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Price (Rs.)</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {services.map((service) => (
+                    <tr key={service._id}>
+                      <td>
+                        {editService?._id === service._id ? (
+                          <input
+                            type="text"
+                            name="title"
+                            value={editService.title}
+                            onChange={handleEditChange}
+                            className={styles.adminInput}
+                          />
+                        ) : (
+                          service.title
+                        )}
+                      </td>
+                      <td>
+                        {editService?._id === service._id ? (
+                          <textarea
+                            name="description"
+                            value={editService.description}
+                            onChange={handleEditChange}
+                            className={styles.adminTextarea}
+                          />
+                        ) : (
+                          service.description
+                        )}
+                      </td>
+                      <td>
+                        {editService?._id === service._id ? (
+                          <input
+                            type="number"
+                            name="price"
+                            value={editService.price}
+                            onChange={handleEditChange}
+                            className={styles.adminInput}
+                          />
+                        ) : (
+                          service.price
+                        )}
+                      </td>
+                      <td>
+                        {editService?._id === service._id ? (
+                          <button className={styles.adminSaveButton} onClick={handleUpdateService}>
+                            Save
+                          </button>
+                        ) : (
+                          <div className={styles.adminActions}>
+                            <button
+                              className={styles.adminEditButton}
+                              onClick={() => handleEditClick(service)}
+                            >
+                              <FaEdit /> Edit
+                            </button>
+                            <button
+                              className={styles.adminDeleteButton}
+                              onClick={() => handleDeleteService(service._id)}
+                            >
+                              <FaTrash /> Delete
+                            </button>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        ) : (
+          <div className={styles.adminFormContainer}>
+            <div className={styles.adminFormHeader}>
+              <button 
+                className={styles.adminBackButton}
+                onClick={() => setShowAddForm(false)}
+              >
+                <FaArrowLeft /> Back to Services
+              </button>
+            </div>
+            
+            <div className={styles.adminFormContent}>
+            <h3>Add New Service</h3>
+              <input
+                className={styles.adminFormInput}
+                type="text"
+                name="title"
+                placeholder="Service Title"
+                value={newService.title}
+                onChange={handleInputChange}
+              />
+              <textarea
+                className={styles.adminFormTextarea}
+                name="description"
+                placeholder="Service Description"
+                value={newService.description}
+                onChange={handleInputChange}
+              />
+              <input
+                className={styles.adminFormInput}
+                type="number"
+                name="price"
+                placeholder="Price (Rs.)"
+                value={newService.price}
+                onChange={handleInputChange}
+              />
+              <div className={styles.adminServiceType}>
+                <label>
+                  <input
+                    type="radio"
+                    name="category"
+                    value="consulting"
+                    checked={newService.category === 'consulting'}
+                    onChange={handleInputChange}
+                  />
+                  Consulting Service
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="category"
+                    value="documentation"
+                    checked={newService.category === 'documentation'}
+                    onChange={handleInputChange}
+                  />
+                  Documentation Service
+                </label>
+              </div>
 
-          <button className={styles.addButton} onClick={handleAddService}>
-            Add Service
-          </button>
-        </div>
+              {newService.category === 'documentation' && (
+                <div className={styles.adminFormTemplate}>
+                  <label>Select a form template:</label>
+                  <select
+                    name="formTemplate"
+                    value={newService.formTemplate}
+                    onChange={handleInputChange}
+                    className={styles.adminFormSelect}
+                  >
+                    <option value="">Select a form</option>
+                    <option value="form1">Divorce Agreement Form</option>
+                    <option value="form2">Partnership Form</option>
+                    <option value="form3">Rental Agreement Form</option>
+                    <option value="form4">Marriage Proof Form</option>
+                    <option value="form5">Property Transfer Form</option>
+                    <option value="form6">Employment Contract Form</option>
+                  </select>
+                </div>
+              )}
+
+              {/* {newService.category === 'documentation' && renderFormTemplate()} */}
+
+              <button className={styles.adminSubmitButton} onClick={handleAddService}>
+                Add Service
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

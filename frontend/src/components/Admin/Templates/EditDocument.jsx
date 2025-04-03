@@ -160,7 +160,7 @@ const EditDocument = () => {
         </div>
 
         <div className={styles.editorContainer}>
-          <p className={styles.editorLabel}><strong>Agreement Content:</strong></p>
+          {/* <p className={styles.editorLabel}><strong>Agreement Content:</strong></p> */}
           <JoditEditor
             value={content}
             onChange={(newContent) => setContent(newContent)}

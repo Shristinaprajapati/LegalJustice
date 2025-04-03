@@ -7,33 +7,27 @@
 }
 
 body {
-  background-color: #f4f7fc;
+  background-color: white;
 }
-
-/* Container for sidebar and content */
-.container {
+.adminContainer {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
-/* Main content area */
-.content {
+.adminContent {
   margin-left: 260px;
   padding: 25px;
   width: calc(100% - 260px);
-  background-color: #f4f7fc;
-  overflow-y: auto;
+  background-color: white;
 }
 
-/* Title */
-.title {
+.adminTitle {
   font-size: 24px;
   color: #2c3e50;
   margin-bottom: 20px;
 }
 
-/* Error Message */
-.errorMessage {
+.adminErrorMessage {
   color: #e74c3c;
   text-align: center;
   font-weight: bold;
@@ -43,67 +37,71 @@ body {
   margin-bottom: 15px;
 }
 
-/* Services List */
-.servicesList {
+.adminHeaderActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.adminAddButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.adminAddButton:hover {
+  background-color: #0056b3;
+}
+
+.adminServicesList {
   margin-bottom: 30px;
   background: white;
-  padding: 25px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.servicesList h3 {
-  color: #2c3e50;
-  margin-bottom: 15px;
-  font-size: 20px;
-}
-
-.servicesList table {
+.adminTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 15px;
 }
 
-.servicesList th,
-.servicesList td {
-  border: 1px solid #ddd;
+.adminTable th,
+.adminTable td {
+  border: 1px solid #e0e0e0;
   padding: 12px 15px;
   text-align: left;
   font-size: 14px;
-  color: #333;
 }
 
-.servicesList th {
-  background-color: #f7f7f7;
-  color: #555;
+.adminTable th {
+  background-color: #f8f9fa;
+  color: #495057;
   font-weight: 600;
 }
 
-.servicesList td {
-  background-color: #fff;
+.adminTable tr:hover {
+  background-color: #f8f9fa;
 }
 
-.servicesList tr:nth-child(even) {
-  background-color: #f9f9f9;
+.adminTable th:last-child,
+.adminTable td:last-child {
+  width: 150px;
 }
 
-.servicesList tr:hover {
-  background-color: #f1f1f1;
-}
-
-.servicesList th:last-child,
-.servicesList td:last-child {
-  width: 150px; /* Fixed width for actions column */
-}
-
-/* Action Buttons */
-.actions {
+.adminActions {
   display: flex;
   gap: 10px;
 }
 
-.editButton,
-.deleteButton {
+.adminEditButton,
+.adminDeleteButton {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -112,161 +110,231 @@ body {
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.editButton {
+.adminEditButton {
   background-color: #28a745;
   color: white;
 }
 
-.editButton:hover {
+.adminEditButton:hover {
   background-color: #218838;
 }
 
-.deleteButton {
+.adminDeleteButton {
   background-color: #dc3545;
   color: white;
 }
 
-.deleteButton:hover {
+.adminDeleteButton:hover {
   background-color: #c82333;
 }
 
-/* Add Service Form */
-.addServiceForm {
-  max-width: 650px;
-  margin: 20px auto;
+.adminFormContainer {
   background: white;
-  padding: 25px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
 }
 
-.addServiceForm h3 {
-  color: #2c3e50;
+.adminFormHeader {
   margin-bottom: 20px;
+}
+
+.adminFormHeader h3 {
+  color: #2c3e50;
   font-size: 20px;
+  text-align: center;
 }
 
-.addServiceForm input,
-.addServiceForm textarea,
-.addServiceForm button {
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  width: 100%;
-  transition: all 0.3s ease-in-out;
-}
-
-.addServiceForm input:focus,
-.addServiceForm textarea:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
-}
-
-.addServiceForm input[type="number"] {
-  max-width: 180px;
-}
-
-.addServiceForm button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-.addServiceForm button:hover {
-  background-color: #0056b3;
-}
-
-/* Radio Buttons Styling */
-.serviceType {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 10px;
-}
-
-.serviceType label {
+.adminBackButton {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.adminBackButton:hover {
+  background-color: #f1f1f1;
+}
+/* Form Container */
+.adminFormContent {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Form Input Fields */
+.adminFormInput {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+.adminFormInput:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+  background-color: #ffffff;
+  outline: none;
+}
+
+/* Textarea */
+.adminFormTextarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 12px 16px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  resize: vertical;
+  transition: all 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+.adminFormTextarea:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+  background-color: #ffffff;
+  outline: none;
+}
+
+/* Radio Buttons */
+.adminServiceType {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 0;
+}
+
+.adminServiceType label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   cursor: pointer;
 }
 
-/* Responsive Design */
+.adminServiceType input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #4a90e2;
+}
+
+/* Select Dropdown */
+.adminFormTemplate {
+  margin-bottom: 1.5rem;
+}
+
+.adminFormTemplate label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.adminFormSelect {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.adminFormSelect:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+  outline: none;
+  background-color: #ffffff;
+}
+
+/* Submit Button */
+.adminSubmitButton {
+  width: 100%;
+  padding: 14px;
+  background-color: #4169E1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.adminSubmitButton:hover {
+  background-color: #3a7bc8;
+}
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
-  .content {
+  .adminFormContent {
+    padding: 1.5rem;
+  }
+  
+  .adminServiceType {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* Input Placeholder Styling */
+.adminFormInput::placeholder,
+.adminFormTextarea::placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+/* Number Input Specific Styling */
+.adminFormInput[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.adminFormInput[type="number"]::-webkit-outer-spin-button,
+.adminFormInput[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.loading {
+  padding: 20px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .adminContent {
     margin-left: 220px;
     width: calc(100% - 220px);
-  }
-
-  .addServiceForm {
-    max-width: 100%;
-    padding: 20px;
-  }
-
-  .servicesList {
-    padding: 20px;
   }
 }
 
 @media (max-width: 576px) {
-  .content {
+  .adminContent {
     margin-left: 200px;
     width: calc(100% - 200px);
     padding: 15px;
   }
 
-  .servicesList th,
-  .servicesList td {
+  .adminTable th,
+  .adminTable td {
     font-size: 14px;
     padding: 10px;
   }
-}
 
-/* Edit Mode Styling */
-.servicesList input[type="text"],
-.servicesList input[type="number"],
-.servicesList textarea {
-  width: 100%;
-  padding: 8px;
-  font-size: 14px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  transition: border-color 0.3s ease;
-}
-
-.servicesList input[type="text"]:focus,
-.servicesList input[type="number"]:focus,
-.servicesList textarea:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
-}
-
-.servicesList textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-/* Save Button in Edit Mode */
-.saveButton {
-  background-color: #28a745;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.saveButton:hover {
-  background-color: #218838;
+  .adminActions {
+    flex-direction: column;
+    gap: 5px;
+  }
 }

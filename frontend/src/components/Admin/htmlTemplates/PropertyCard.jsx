@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import PropertyTransferTemplate from "./PropertytransferTemplate"; 
+import PropertyTransferTemplate from "./PropertytransferTemplate";
 import Sidebar from "../Sidebar";
-import styles from "./ClientCards.module.css"; // Reuse the same styles or create a new CSS file
+import styles from "./ClientCards.module.css";
+import { FiArrowLeft } from 'react-icons/fi';
 
 const PropertyCards = () => {
   const [agreements, setAgreements] = useState([]);
@@ -10,28 +11,23 @@ const PropertyCards = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [showDocument, setShowDocument] = useState(false);
 
-  // Fetch all property transfer agreements from the backend
   useEffect(() => {
     const fetchAgreements = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/propertytransfer/property-transfer-agreement");
-        setAgreements(response.data); // Assuming the response returns an array of agreements
+        setAgreements(response.data);
       } catch (err) {
         setError("Failed to load agreements.");
       }
     };
-
     fetchAgreements();
   }, []);
 
-  // Handle creating/selecting a document
   const handleCreateDocument = (clientId) => {
     setLoading(true);
     setError(null);
-
-    // Log clientId when the button is clicked
-    console.log("Selected Client ID:", clientId);
 
     const fetchAgreementData = async () => {
       try {
@@ -39,12 +35,9 @@ const PropertyCards = () => {
           `http://localhost:8080/api/propertytransfer/property-transfer-agreement/${clientId}`
         );
 
-        // Log the fetched data
-        console.log("Fetched Agreement Data:", response.data);
-
-        // Check if there's any data and set the first item of the array
         if (response.data && response.data.length > 0) {
-          setSelectedAgreement(response.data[0]); // Access the first agreement data in the array
+          setSelectedAgreement(response.data[0]);
+          setShowDocument(true);
         } else {
           setError("No agreement data found.");
         }
@@ -58,12 +51,15 @@ const PropertyCards = () => {
     fetchAgreementData();
   };
 
-  // Handle search input change
+  const handleBackClick = () => {
+    setShowDocument(false);
+    setSelectedAgreement(null);
+  };
+
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  // Filter agreements based on search query
   const filteredAgreements = agreements.filter(
     (agreement) =>
       agreement.clientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -71,64 +67,73 @@ const PropertyCards = () => {
   );
 
   return (
-    <div className={styles.maindiv}>
+    <div className={styles.container}>
       <Sidebar />
-      <h1 className={styles.divorceheading}>Property Transfer Agreements</h1>
+      <div className={styles.content}>
+        {!showDocument ? (
+          <>
+            <div className={styles.header}>
+              <h1>Property Transfer Agreements</h1>
+              <div className={styles.searchContainer}>
+                <input
+                  type="text"
+                  placeholder="Search by Name or ID"
+                  value={searchQuery}
+                  onChange={handleSearchChange}
+                />
+              </div>
+            </div>
 
-      {/* Search Bar */}
-      <div className={styles.searchContainer}>
-        <input
-          type="text"
-          className={styles.searchBar}
-          placeholder="Search by Name or ID"
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-      </div>
+            <div className={styles.clientCardsContainer}>
+              {filteredAgreements.map((agreement) => (
+                <div key={agreement._id} className={styles.clientCard}>
+                  <div className={styles.cardHeader}>
+                    <h3>{agreement.clientName}</h3>
+                    <p>Client ID: {agreement.clientId}</p>
+                  </div>
+                  <button
+                    onClick={() => handleCreateDocument(agreement.clientId)}
+                    className={styles.viewButton}
+                  >
+                    View Agreement
+                  </button>
+                </div>
+              ))}
+            </div>
 
-      {/* Display Property Transfer Agreement Cards */}
-      <div className={styles.clientCardsContainer}>
-        {filteredAgreements.map((agreement) => (
-          <div key={agreement._id} className={styles.clientCard}>
-            <h3>{agreement.clientName}</h3>
-            <p className={styles.clientIdStyle}>Client ID: {agreement.clientId}</p>
-            <button
-              onClick={() => handleCreateDocument(agreement.clientId)} // Pass the client ID to fetch agreement data
-              className={styles.createDocumentButton}
-            >
-              See Document
+            {loading && <div className={styles.loading}>Loading...</div>}
+            {error && <div className={styles.error}>{error}</div>}
+            {filteredAgreements.length === 0 && !loading && (
+              <div className={styles.empty}>No property transfer agreements found</div>
+            )}
+          </>
+        ) : (
+          <>
+            <button onClick={handleBackClick} className={styles.backButton}>
+              <FiArrowLeft /> Back to Agreements
             </button>
-          </div>
-        ))}
+            {selectedAgreement && (
+              <PropertyTransferTemplate
+                clientName={selectedAgreement.clientName}
+                clientId={selectedAgreement.clientId}
+                transferorName={selectedAgreement.transferorName}
+                transfereeName={selectedAgreement.transfereeName}
+                propertyAddress={selectedAgreement.propertyAddress}
+                propertyDescription={selectedAgreement.propertyDescription}
+                transferDate={selectedAgreement.transferDate}
+                considerationAmount={selectedAgreement.considerationAmount}
+                paymentTerms={selectedAgreement.paymentTerms}
+                transferorSignatureDate={selectedAgreement.transferorSignatureDate}
+                transfereeSignatureDate={selectedAgreement.transfereeSignatureDate}
+                witnessSignatureDate={selectedAgreement.witnessSignatureDate}
+                notarySignatureDate={selectedAgreement.notarySignatureDate}
+                jurisdiction={selectedAgreement.jurisdiction}
+                additionalTerms={selectedAgreement.additionalTerms}
+              />
+            )}
+          </>
+        )}
       </div>
-
-      {/* Show loading spinner while fetching agreement data */}
-      {loading && <p className={styles.loadingMessage}>Loading agreement data...</p>}
-      {error && <p className={styles.errorMessage}>{error}</p>}
-
-      {/* Pass selected agreement data as props to PropertyTransferTemplate */}
-      {selectedAgreement && (
-        <>
-          {/* Render PropertyTransferTemplate with the props */}
-          <PropertyTransferTemplate
-            clientName={selectedAgreement.clientName}
-            clientId={selectedAgreement.clientId}
-            transferorName={selectedAgreement.transferorName}
-            transfereeName={selectedAgreement.transfereeName}
-            propertyAddress={selectedAgreement.propertyAddress}
-            propertyDescription={selectedAgreement.propertyDescription}
-            transferDate={selectedAgreement.transferDate}
-            considerationAmount={selectedAgreement.considerationAmount}
-            paymentTerms={selectedAgreement.paymentTerms}
-            transferorSignatureDate={selectedAgreement.transferorSignatureDate}
-            transfereeSignatureDate={selectedAgreement.transfereeSignatureDate}
-            witnessSignatureDate={selectedAgreement.witnessSignatureDate}
-            notarySignatureDate={selectedAgreement.notarySignatureDate}
-            jurisdiction={selectedAgreement.jurisdiction}
-            additionalTerms={selectedAgreement.additionalTerms}
-          />
-        </>
-      )}
     </div>
   );
 };
