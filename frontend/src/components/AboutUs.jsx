@@ -56,7 +56,7 @@ const AboutUs = () => {
             </p>
           </div>
           <div className={styles.aboutImage}>
-            <img src="/public/Images/hero1.png" alt="Law firm office" />
+          <img src="/Images/hero3.png" alt="office2" />
           </div>
         </div>
       </section>
@@ -113,7 +113,7 @@ const AboutUs = () => {
       </section>
 
       {/* Contact Section */}
-      <section className={styles.contactSection}>
+      <secti  on className={styles.contactSection}>
         <div className={styles.container}>
           <div className={styles.contactInfo}>
             <h2>Contact Us</h2>
@@ -145,7 +145,7 @@ const AboutUs = () => {
             )}
           </div>
         </div>
-      </section>
+      </secti>
     </div>
   );
 };

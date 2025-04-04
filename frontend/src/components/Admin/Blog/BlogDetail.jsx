@@ -55,9 +55,15 @@ const BlogDetail = () => {
           <Icon icon="mdi:arrow-left" className={styles.icon} />
         </button>
         {!isEditing && (
-          <button className={styles.editButton} onClick={handleEditClick}>
-            Edit
-          </button>
+          <button
+          onClick={handleEditClick}
+          className={styles.editButton}
+        >
+          <Icon icon="mdi:pencil" /> Edit
+        </button>
+        
+
+          
         )}
       </div>
 

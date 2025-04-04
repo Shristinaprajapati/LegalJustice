@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
-import { FaDollarSign, FaUsers, FaTasks, FaBalanceScale } from "react-icons/fa";
+import { FaDollarSign, FaUsers, FaTasks, FaBalanceScale, FaQuoteLeft } from "react-icons/fa";
 import axios from "axios";
 import styles from "./AdminDashboard.module.css";
+import { Link, useLocation } from 'react-router-dom';
+import { Icon } from '@iconify/react';
+
 
 const AdminDashboard = () => {
   const [userCount, setUserCount] = useState(null);
   const [bookingCount, setBookingCount] = useState(null);
+  const location = useLocation();
 
   // Fetch user count from the API
   useEffect(() => {
@@ -35,6 +39,10 @@ const AdminDashboard = () => {
 
     fetchBookingCount();
   }, []);
+
+  const getLinkClass = (path) => {
+    return location.pathname === path ? `${styles.link} ${styles.active}` : styles.link;
+  };
 
   return (
     <div className={styles.dashboardContainer}>
@@ -82,6 +90,34 @@ const AdminDashboard = () => {
               <p>15k</p>
             </div>
           </div>
+        </div>
+
+        {/* Separator Line */}
+        <div className={styles.separator}></div>
+
+        {/* Navigation Cards Row */}
+        <div className={styles.navCards}>
+          <Link to="/admin/post" className={styles.navCard}>
+            <div className={`${styles.iconWrapper} ${styles.postIcon}`}>
+              <Icon icon="mdi:post" className={styles.icon} />
+            </div>
+            <div className={styles.statDetails}>
+              <h3>Privacy Policy</h3>
+              <p>Post privacy contnets</p>
+            </div>
+          </Link>
+
+          <Link to="/testimonial" className={styles.navCard}>
+            <div className={`${styles.iconWrapper} ${styles.postIcon}`}>
+            <FaQuoteLeft className={styles.icon} />
+
+            </div>
+            <div className={styles.statDetails}>
+              <h3>Testimonials</h3>
+              <p>Post Testimonials</p>
+            </div>
+          </Link>
+
         </div>
       </div>
     </div>

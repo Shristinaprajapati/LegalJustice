@@ -24,15 +24,13 @@
     top: 0;
     left: 250px; /* Aligns next to the sidebar */
     right: 0;
-    padding: 15px 20px;
-    box-shadow: 0 2px 5px rgba(131, 131, 131, 0.1);
+    padding: 55px 40px;
     z-index: 1000;
     transition: left 0.3s ease-in-out;
 }
 
 /* Back and Edit Buttons */
-.backButton,
-.editButton {
+.backButton {
     background: none;
     border: none;
     font-size: 16px;
@@ -42,8 +40,7 @@
     font-weight: bold;
 }
 
-.backButton:hover,
-.editButton:hover {
+.backButton:hover{
     color: #0056b3;
 }
 
@@ -101,6 +98,25 @@
 .saveButton:hover {
     background: #0056b3;
 }
+
+
+.editButton {
+    background-color: #28a745;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 13px;
+    transition: background-color 0.3s;
+  }
+  
+  .editButton:hover {
+    background-color: #28a745;
+  }
 
 /* Icon */
 .icon {

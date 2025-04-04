@@ -4,7 +4,7 @@ import axios from "axios";
 import { Icon } from "@iconify/react";
 import styles from "./blogDetail.module.css";
 import Header from "../Main/Header.jsx";
-import Footer from '../Footer.jsx'
+import Footer from '../Footer.jsx';
 
 const BlogDetail = () => {
   const [blog, setBlog] = useState(null);
@@ -23,54 +23,80 @@ const BlogDetail = () => {
     fetchBlog();
   }, [id]);
 
-  const handleBackClick = () => navigate(-1); // Go back to the previous page
+  const handleBackClick = () => navigate(-1);
 
   if (!blog) return <div className={styles.loading}>Loading...</div>;
 
   return (
     <div className={styles.container}>
       <Header />
-      {/* Hero Section */}
-      <div className={styles.heroSection}>
-        <div className={styles.heroText}>Legal Justice Blogs</div>
-      </div>
-
-            <div className={styles.sidebar}>
-              <h3 className={styles.sidebarTitle}>PRACTICE AREAS</h3>
-              <ul className={styles.sidebarList}>
-                <li>Banking & Finance</li>
-                <li>Corporate & Commercial</li>
-                <li>Litigation & Arbitration</li>
-                <li>Mergers & Acquisitions</li>
-              </ul>
-    
-              <h3 className={styles.sidebarTitle}>LATEST POST</h3>
-              <ul className={styles.sidebarList}>
-                <li>Arbitration law and procedure in Nepal</li>
-                <li>Nepal Project Finance Guide</li>
-                <li>Doing Business in Nepal Guide</li>
-                <li>Overview of the new Foreign Investment Act 2019</li>
-              </ul>
-            </div>
-      {/* Blog Content Container */}
-      <div className={styles.contentContainer}>
-        <div className={styles.blogDetail}>
-        <div className={styles.TitleText}>{blog.title}</div>
-          <p className={styles.blogDate}>
-            <Icon icon="mdi:calendar" className={styles.icon} />{" "}
-            {new Date(blog.publishedDate).toLocaleDateString()}
-          </p>
-
-          {/* Blog Content */}
-          <div className={styles.blogContent}>
-            <div
-              className={styles.blogContentHtml}
-              dangerouslySetInnerHTML={{ __html: blog.content }}
-            />
+      
+      <div className={styles.contentWrapper}>
+        <div className={styles.blogContainer}>
+          <button onClick={handleBackClick} className={styles.backButton}>
+            <Icon icon="mdi:arrow-left" /> Back to Articles
+          </button>
+          
+          <h1 style={{
+  fontSize: "2rem",
+  color: "#003366",
+  margin: "0 0 20px 0",
+  lineHeight: "1.3",
+  fontWeight: "600",
+  textShadow: "none"
+}}>
+  {blog.title}
+</h1>
+          
+          <div className={styles.blogMeta}>
+            <span className={styles.blogDate}>
+              <Icon icon="mdi:calendar" className={styles.icon} />
+              {new Date(blog.publishedDate).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric'
+              })}
+            </span>
           </div>
+
+          <div 
+            className={styles.blogContent}
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+          />
         </div>
+
+        <aside className={styles.sidebar}>
+          <div className={styles.sidebarSection}>
+          <h3 style={{
+  fontWeight: "bold"
+}}
+className={styles.sidebarTitle}>
+  Practice Areas
+</h3>
+            <ul className={styles.sidebarList}>
+              <li>Banking & Finance</li>
+              <li>Corporate & Commercial</li>
+              <li>Litigation & Arbitration</li>
+              <li>Mergers & Acquisitions</li>
+            </ul>
+          </div>
+
+          <div className={styles.sidebarSection}>
+            <h3 
+            style={{
+              fontWeight: "bold"
+            }}className={styles.sidebarTitle}>Latest Posts</h3>
+            <ul className={styles.sidebarList}>
+              <li>Arbitration law in Nepal</li>
+              <li>Nepal Project Finance Guide</li>
+              <li>Doing Business in Nepal</li>
+              <li>Foreign Investment Act 2019</li>
+            </ul>
+          </div>
+        </aside>
       </div>
-      <Footer/>
+      
+      <Footer />
     </div>
   );
 };

@@ -114,7 +114,7 @@ const PracticeAreas = () => {
   ];
   
 
-  const categories = ["All", "Criminal Law", "Family Law", "Civil Litigation", "Corporate Law", "Immigration Law"];
+  const categories = ["All", "Legal Documentation", "Family Law", "Intellectual Property", "Corporate Law", "Employment Law"];
 
   const filteredPracticeAreas = selectedCategory === "All" 
     ? practiceAreas 

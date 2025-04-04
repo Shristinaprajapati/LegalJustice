@@ -99,28 +99,39 @@ const AdminServices = () => {
     }
   };
 
-  if (loading) return <div className={styles.loading}>Loading services...</div>;
+  if (loading) return (
+    <div className={styles.loadingContainer}>
+      <div className={styles.spinner}></div>
+      <p>Loading services...</p>
+    </div>
+  );
 
   return (
-    <div className={styles.adminContainer}>
+    <div className={styles.adminPanel}>
       <Sidebar />
-      <div className={styles.adminContent}>
-        <h2 className={styles.adminTitle}>Manage Services</h2>
-        {error && <div className={styles.adminErrorMessage}>{error}</div>}
+      <div className={styles.contentContainer}>
+        <div className={styles.header}>
+          <h1 className={styles.pageTitle}>
+            {/* <span className={styles.titleIcon}>📋</span> */}
+            Manage Services
+          </h1>
+          {error && <div className={styles.errorBanner}>{error}</div>}
+        </div>
 
         {!showAddForm ? (
-          <>
-            <div className={styles.adminHeaderActions}>
+          <div className={styles.servicesDashboard}>
+            <div className={styles.actionsBar}>
               <button 
-                className={styles.adminAddButton}
+                className={styles.primaryButton}
                 onClick={() => setShowAddForm(true)}
               >
-                <FaPlus /> Add New Service
+                <FaPlus className={styles.buttonIcon} />
+                Add New Service
               </button>
             </div>
 
-            <div className={styles.adminServicesList}>
-              <table className={styles.adminTable}>
+            <div className={styles.servicesTableContainer}>
+              <table className={styles.servicesTable}>
                 <thead>
                   <tr>
                     <th>Title</th>
@@ -139,10 +150,10 @@ const AdminServices = () => {
                             name="title"
                             value={editService.title}
                             onChange={handleEditChange}
-                            className={styles.adminInput}
+                            className={styles.tableInput}
                           />
                         ) : (
-                          service.title
+                          <span className={styles.serviceTitle}>{service.title}</span>
                         )}
                       </td>
                       <td>
@@ -151,10 +162,10 @@ const AdminServices = () => {
                             name="description"
                             value={editService.description}
                             onChange={handleEditChange}
-                            className={styles.adminTextarea}
+                            className={styles.tableTextarea}
                           />
                         ) : (
-                          service.description
+                          <span className={styles.serviceDescription}>{service.description}</span>
                         )}
                       </td>
                       <td>
@@ -164,30 +175,35 @@ const AdminServices = () => {
                             name="price"
                             value={editService.price}
                             onChange={handleEditChange}
-                            className={styles.adminInput}
+                            className={styles.tableInput}
                           />
                         ) : (
-                          service.price
+                          <span className={styles.servicePrice}>Rs. {service.price}</span>
                         )}
                       </td>
                       <td>
                         {editService?._id === service._id ? (
-                          <button className={styles.adminSaveButton} onClick={handleUpdateService}>
-                            Save
+                          <button 
+                            className={styles.saveButton} 
+                            onClick={handleUpdateService}
+                          >
+                            Save Changes
                           </button>
                         ) : (
-                          <div className={styles.adminActions}>
+                          <div className={styles.actionButtons}>
                             <button
-                              className={styles.adminEditButton}
+                              className={styles.editButton}
                               onClick={() => handleEditClick(service)}
                             >
-                              <FaEdit /> Edit
+                              <FaEdit className={styles.actionIcon} />
+                              Edit
                             </button>
                             <button
-                              className={styles.adminDeleteButton}
+                              className={styles.deleteButton}
                               onClick={() => handleDeleteService(service._id)}
                             >
-                              <FaTrash /> Delete
+                              <FaTrash className={styles.actionIcon} />
+                              Delete
                             </button>
                           </div>
                         )}
@@ -197,76 +213,93 @@ const AdminServices = () => {
                 </tbody>
               </table>
             </div>
-          </>
+          </div>
         ) : (
-          <div className={styles.adminFormContainer}>
-            <div className={styles.adminFormHeader}>
+          <div className={styles.formSection}>
+            <div className={styles.formHeader}>
               <button 
-                className={styles.adminBackButton}
+                className={styles.backButton}
                 onClick={() => setShowAddForm(false)}
               >
-                <FaArrowLeft /> Back to Services
+                <FaArrowLeft className={styles.backIcon} />
+                Back to Services
               </button>
             </div>
             
-            <div className={styles.adminFormContent}>
-            <h3>Add New Service</h3>
-              <input
-                className={styles.adminFormInput}
-                type="text"
-                name="title"
-                placeholder="Service Title"
-                value={newService.title}
-                onChange={handleInputChange}
-              />
-              <textarea
-                className={styles.adminFormTextarea}
-                name="description"
-                placeholder="Service Description"
-                value={newService.description}
-                onChange={handleInputChange}
-              />
-              <input
-                className={styles.adminFormInput}
-                type="number"
-                name="price"
-                placeholder="Price (Rs.)"
-                value={newService.price}
-                onChange={handleInputChange}
-              />
-              <div className={styles.adminServiceType}>
-                <label>
-                  <input
-                    type="radio"
-                    name="category"
-                    value="consulting"
-                    checked={newService.category === 'consulting'}
-                    onChange={handleInputChange}
-                  />
-                  Consulting Service
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    name="category"
-                    value="documentation"
-                    checked={newService.category === 'documentation'}
-                    onChange={handleInputChange}
-                  />
-                  Documentation Service
-                </label>
+            <div className={styles.formContent}>
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>Service Title</label>
+                <input
+                  className={styles.formInput}
+                  type="text"
+                  name="title"
+                  placeholder="Enter service title"
+                  value={newService.title}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>Description</label>
+                <textarea
+                  className={styles.formTextarea}
+                  name="description"
+                  placeholder="Enter service description"
+                  value={newService.description}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>Price (Rs.)</label>
+                <input
+                  className={styles.formInput}
+                  type="number"
+                  name="price"
+                  placeholder="Enter price"
+                  value={newService.price}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label className={styles.formLabel}>Service Type</label>
+                <div className={styles.radioGroup}>
+                  <label className={styles.radioOption}>
+                    <input
+                      type="radio"
+                      name="category"
+                      value="consulting"
+                      checked={newService.category === 'consulting'}
+                      onChange={handleInputChange}
+                      className={styles.radioInput}
+                    />
+                    <span className={styles.radioLabel}>Consulting Service</span>
+                  </label>
+                  <label className={styles.radioOption}>
+                    <input
+                      type="radio"
+                      name="category"
+                      value="documentation"
+                      checked={newService.category === 'documentation'}
+                      onChange={handleInputChange}
+                      className={styles.radioInput}
+                    />
+                    <span className={styles.radioLabel}>Documentation Service</span>
+                  </label>
+                </div>
               </div>
 
               {newService.category === 'documentation' && (
-                <div className={styles.adminFormTemplate}>
-                  <label>Select a form template:</label>
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Form Template</label>
                   <select
                     name="formTemplate"
                     value={newService.formTemplate}
                     onChange={handleInputChange}
-                    className={styles.adminFormSelect}
+                    className={styles.formSelect}
                   >
-                    <option value="">Select a form</option>
+                    <option value="">Select a form template</option>
                     <option value="form1">Divorce Agreement Form</option>
                     <option value="form2">Partnership Form</option>
                     <option value="form3">Rental Agreement Form</option>
@@ -277,11 +310,14 @@ const AdminServices = () => {
                 </div>
               )}
 
-              {/* {newService.category === 'documentation' && renderFormTemplate()} */}
-
-              <button className={styles.adminSubmitButton} onClick={handleAddService}>
-                Add Service
-              </button>
+              <div className={styles.formActions}>
+                <button 
+                  className={styles.submitButton}
+                  onClick={handleAddService}
+                >
+                  Add Service
+                </button>
+              </div>
             </div>
           </div>
         )}

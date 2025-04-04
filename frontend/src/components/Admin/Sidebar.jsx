@@ -148,12 +148,12 @@ const Sidebar = () => {
             </Link>
           </li>
 
-          <li>
+          {/* <li>
             <Link to="/admin/post" className={getLinkClass('/admin/post')}>
               <Icon icon="mdi:cash-multiple" className={styles.icon} />
               Post Contents
             </Link>
-          </li>
+          </li> */}
           <li>
   <Link to="/settings" className={getLinkClass('/settings')}>
     <Icon icon="material-symbols:settings" className={styles.icon} />

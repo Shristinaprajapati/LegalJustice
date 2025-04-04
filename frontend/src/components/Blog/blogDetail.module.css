@@ -1,149 +1,175 @@
-/* Main Container */
+/* blogDetail.module.css */
+
 .container {
-    display: flex;
-    min-height: 100vh;
-    font-family: "Georgia", serif;
-    color: #333;
-    line-height: 1.6;
+  font-family: 'Georgia', serif;
+  color: #333;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.contentWrapper {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 40px;
+}
+
+.blogContainer {
+  flex: 1;
+  max-width: 800px;
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  color: #003366;
+  font-size: 1rem;
+  margin-bottom: 30px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.backButton:hover {
+  text-decoration: underline;
+}
+
+/* .blogTitle {
+  font-size: 2rem;
+  color: #003366;
+  margin: 0 0 20px 0;
+  line-height: 1.3;
+  font-weight: 600;
+} */
+
+.blogMeta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+.blogContent {
+  font-size: 1.1rem;
+  line-height: 1.8;
+}
+
+.blogContent p {
+  margin-bottom: 1.5em;
+}
+
+.blogContent h2 {
+  font-size: 1.5rem;
+  color: #003366;
+  margin: 2em 0 1em 0;
+}
+
+.blogContent h3 {
+  font-size: 1.3rem;
+  color: #003366;
+  margin: 1.8em 0 0.8em 0;
+}
+
+.blogContent ul,
+.blogContent ol {
+  margin-bottom: 1.5em;
+  padding-left: 1.5em;
+}
+
+.blogContent li {
+  margin-bottom: 0.5em;
+}
+
+.blogContent a {
+  color: #003366;
+  text-decoration: underline;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 280px;
+}
+
+.sidebarSection {
+  margin-bottom: 40px;
+}
+
+.sidebarTitle {
+  font-size: 1.1rem;
+  color: #003366;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  
+}
+
+.sidebarList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebarList li {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.sidebarList li:hover {
+  color: #003366;
+}
+
+.loading {
+  text-align: center;
+  padding: 100px 0;
+  color: #666;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .contentWrapper {
     flex-direction: column;
-  }
-  
-  /* Hero Section */
-  .heroSection {
-    margin-top: -100px;
-    background-image: url('/public/Images/book-lot.jpg'); /* Add the path to your image */
-    background-size: cover;
-    background-position: center;
-    height: 350px; /* Adjust height as needed */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-align: center;
-  }
-  .TitleText{
-    margin-top: 10px;
-    font-size: 30px;
-    font-weight: bold;
-    margin-bottom: -30px;
-    color: #264262;
-  }
-  
-  .heroText {
-    font-size: 48px; /* Adjust font size as needed */
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow for better readability */
-  }
-  
-  /* Header (Fixed at the Top, Separate from Content) */
-  .header {
-    display: flex;
-    justify-content: flex-start; /* Align back button to the left */
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    padding: 15px 20px;
-    box-shadow: 0 2px 5px rgba(131, 131, 131, 0.1);
-    z-index: 1000;
-    background: white; /* Add background for better visibility */
-  }
-  
-  /* Back Button */
-  .backButton {
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 5px;
-    color: #007bff;
-    font-weight: bold;
-  }
-  
-  .backButton:hover {
-    color: #0056b3;
-  }
-  
-  /* Main Content Container */
-  .contentContainer {
-    flex-grow: 1;
-    max-width: 900px;
-    margin: 80px auto 0; /* Leaves space for fixed header */
-    padding: 50px;
-    margin-top: -470px;
-  }
-  
-  /* Blog Detail */
-  .blogDetail {
-    padding: 20px;
-  }
-  
-  /* Blog Title */
-  .blogTitle {
-    font-size: 28px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 10px;
-    color: #4d4d4d;
-  }
-  
-  /* Blog Date */
-/* Blog Date */
-.blogDate {
-    color: #264262;
-    font-size: 14px;
-    text-align: right; /* Align text to the right */
-  }
-  
-  /* Blog Content */
-  .blogContentHtml {
-    margin-top: 20px;
-    text-align: justify;
-    color: #4d4d4d;
-  }
-  
-  /* Icon */
-  .icon {
-    font-size: 24px;
-    vertical-align: middle;
+    gap: 30px;
   }
 
   .sidebar {
-    margin-left: 80px;
-    width: 250px;
-    padding: 20px;
-    margin-top: 30px;
+    width: 100%;
+    order: -1;
+    display: flex;
+    gap: 40px;
   }
-  
-  .sidebarTitle {
-    font-size: 18px;
-    font-weight: bold;
-    color: #264262;
-    margin-bottom: 10px; /* Reduced margin */
-    text-align: left; /* Ensure text is aligned left */
-  }
-  
-  .sidebarList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebarList li {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 8px; /* Reduced margin */
-    cursor: pointer;
-    transition: color 0.3s ease;
-    text-align: left; /* Ensure text is aligned left */
-  }
-  
-  .sidebarList li:hover {
-    color: #007bff;
-  }
-  
-  .mainContent {
+
+  .sidebarSection {
     flex: 1;
+    margin-bottom: 0;
   }
-  
+}
+
+@media (max-width: 600px) {
+  .contentWrapper {
+    padding: 0 15px;
+  }
+
+  .blogTitle {
+    font-size: 1.7rem;
+  }
+
+  .sidebar {
+    flex-direction: column;
+    gap: 30px;
+  }
+}

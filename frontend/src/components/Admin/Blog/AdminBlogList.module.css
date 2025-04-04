@@ -1,121 +1,167 @@
-/* AdminBlogList.module.css */
+.dashboardContainer {
+  display: flex;
+  min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+}
 
-/* Main container (flex layout for sidebar and content) */
-.container {
-    display: flex;
-    font-family: 'Roboto', sans-serif;
-  }
-  
-  /* Content container */
-  .contentContainer {
-    margin-left: 250px;
-    padding: 30px;
-    width: 100%;
-    background-color: #f4f4f9;
-  }
-  
-  /* Heading style */
-  .heading {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  /* Button to add blog */
-  .addBlogButton {
-    background-color: #0073e6;
-    color: #fff;
-    border: none;
-    padding: 12px 20px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .addBlogButton:hover {
-    background-color: #005bb5;
-  }
-  
-  /* Table styling */
-  .blogTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .blogTable th,
-  .blogTable td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .blogTable th {
-    background-color: #f4f4f9;
-    font-weight: bold;
-  }
-  
-  .blogTable tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  /* Styling for blog row */
-  .blogRow {
-    transition: background-color 0.3s ease;
-  }
-  
-  .blogTitle,
-  .author,
-  .date {
-    font-size: 1rem;
-    color: #333;
-  }
-  
-  /* View details button */
-  .viewDetailButton {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .viewDetailButton:hover {
-    background-color: #218838;
-  }
-  
+.mainContent {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  padding: 30px;
+  background-color: #f8f9fa;
+}
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
 
-/* Pagination Styling */
+.header h2 {
+  font-size: 24px;
+  color: #333;
+  margin: 0;
+}
+
+.addButton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.addButton:hover {
+  background-color: #45a049;
+}
+
+.tableContainer {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.blogTable {
+  width: 100%;
+  border-collapse: separate; /* Changed from collapse to separate */
+  border-spacing: 0;
+  font-size: 14px;
+}
+
+.blogTable th,
+.blogTable td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  border-right: 1px solid #f0f0f0; /* Added light stroke between columns */
+}
+
+/* Remove right border from last column */
+.blogTable th:last-child,
+.blogTable td:last-child {
+  border-right: none;
+}
+
+.blogTable th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #444;
+  position: relative;
+}
+
+/* Optional: Add a slightly darker divider between header and body */
+.blogTable thead tr {
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.titleCell {
+  font-weight: 500;
+  color: #333;
+}
+
+.actionsCell {
+  display: flex;
+  gap: 8px;
+}
+
+.viewButton {
+  background-color:  #ffc107;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  transition: background-color 0.3s;
+}
+
+.viewButton:hover {
+  background-color: #ffc107;
+}
+
+.editButton {
+  background-color: #ffc107;
+  color: #333;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  transition: background-color 0.3s;
+}
+
+.editButton:hover {
+  background-color: #ffc107;
+}
+
+.noData {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}
+
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: auto;
-  padding: 20px 0;
+  margin-top: 25px;
+  gap: 15px;
 }
 
-.pagination button {
-  background-color: #0073e6;
+.paginationButton {
+  background-color: #6c757d;
   color: white;
   border: none;
-  padding: 8px 12px;
-  margin: 0 5px;
-  border-radius: 5px;
+  padding: 8px 16px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
-.pagination button:disabled {
-  background-color: #ccc;
+.paginationButton:hover:not(:disabled) {
+  background-color: #5a6268;
+}
+
+.paginationButton:disabled {
+  background-color: #d1d5da;
   cursor: not-allowed;
 }
 
-.pagination button:hover:not(:disabled) {
-  background-color: #005bb5;
+.pageInfo {
+  font-size: 14px;
+  color: #666;
 }

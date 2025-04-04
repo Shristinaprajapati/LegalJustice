@@ -51,6 +51,7 @@ import Settings from "./components/Admin/Settings.jsx";
 import Aboutus from "./components/AboutUs.jsx";
 
 import Loader from "./components/Loader.jsx";
+import Testimonial from "./components/Admin/Testimonial/testimonial.jsx";
 
 
 
@@ -99,6 +100,7 @@ function App() {
         <Route path="/successfull/:serviceId/:clientId" element={<PaymentComplete />} />
         <Route path="/admin/payment-history" element={<PaymentHistory />} />
         <Route path="/admin/post" element={<PostContent />} />
+        <Route path ="/testimonial" element={<Testimonial/>}/>
         </Route>
 
         <Route path ="/desk" element={<Desktop/>}/>
