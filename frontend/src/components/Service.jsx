@@ -6,6 +6,7 @@ import PopupForm from "./PopupForm.jsx";
 import { FaGavel, FaFileContract, FaBalanceScale, FaBriefcase, FaFileAlt } from "react-icons/fa";
 import dividerImage2 from "./assets/profile1.jpg";
 import Loader from "./Loader";
+import Footer from "./Footer.jsx"
 
 const serviceIcons = {
   consulting: <FaGavel className={styles.serviceIcon} />, 
@@ -91,7 +92,7 @@ const Service = () => {
   </div>
   <div
     style={{
-      color: "#264262" ,
+      color: "#00000" ,
       fontSize: "38px",
       fontWeight: "700",
       marginTop: "5px",
@@ -424,9 +425,12 @@ const Service = () => {
             Popular
           </div>
         )}
+
+
       </div>
     ))
   )}
+
 </div>
 
         
@@ -440,9 +444,11 @@ const Service = () => {
   phone={formData.phone}
   clientId={formData.clientId}
 />
-
       </div>
+      
+      <Footer/>
     </>
+    
   );
 };
 

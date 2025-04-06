@@ -33,7 +33,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #004aad;
+  background: linear-gradient(135deg, #002b66 0%, #003d8f 100%);
   color: white;
   border: none;
   cursor: pointer;
@@ -144,7 +144,7 @@
 
 /* Buttons */
 .bookNowBtn {
-  background: #004aad;
+  background: linear-gradient(135deg, #002b66 0%, #003d8f 100%);
   color: white;
   font-size: 15px;
   padding: 12px 25px;
@@ -156,7 +156,7 @@
 }
 
 .bookNowBtn:hover {
-  background: #003d8f;
+  background: linear-gradient(135deg, #002b66 0%, #003d8f 100%);
   transform: translateY(-2px);
 }
 

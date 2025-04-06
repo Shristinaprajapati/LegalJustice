@@ -3,6 +3,7 @@ import axios from 'axios';
 import styles from './AboutUs.module.css';
 import Header from "./Main/Header.jsx";
 import Loader from "./Loader.jsx";
+import Footer from "./Footer.jsx";
 
 const AboutUs = () => {
   const [settings, setSettings] = useState(null);
@@ -86,7 +87,7 @@ const AboutUs = () => {
       </section>
 
       {/* Team Section (Static Content) */}
-      <section className={styles.teamSection}>
+      {/* <section className={styles.teamSection}>
         <div className={styles.container}>
           <h2>Our Legal Team</h2>
           <p className={styles.sectionSubtitle}>
@@ -110,10 +111,10 @@ const AboutUs = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Contact Section */}
-      <secti  on className={styles.contactSection}>
+      <section className={styles.contactSection}>
         <div className={styles.container}>
           <div className={styles.contactInfo}>
             <h2>Contact Us</h2>
@@ -145,7 +146,8 @@ const AboutUs = () => {
             )}
           </div>
         </div>
-      </secti>
+      </section>
+      <Footer/>
     </div>
   );
 };

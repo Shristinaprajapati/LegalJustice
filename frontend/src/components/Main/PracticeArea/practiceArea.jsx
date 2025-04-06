@@ -5,6 +5,7 @@ import styles from "./PracticeArea.module.css";
 import Header from "../Header";
 import About from '../../about.jsx';
 import { htmlToText } from "html-to-text";
+import Footer from "../../Footer.jsx";
 
 const practiceAreas = [
   {
@@ -285,7 +286,9 @@ const PracticeArea = () => {
           </div>
         </div>
       </section>
+      <Footer/>
     </div>
+    
   );
 };
 

@@ -46,7 +46,7 @@ p, .paragraph {
   display: flex;
   align-items: left;
   justify-content: space-between;
-  background-color: #ffffff;
+  background-color: #fcfcff;
   color: #ffffff;
   padding: 90px 80px;
   border-radius: 8px;
@@ -200,54 +200,53 @@ p {
 
 
 
-/* Partner Section */
 .partnerSection {
+  background-color: #fcfcff;
   display: flex;
   flex-direction: column;
   padding: 80px 100px;
   gap: 40px;
 }
 
-.partnerSection .partnerContent {
+.partnerContent {
   display: flex;
   flex-direction: row;
-  gap: 40px;
+  flex-wrap: wrap;
+  gap: 100px;
   align-items: center;
 }
 
-.partnerSection .partnerImage {
+.partnerImage {
   flex: 1;
+  text-align: center;
 }
 
-.partnerSection .partnerImage img {
-  border-radius: 8px;
-  max-width: 70%;
+.partnerImage img {
+  border-radius: 12px;
+  max-width: 100%;
   height: auto;
   object-fit: cover;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.partnerimg{
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-top: 18px;
 }
 
-.partnerSection .partnerText {
+.partnerText {
   flex: 1.5;
+  font-size: 16px;
+  color: #333;
+  line-height: 1.7;
+  margin-top: 8rem;
+}
+
+.subheading {
+  font-size: 28px;
+  font-weight: 700;
+  color: #212121;
+  margin-bottom: 20px;
 }
 
 
-/* Trusted Partner Section */
-.trustedPartner {
-  text-align: center;
-  padding: 40px 10%;
-  background: #F8F9FA;
-}
 
-.list {
-  list-style-type: none;
-  padding: 0;
-  font-size: 1rem;
-  color: #6C757D;
-}
 
 /* Hero Section */
 .heroSection {
@@ -267,12 +266,12 @@ p {
 }
 
 .primaryButton {
-  background-color: #003366;
+  background: linear-gradient(135deg, #002b66 0%, #003d8f 100%);
   color: white;
 }
 
 .secondaryButton {
-  background-color: #003366;;
+  background: linear-gradient(135deg, #002b66 0%, #003d8f 100%);
   color: rgb(255, 255, 255);
 }
 
@@ -281,7 +280,7 @@ p {
 }
 
 .secondaryButton:hover {
-  background-color: #003366;
+  background: linear-gradient(135deg, #002b66 0%, #003d8f 100%);
 }
 
 /* Personalized & Elevating Experience Sections */

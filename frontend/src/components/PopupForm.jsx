@@ -71,7 +71,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
       const response = await axios.post("http://localhost:8080/api/khalti-api", {
         return_url: `http://localhost:3000/successful/${formData.serviceId}/${formData.clientId}`,
         website_url: "http://localhost:8080/payment-callback",
-        amount: 40 * 100,
+        amount: 2000 * 100,
         purchase_order_id: formData.serviceId,
         purchase_order_name: `Service for ${formData.clientId}`,
         customer_info: {

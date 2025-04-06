@@ -117,11 +117,13 @@
 }
 
 /* Stats Section */
+/* Stats Section */
 .statsSection {
   padding: 80px 0;
-  background-color:  #003366;
+  background: linear-gradient(135deg, #002b66 0%, #003d8f 100%);
   color: white;
 }
+
 
 .statsGrid {
   display: grid;
@@ -214,6 +216,11 @@
   color: #1a2a4a;
   text-decoration: underline;
 }
+
+.sectionTitle{
+  font-size: 2em;
+}
+
 
 
 

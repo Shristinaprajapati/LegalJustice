@@ -73,11 +73,13 @@ const ScrollableFrame = () => {
       {/* Manage Cases Section */}
       <div className={styles.manageCasesSection}>
         <div className={styles.content}>
-          <h1 className={styles.heading}>Manage Cases with Legal Justice</h1>
-          <p className={styles.paragraph}>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut sed nibh et nibh iaculis venenatis.
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-          </p>
+        <h1 className={styles.heading}>Manage Cases with Legal Justice</h1>
+<p className={styles.paragraph}>
+  From tracking case progress and managing client details 
+  to organizing legal documents — our platform provides everything you need to handle cases efficiently and securely. 
+
+</p>
+
           <button className={styles.secondaryButton}>Talk to Us</button>
         </div>
         <div className={styles.image}>
@@ -87,170 +89,419 @@ const ScrollableFrame = () => {
 
       <Practicearea/>
 
-      <section
+
+
+  {/* Partner Section */}
+<div className={styles.partnerSection}>
+  <div className={styles.partnerContent}>
+    <div className={styles.partnerImage}>
+      <h2 className={styles.subheading}>
+        Advocating for Your Rights, Empowering Your Future
+      </h2>
+      <img
+        className={styles.partnerimg}
+        src="/Images/office.jpg"
+        alt="Legal consultation"
+      />
+    </div>
+    <div className={styles.partnerText}>
+      <p className={styles.paragraph}>
+        At this law firm, we believe that every individual deserves access to justice and protection under the law. 
+        Our commitment goes beyond courtroom representation — we educate, empower, and guide you through every legal step. 
+        Whether it’s defending your rights in civil matters, navigating business regulations, or resolving family disputes, 
+        we stand by your side with clarity and confidence.
+      </p>
+      <p className={styles.paragraph}>
+        With a client-first approach and a dedication to legal excellence, we work to create lasting partnerships that 
+        ensure your voice is heard and your future is secure. Your rights are not just protected — they are prioritized.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<section
   style={{
-    textAlign: "center",
-    padding: "60px 20px",
-    backgroundColor: "#f9f9f9",
+    width: "100%",
+    padding: "80px 20px",
+    backgroundColor: "#ffffff",
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
   }}
 >
-  <button
-    style={{
-      backgroundColor: "#004aad",
-      color: "#fff",
-      fontSize: "16px",
-      padding: "12px 20px",
-      border: "none",
-      borderRadius: "5px",
-      cursor: "pointer",
-      fontWeight: "bold",
-      transition: "background-color 0.3s ease",
-    }}
-    className="practice-btn"
-  >
-    + PRACTICE AREAS
-  </button>
-  <h2
-    style={{
-      fontSize: "36px",
-      color: "#0a0a0a",
-      fontWeight: "800",
-      marginTop: "20px",
-      textAlign: "center", // Centering the heading
-    }}
-  >
-    Our Legal Expertise
-  </h2>
-  <p
-    style={{
-      fontSize: "16px",
-      color: "#666",
-      maxWidth: "600px",
-      margin: "10px auto 30px",
-    }}
-  >
-    We specialize in various areas of law to provide the best legal
-    representation.
-  </p>
-
   <div
     style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(4, 1fr)", // 4 columns in one row
-      gap: "30px",
-      maxWidth: "1250px",
-      margin: "auto",
+      maxWidth: "1200px",
+      margin: "0 auto",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center"
     }}
-    className="practice-cards"
   >
-    {practices.map((practice, index) => (
-      <div
-        key={index}
+    {/* Header Section */}
+    <div style={{ textAlign: "center", marginBottom: "60px" }}>
+      <span
         style={{
-          backgroundColor: "#ffffff",
-          borderRadius: "10px",
-          boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.1)",
-          padding: "20px",
-          textAlign: "center",
-          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          display: "inline-block",
+          // backgroundColor: "#f0f7ff",
+          // color: "#2563eb",
+          // padding: "8px 16px",
+          // borderRadius: "50px",
+          fontSize: "14px",
+          fontWeight: "500",
+          marginBottom: "20px",
+          color: "##4b5563",
+          letterSpacing: "0.5px", 
         }}
-        className="practice-card"
+      >
+        OUR EXPERTISE
+      </span>
+      <h2
+        style={{
+          fontSize: "36px",
+          fontWeight: "700",
+          color: "#1e293b",
+          margin: "0 0 15px 0",
+          lineHeight: "1.2",
+          textAlign: "center",
+        }}
+      >
+        Comprehensive Legal Solutions
+      </h2>
+
+    </div>
+
+    {/* Mission/Vision Section */}
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(2, 1fr)",
+        gap: "40px",
+        marginBottom: "40px"
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#f8fafc",
+          padding: "40px",
+          borderRadius: "12px",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)"
+        }}
       >
         <div
           style={{
-            backgroundColor: index === 1 ? "#f3e5f5" : index === 2 ? "#e3f2fd" : "#fce4ec",
-            padding: "15px",
             display: "flex",
-            justifyContent: "center",
             alignItems: "center",
-            borderRadius: "10px",
-            width: "100%",
-            height: "100px",
-            marginBottom: "15px",
+            marginBottom: "20px"
           }}
-          className="icon-container"
         >
-          <Icon icon={practice.icon} style={{ fontSize: "28px", color: "#004aad" }} className="practice-icon" />
+          <div
+            style={{
+              width: "50px",
+              height: "50px",
+              backgroundColor: "#2563eb",
+              borderRadius: "8px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginRight: "15px"
+            }}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+          </div>
+          <h3
+            style={{
+              fontSize: "22px",
+              fontWeight: "600",
+              color: "#1e293b",
+              margin: "0"
+            }}
+          >
+            Our Mission
+          </h3>
         </div>
-        <h3
-          style={{
-            fontSize: "20px",
-            fontWeight: "700",
-            color: "#0a0a0a",
-            marginBottom: "10px",
-          }}
-        >
-          {practice.title}
-        </h3>
         <p
           style={{
-            fontSize: "14px",
-            color: "#444",
-            marginBottom: "15px",
+            fontSize: "16px",
+            color: "#475569",
+            lineHeight: "1.7",
+            margin: "0"
           }}
         >
-          {practice.description}
+          To provide exceptional legal services through innovative solutions, unwavering integrity, and a deep commitment to our clients' success. We strive to make the law accessible and understandable while achieving outstanding results.
         </p>
-        <button
-          style={{
-            backgroundColor: "transparent",
-            color: "#0a0a0a",
-            fontSize: "14px",
-            fontWeight: "600",
-            padding: "10px 15px",
-            border: "2px solid #0a0a0a",
-            borderRadius: "5px",
-            cursor: "pointer",
-            transition: "background-color 0.3s ease, color 0.3s ease",
-          }}
-          className="learn-more-btn"
-        >
-          Learn More
-        </button>
       </div>
-    ))}
+
+      <div
+        style={{
+          backgroundColor: "#f8fafc",
+          padding: "40px",
+          borderRadius: "12px",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)"
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginBottom: "20px"
+          }}
+        >
+          <div
+            style={{
+              width: "50px",
+              height: "50px",
+              backgroundColor: "#2563eb",
+              borderRadius: "8px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginRight: "15px"
+            }}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polygon points="10 8 16 12 10 16 10 8"></polygon>
+            </svg>
+          </div>
+          <h3
+            style={{
+              fontSize: "22px",
+              fontWeight: "600",
+              color: "#1e293b",
+              margin: "0"
+            }}
+          >
+            Our Vision
+          </h3>
+        </div>
+        <p
+          style={{
+            fontSize: "16px",
+            color: "#475569",
+            lineHeight: "1.7",
+            margin: "0"
+          }}
+        >
+          To be recognized as the premier law firm that transforms the practice of law through excellence, creativity, and a forward-thinking approach. We envision a legal landscape where justice is accessible and the law serves as a tool for positive change.
+        </p>
+      </div>
+    </div>
+
+    {/* CTA Section */}
+    <div
+      style={{
+        backgroundColor: "#2563eb",
+        borderRadius: "12px",
+        padding: "60px",
+        marginTop: "80px",
+        width: "100%",
+        textAlign: "center",
+        background: "linear-gradient(135deg, #002b66 0%, #003d8f 100%)",
+      }}
+    >
+      <h3
+        style={{
+          fontSize: "28px",
+          fontWeight: "600",
+          color: "#ffffff",
+          margin: "0 0 15px 0"
+        }}
+      >
+        Ready to discuss your legal needs?
+      </h3>
+      <p
+        style={{
+          fontSize: "18px",
+          color: "#e0e7ff",
+          maxWidth: "600px",
+          margin: "0 auto 30px",
+          lineHeight: "1.6",
+          textAlign: "center",
+        }}
+      >
+        Our team of experienced attorneys is here to provide personalized legal solutions tailored to your specific situation.
+      </p>
+      <button
+        style={{
+          backgroundColor: "#ffffff",
+          color:"linear-gradient(135deg, #002b66 0%, #003d8f 100%)",
+          fontSize: "16px",
+          fontWeight: "600",
+          padding: "14px 28px",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer",
+          transition: "transform 0.3s ease, box-shadow 0.3s ease",
+          boxShadow: "0 4px 15px rgba(0, 0, 0, 0.1)"
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "translateY(-2px)";
+          e.currentTarget.style.boxShadow = "0 7px 20px rgba(0, 0, 0, 0.15)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "translateY(0)";
+          e.currentTarget.style.boxShadow = "0 4px 15px rgba(0, 0, 0, 0.1)";
+        }}
+      >
+        Schedule a Consultation
+      </button>
+    </div>
   </div>
 </section>
 
 
 
-      {/* Partner Section */}
-      <div className={styles.partnerSection}>
-        <div className={styles.partnerContent}>
-          <div className={styles.partnerImage}>
-            <h2 className={styles.subheading}>
-              Your partner in digital growth, from strategy to work
-            </h2>
-            <img  className={styles.partnerimg} src="/Images/hero3.png" alt="office2" />
-          </div>
-          <div className={styles.partnerText}>
-            <p className={styles.paragraph}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non arcu a urna porta dapibus.Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit. Duis non arcu a urna porta dapibus.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Duis non arcu a urna porta dapibus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non arcu a urna porta
-              dapibus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non arcu a urna porta dapibus.
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis non arcu a urna porta dapibus.Lorem ipsum dolor sit amet,
-              consectetur adipiscing elit. Duis non arcu a urna porta dapibus.Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Duis non arcu a urna porta dapibus.Lorem ipsum dolor sit .
-            </p>
-          </div>
+
+      <section
+  style={{
+    backgroundColor: "#ffffff",
+    padding: "80px 20px",
+    textAlign: "center",
+  }}
+>
+  <h2
+    style={{
+      fontSize: "38px",
+      fontWeight: "600",
+      textAlign: "center",
+      color: "#000011",
+      marginBottom: "20px",
+    }}
+  >
+    Why Clients Trust Legal Justice
+  </h2>
+
+  <p
+    style={{
+      fontSize: "18px",
+      color: "#555",
+      maxWidth: "800px",
+      margin: "0 auto 50px",
+      textAlign: "center",
+      lineHeight: "1.6",
+    }}
+  >
+    We focus on transparency, commitment, and delivering outcomes that exceed expectations. 
+  </p>
+
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+      gap: "40px",
+      maxWidth: "1200px",
+      margin: "0 auto 80px",
+    }}
+  >
+    {[
+      {
+        title: "Experienced Lawyers",
+        desc: "Our team consists of skilled professionals with years of experience in multiple legal domains.",
+      },
+      {
+        title: "Client-Centered Approach",
+        desc: "Every case is handled with empathy, care, and full dedication to our clients' best interests.",
+      },
+      {
+        title: "Proven Track Record",
+        desc: "We’ve successfully represented hundreds of cases with a strong history of positive results.",
+      },
+    ].map((item, idx) => (
+      <div
+        key={idx}
+        style={{
+          backgroundColor: "#fcfcfc",
+          borderRadius: "12px",
+          padding: "30px",
+          boxShadow: "0px 6px 18px rgba(0, 0, 0, 0.05)",
+          textAlign: "left",
+        }}
+      >
+        <div
+          style={{
+            width: "50px",
+            height: "50px",
+            backgroundColor: "#004aad",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            fontSize: "20px",
+            fontWeight: "bold",
+            marginBottom: "15px",
+          }}
+        >
+          {idx + 1}
         </div>
+        <h3
+          style={{
+            fontSize: "20px",
+            fontWeight: "700",
+            color: "#002b5b",
+            marginBottom: "10px",
+          }}
+        >
+          {item.title}
+        </h3>
+        <p
+          style={{
+            fontSize: "16px",
+            color: "#444",
+            lineHeight: "1.5",
+          }}
+        >
+          {item.desc}
+        </p>
       </div>
+    ))}
+  </div>
+
+  <button
+    style={{
+      backgroundColor: "#004aad",
+      color: "#fff",
+      fontSize: "16px",
+      fontWeight: "600",
+      padding: "14px 28px",
+      border: "none",
+      borderRadius: "6px",
+      cursor: "pointer",
+      transition: "background-color 0.3s ease",
+    }}
+  >
+    Contact Us
+  </button>
+</section>
+
+
+
 
      
-
-  {/* Trusted Partner Section */}
-  <section className={styles.trustedPartner}>
-        <h2 className={styles.subheading}>Your Trusted Legal Partner</h2>
-        <ul className={styles.list}>
-          <li>Comprehensive Legal Services</li>
-          <li>Tailored to Your Needs</li>
-          <li>Protecting Your Interests</li>
-        </ul>
-      </section>
+   
       
       {/* Elevating Experience Section */}
-      <section className={styles.elevatingExperience}>
+      {/* <section className={styles.elevatingExperience}>
         <div className={styles.textContainer}>
           <h2 className={styles.subheading}>Elevating Your Legal Experience</h2>
           <p className={styles.paragraph}>
@@ -259,7 +510,8 @@ const ScrollableFrame = () => {
           <button className={styles.secondaryButton}>Contact Us</button>
         </div>
         <img src='/Images/office.jpg' alt='Office' className={styles.image} />
-      </section>
+      </section> */}
+      
       <Footer />
     </div>
   );

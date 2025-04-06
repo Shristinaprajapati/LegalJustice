@@ -91,10 +91,18 @@ const ContactForm = () => {
         <section className={styles.contactInfo}>
           <div className={styles.contactHeader}>
             <span className={styles.sectionTag}>Contact</span>
-            <h1 className={styles.mainHeading}>Contact Us</h1>
+            <h1
+  className={styles.mainHeading}
+  style={{
+    color: "#0a3d62", // a nice dark bluish tone
+    textShadow: "none",
+  }}
+>
+  Let's Contact 
+</h1>
+
             <p className={styles.introText}>
-              Have questions or need assistance? We're here to help! 
-              Reach out to us through this form and we'll get back to you promptly.
+            Have questions or need assistance? Our team is here to help you with any inquiries. Fill out the form and we'll get back to you within 24 hours.
             </p>
           </div>
           <div className={styles.accentLine}></div>

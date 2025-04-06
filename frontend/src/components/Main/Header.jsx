@@ -261,7 +261,7 @@ const Header = () => {
                         <div className={styles.settingsContent}>
                           <div className={styles.settingsTitle}>
                             <Icon icon="mdi:cog-outline" className={styles.settingsIcon} />
-                            <h2 className={styles.sectionTitle}>Settings</h2>
+                            <h2 className={styles.sectionTitleSetting}>Settings</h2>
                           </div>
                         </div>
                       </li>

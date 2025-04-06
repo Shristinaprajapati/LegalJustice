@@ -1,20 +1,99 @@
-/* Footer */
+/* Footer.module.css */
+
 .footer {
-    background: #003366;
-    color: white;
-    padding: 20px 10%;
-    text-align: center;
-  }
+  background: linear-gradient(135deg, #002b66 0%, #003d8f 100%);
+  color: white;
+  padding: 40px 0;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footerContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+}
+
+.footerNav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.footerNav a {
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.footerNav a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+}
+
+.footerNav a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: white;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.footerNav a:hover::after {
+  width: calc(100% - 24px);
+}
+
+/* Responsive Design */
+@media (min-width: 768px) {
   .footerContainer {
-    display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
+  
+  .footerNav {
+    gap: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 30px 0;
+  }
+  
+  .footerNav {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+  
   .footerNav a {
-    color: white;
-    margin: 0 10px;
-    text-decoration: none;
+    padding: 6px 0;
   }
-  .footerNav a:hover {
-    text-decoration: underline;
+  
+  .footerNav a::after {
+    display: none;
   }
+}
