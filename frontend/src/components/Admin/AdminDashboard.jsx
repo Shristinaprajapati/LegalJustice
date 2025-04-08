@@ -95,6 +95,9 @@ const AdminDashboard = () => {
         {/* Separator Line */}
         <div className={styles.separator}></div>
 
+        {/* Separator Line */}
+        <div className={styles.separator}></div>
+
         {/* Navigation Cards Row */}
         <div className={styles.navCards}>
           <Link to="/admin/post" className={styles.navCard}>
@@ -103,21 +106,32 @@ const AdminDashboard = () => {
             </div>
             <div className={styles.statDetails}>
               <h3>Privacy Policy</h3>
-              <p>Post privacy contnets</p>
+              <p>Post privacy content</p>
             </div>
           </Link>
 
           <Link to="/testimonial" className={styles.navCard}>
             <div className={`${styles.iconWrapper} ${styles.postIcon}`}>
-            <FaQuoteLeft className={styles.icon} />
-
+              <FaQuoteLeft className={styles.icon} />
             </div>
             <div className={styles.statDetails}>
               <h3>Testimonials</h3>
               <p>Post Testimonials</p>
             </div>
           </Link>
+      
 
+            {/* Client Detail Section Below the Line */}
+          <Link to="/list" className={styles.navCard}>
+            <div className={`${styles.iconWrapper} ${styles.postIcon}`}>
+              <FaUsers className={styles.icon} />
+            </div>
+            <div className={styles.statDetails}>
+              <h3>Client Detail</h3>
+              <p>View client details</p>
+            </div>
+          </Link>
+        
         </div>
       </div>
     </div>

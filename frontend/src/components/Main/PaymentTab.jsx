@@ -24,6 +24,12 @@ const PaymentTab = ({ clientId }) => {
         const response = await axios.get(`http://localhost:8080/api/payments/${clientId}`);
         console.log("Backend response:", response.data);
         const paymentsFromDb = response.data.data || [];
+        if (paymentsFromDb.length === 0) {
+          setError("No payments yet"); // Set friendly message when no payments
+        } else {
+          setError(null); // Clear any previous errors
+        }
+
 
         setPayments((prevPayments) => {
           const newPayments = paymentsFromDb.filter((newPayment) =>
@@ -46,7 +52,10 @@ const PaymentTab = ({ clientId }) => {
           }
         });
       } catch (err) {
-        setError(err.response ? err.response.data : err.message);
+        // setError(err.response ? 
+        //   (typeof err.response.data === 'string' ? err.response.data : 
+        //    err.response.data.message || "Failed to load payments") 
+        //   : err.message || "Failed to load payments");
         console.error('Error fetching payments:', err);
       } finally {
         setLoading(false);
@@ -163,9 +172,12 @@ const PaymentTab = ({ clientId }) => {
         <p className={styles.loading}>Loading payments...</p>
       ) : error ? (
         <p className={styles.error}>{error}</p>
-      ) : payments.length === 0 ? (
-        <p className={styles.noPayments}>No payments found.</p>
-      ) : (
+      ) : 
+      // payments.length === 0 ? (
+      //   <p className={styles.noPayments}>No payments found.</p>
+      // ) 
+      // : 
+      (
         <div className={styles.paymentList}>
           {payments.map((payment) => (
             <div key={payment._id} className={styles.paymentCard}>

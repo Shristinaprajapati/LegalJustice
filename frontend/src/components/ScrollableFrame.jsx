@@ -5,6 +5,7 @@ import ServiceComponent from './ServiceComponent.jsx';
 import Practicearea from './about.jsx';
 import Footer from './Footer.jsx'
 import { Icon } from "@iconify/react";
+import ChatbaseWidget from './ChatbaseWidget'; // Import the component
 
 const ScrollableFrame = () => {
   const [services, setServices] = useState([]); // State to store services
@@ -493,6 +494,7 @@ const ScrollableFrame = () => {
     Contact Us
   </button>
 </section>
+<ChatbaseWidget />
 
 
 

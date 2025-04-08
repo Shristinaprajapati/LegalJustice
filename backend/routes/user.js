@@ -50,6 +50,22 @@ router.get('/', async (req, res) => {
     }
   });
 
+  // Add this route to your existing router
+router.get('/clients', async (req, res) => {
+  try {
+      // Find all users where role is not 'admin'
+      const users = await User.find(
+          { role: { $ne: 'admin' } },  // $ne means "not equal"
+          { _id: 1, name: 1, email: 1, phone: 1, role: 1 }  // Only include these fields
+      );
+      
+      res.status(200).json(users);
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 
 
   // Fetch client by clientId

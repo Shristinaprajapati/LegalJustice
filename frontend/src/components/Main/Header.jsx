@@ -267,14 +267,21 @@ const Header = () => {
                       </li>
 
                       {activeSubTab === "settings" && (
-                        <li className={styles.settingsDetails}>
-                          <div className={styles.settingsText}>
-                            <label className={styles.inputLabel}>Reset Password:</label>
-                            <input type="password" placeholder="Enter new password" className={styles.inputField} />
-                            <button className={styles.saveBtn}>Change Password</button>
-                          </div>
-                        </li>
-                      )}
+  <li className={styles.settingsDetails}>
+    <div className={styles.settingsText}>
+      
+      {/* Added Forgot Password link */}
+      <div className={styles.forgotPasswordLink}>
+        <button 
+          onClick={() => navigate('/forgot-password')}
+          className={styles.linkBtn}
+        >
+          Forgot Password?
+        </button>
+      </div>
+    </div>
+  </li>
+)}
 
                       <li onClick={handleLogout} className={styles.logout}>
                         Logout

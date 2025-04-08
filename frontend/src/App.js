@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 // import '@fortawesome/fontawesome-free/css/all.min.css';
 import ProtectedRoute from './components/ProtectedRoute';
 
+
 import Main from './components/Main/index.jsx'; 
 import Login from './components/Login'; 
 import SignUp from './components/SignUp'; 
@@ -52,6 +53,7 @@ import Aboutus from "./components/AboutUs.jsx";
 
 import Loader from "./components/Loader.jsx";
 import Testimonial from "./components/Admin/Testimonial/testimonial.jsx";
+import List from "./components/Admin/clientList.jsx";
 
 
 
@@ -65,6 +67,7 @@ import { Toaster } from 'react-hot-toast';
 function App() {
   const user = localStorage.getItem("token");
   return (
+    
     <Router>
       
       <Routes>
@@ -101,6 +104,7 @@ function App() {
         <Route path="/admin/payment-history" element={<PaymentHistory />} />
         <Route path="/admin/post" element={<PostContent />} />
         <Route path ="/testimonial" element={<Testimonial/>}/>
+        <Route path ="/list" element={<List/>}/>
         </Route>
 
         <Route path ="/desk" element={<Desktop/>}/>

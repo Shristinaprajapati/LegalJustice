@@ -329,10 +329,31 @@
   color: #0056b3; /* Highlight text on hover */
 }
 
-.profileDropdown .logout {
-  color: #e74c3c;
-  font-weight: bold;
+/* Logout Button Styling within Profile Dropdown */
+.logout.profileDropdown .logout {
+  color: #e74c3c; /* Red color for logout text */
+  font-weight: bold; /* Make the text bold */
+  font-size: 16px; /* Set font size */
+  padding: 10px 15px; /* Add padding for better spacing */
+  border-radius: 5px; /* Round the corners */
+  background-color: transparent; /* Make background transparent */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions for background and color */
+  cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
 }
+
+/* Hover Effect */
+.logout.profileDropdown .logout:hover {
+  color: #fff; /* Change color to white when hovering */
+  background-color: #e74c3c; /* Set background color to red on hover */
+}
+
+/* Focus Effect */
+.logout.profileDropdown .logout:focus {
+  outline: 2px solid #e74c3c; /* Add a border when the element is focused */
+  background-color: #e74c3c; /* Keep the background red */
+  color: #fff; /* Ensure text stays white */
+}
+
 
 /* Show the dropdown when active (triggered by JS) */
 .profileSection.active .profileDropdown {
@@ -981,6 +1002,29 @@
   }
 }
 
+
+
+
+
+
+.forgotPasswordLink {
+  margin-top: 0px;
+  text-align: center;
+}
+
+.linkBtn {
+  background: none;
+  border: none;
+  color: #0066cc;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0;
+}
+
+.linkBtn:hover {
+  color: #004499;
+}
 
 
 
