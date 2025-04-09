@@ -53,6 +53,51 @@ router.get('/', async (req, res) => {
 });
 
 
+// Fetch all bookings with all details (client, service, etc.)
+router.get('/all', async (req, res) => {
+  try {
+    // Fetch all bookings with populated client and service details
+    const bookings = await Booking.find()
+      .populate('clientId', 'name email') // Populate client details (name, email)
+      .populate('serviceId', 'title'); // Populate service details (title)
+
+    if (!bookings || bookings.length === 0) {
+      return res.status(404).json({ message: 'No bookings found' });
+    }
+
+    // Format the response to match the frontend structure
+    const bookingsWithDetails = bookings.map((booking) => {
+      // Safely check for null values before accessing properties
+      const client = booking.clientId ? {
+        _id: booking.clientId._id,
+        name: booking.clientId.name,
+        email: booking.clientId.email,
+      } : null;
+
+      const service = booking.serviceId ? {
+        _id: booking.serviceId._id,
+        title: booking.serviceId.title,
+      } : null;
+
+      return {
+        _id: booking._id,
+        serviceId: service, // May be null
+        clientId: client, // May be null
+        category: booking.category, // Include category here
+        status: booking.status,
+        createdAt: booking.createdAt,
+        updatedAt: booking.updatedAt,
+        __v: booking.__v,
+      };
+    });
+
+    res.status(200).json({ bookings: bookingsWithDetails });
+  } catch (err) {
+    console.error('Error fetching all bookings:', err);
+    res.status(500).json({ message: 'Error fetching bookings', error: err.message });
+  }
+});
+
 
 // Create a booking (POST)
 router.post('/', async (req, res) => {

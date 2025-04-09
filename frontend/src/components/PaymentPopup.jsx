@@ -17,7 +17,7 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
   // Fetch the payment URL when the popup opens
   useEffect(() => {
     const initiatePayment = async () => {
-      setIsLoading(true);
+      setIsLoading(true); 
       setError(null);
       try {
         const response = await axios.post(
@@ -25,7 +25,7 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
           {
             return_url: `http://localhost:3000/successful/${clientDetails.serviceId}/${clientDetails.clientId}`,
             website_url: "http://localhost:8080/payment-callback",
-            amount: 40 * 100, // Ensure this is in the correct unit (paisa or NPR)
+            amount: 1000 * 100, // Ensure this is in the correct unit (paisa or NPR)
             purchase_order_id: clientDetails.serviceId,
             purchase_order_name: `Service for ${clientDetails.clientId}`,
             customer_info: {

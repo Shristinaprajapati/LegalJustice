@@ -77,6 +77,16 @@ router.post('/save', async (req, res) => {
 });
 
 
+// Count the number of divorce agreements
+router.get('/count', async (req, res) => {
+  try {
+    const documentCount = await DivorceAgreement.countDocuments();
+    return res.status(200).json({ documentCount });
+  } catch (error) {
+    console.error('Error counting documents:', error);
+    return res.status(500).json({ message: 'Failed to count documents' });
+  }
+});
 
 
 router.get('/:clientId', async (req, res) => {

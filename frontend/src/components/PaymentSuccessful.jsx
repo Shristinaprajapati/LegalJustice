@@ -256,12 +256,21 @@ const BookingSuccess = () => {
     <div style={styles.container}>
       <div style={styles.box}>
         <h2 style={styles.heading}>Booking Successful</h2>
-        <p style={styles.subText}>We appreciate your trust in us.</p>
-        <img src="/Images/check.png" alt="Success" style={styles.image} />
-        <p style={styles.message}>
-          Payment Status:{" "}
-          <span style={styles.processed}>{paymentStatus}</span>
-        </p>
+        <p style={{ ...styles.subText, textAlign: 'center' }}>
+  We appreciate your trust in us.
+</p>
+
+        <img
+  src="/Images/check.png"
+  alt="Success"
+  style={{ ...styles.image, marginTop: '18px', marginBottom: '20px' }}
+/>
+
+<p style={{ ...styles.message, textAlign: 'center' }}>
+  Payment Status:{" "}
+  <span style={styles.processed}>{paymentStatus}</span>
+</p>
+
         <a href="/" style={styles.button}>
           Back to Home
         </a>

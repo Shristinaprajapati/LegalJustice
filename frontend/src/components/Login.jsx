@@ -13,7 +13,7 @@ const Login = () => {
   const [data, setData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false); // Added loading state
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -26,32 +26,50 @@ const Login = () => {
     setError("");
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true); // Start loading when form is submitted
+  const validateForm = () => {
+    if (!data.email.trim()) {
+      setError("Email is required");
+      return false;
+    }
+    
+    if (!/^\S+@\S+\.\S+$/.test(data.email)) {
+      setError("Please enter a valid email address");
+      return false;
+    }
 
-    // Validate email and password
-    if (!data.email || !data.password) {
-      setError("Please enter both email and password.");
-      setLoading(false);
-      return;
+    if (!data.password) {
+      setError("Password is required");
+      return false;
     }
 
     if (!recaptchaValue) {
-      setError("Please complete the reCAPTCHA verification.");
-      setLoading(false);
-      return;
+      setError("Please complete the reCAPTCHA verification");
+      return false;
     }
+
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+
+    if (!validateForm()) return;
+
+    setLoading(true);
 
     try {
       const url = "http://localhost:8080/api/auth";
       const payload = { ...data, recaptchaValue };
 
-      const response = await axios.post(url, payload, { timeout: 10000 });
+      const response = await axios.post(url, payload, { 
+        timeout: 10000,
+        validateStatus: (status) => status >= 200 && status < 500 
+      });
+      
       const res = response.data;
-      setLoading(false); // Stop loading on success
 
-      if (res.token) {
+      if (response.status === 200 && res.token) {
         if (res.user.role === "admin") {
           localStorage.setItem("admin_token", res.token);
           localStorage.setItem("admin_email", res.user.email);
@@ -60,124 +78,158 @@ const Login = () => {
           localStorage.setItem("email", res.user.email);
         }
 
-        if (res.redirectTo) {
-          window.location.href = res.redirectTo;
-        } else {
-          navigate("/");
-        }
+        navigate(res.redirectTo || "/");
+        return;
+      }
+
+      // Handle specific error cases from server
+      if (response.status === 401) {
+        setError(res.message || "Invalid email or password");
+      } else if (response.status === 403) {
+        setError(res.message || "reCAPTCHA verification failed");
+      } else if (response.status === 400) {
+        setError(res.message || "Invalid request data");
       } else {
-        setError("Authentication failed. No token received.");
+        setError(res.message || "Login failed. Please try again.");
       }
     } catch (error) {
-      setLoading(false); // Stop loading on error
-      console.error("Login Error:", error);
-
       if (error.code === "ECONNABORTED") {
         setError("Request timed out. Please try again.");
       } else if (error.response) {
+        // Handle cases where server responds with error
         const { status, data } = error.response;
-        switch (status) {
-          case 400:
-            setError(data.message || "Invalid request. Please check your input.");
-            break;
-          case 401:
-            setError(data.message || "Invalid email or password.");
-            break;
-          case 403:
-            setError(data.message || "reCAPTCHA verification failed.");
-            break;
-          case 500:
-            setError("An internal server error occurred. Please try again later.");
-            break;
-          default:
-            setError("An unexpected error occurred. Please try again.");
+        if (status === 500) {
+          setError("Server error. Please try again later.");
+        } else {
+          setError(data.message || "An error occurred during login.");
         }
       } else if (error.request) {
-        setError("Unable to connect to the server. Please check your internet connection.");
+        setError("Network error. Please check your internet connection.");
       } else {
         setError("An unexpected error occurred. Please try again.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className={styles.loginContainer}>
-      {loading && <Loader />} {/* Loader positioned here to overlay the entire form */}
+    <div className={styles.loginWrapper}>
+      {loading && (
+        <div className={styles.loaderOverlay}>
+          <Loader />
+        </div>
+      )}
       
-      <div className={styles.loginContent}>
-        <h1 className={styles.mainHeading}>Welcome to Legal Justice Platform!</h1>
-        <p className={styles.subheading}>Sign in to access your account and manage your cases.</p>
-      </div>
+      <div className={styles.loginContainer}>
+        <div className={styles.loginHero}>
+          <h1 className={styles.mainHeading}>Welcome to Legal Justice Platform</h1>
+          <p className={styles.subheading}>
+            Sign in to access your account and manage your cases efficiently.
+          </p>
+          <div className={styles.loginIllustration}></div>
+        </div>
 
-      <div className={styles.loginForm}>
-        <h2 className={styles.heading}>Nice to see you here!</h2>
-        {error && <div className={styles.errorMessage}>{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Email:</label>
-            <input
-              type="email"
-              name="email"
-              value={data.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              required
-              className={styles.inputField}
-              disabled={loading} // Disable inputs during loading
-            />
-          </div>
-          <div className={styles.formGroup}>
-            <label className={styles.label}>Password:</label>
-            <div className={styles.passwordContainer}>
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={data.password}
-                onChange={handleChange}
-                placeholder="Enter your password"
-                required
-                className={styles.inputField}
-                disabled={loading}
-              />
+        <div className={styles.loginFormContainer}>
+          <div className={styles.loginForm}>
+            <div className={styles.formHeader}>
+              <h2>Sign In</h2>
+              <p>Enter your credentials to access your account</p>
+            </div>
+
+            {error && (
+              <div className={styles.errorMessage}>
+                <Icon icon="mdi:alert-circle-outline" className={styles.errorIcon} />
+                <span>{error}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit}>
+              <div className={styles.formGroup}>
+                <label htmlFor="email">Email Address</label>
+                <div className={styles.inputContainer}>
+                  <Icon icon="mdi:email-outline" className={styles.inputIcon} />
+                  <input
+                    id="email"
+                    type="email"
+                    name="email"
+                    value={data.email}
+                    onChange={handleChange}
+                    placeholder="your@email.com"
+                    className={styles.inputField}
+                    disabled={loading}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.formGroup}>
+                <label htmlFor="password">Password</label>
+                <div className={styles.inputContainer}>
+                  <Icon icon="mdi:lock-outline" className={styles.inputIcon} />
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={data.password}
+                    onChange={handleChange}
+                    placeholder="••••••••"
+                    className={styles.inputField}
+                    disabled={loading}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className={styles.passwordToggle}
+                    disabled={loading}
+                  >
+                    <Icon
+                      icon={showPassword ? "mdi:eye-off" : "mdi:eye"}
+                      className={styles.eyeIcon}
+                    />
+                  </button>
+                </div>
+              </div>
+
+              <div className={styles.formOptions}>
+                <Link to="/forgot-password" className={styles.forgotPassword}>
+                  Forgot password?
+                </Link>
+              </div>
+
+              <div className={styles.captchaContainer}>
+                <ReCAPTCHA
+                  sitekey={SITE_KEY}
+                  onChange={handleRecaptcha}
+                  className={loading ? styles.disabledCaptcha : ""}
+                />
+              </div>
+
               <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className={styles.passwordToggle}
+                type="submit"
+                className={styles.loginButton}
                 disabled={loading}
               >
-                <Icon
-                  icon={showPassword ? "mdi:eye-off" : "mdi:eye"}
-                  className={styles.eyeIcon}
-                />
+                {loading ? (
+                  <>
+                    <Icon icon="mdi:loading" className={styles.spinnerIcon} />
+                    Signing In...
+                  </>
+                ) : (
+                  "Sign In"
+                )}
               </button>
-            </div>
+            </form>
+
+            <div className={styles.signupPrompt}>
+  <p>
+    Don’t have an account?{" "}
+    <Link to="/signup" className={styles.signupLink}>
+      Create one
+    </Link>
+  </p>
+</div>
+
           </div>
-          <Link to="/forgot-password" className={styles.forgotPassword}>
-            Forgot Password?
-          </Link>
-          <div className={styles.captchaContainer}>
-            <ReCAPTCHA 
-              sitekey={SITE_KEY} 
-              onChange={handleRecaptcha}
-              className={loading ? styles.disabledCaptcha : ""}
-            />
-          </div>
-          <button 
-            type="submit" 
-            className={styles.loginButtonSubmit}
-            style={{ backgroundColor: '#1e40af' }}
-            disabled={loading}
-          >
-            {loading ? "Logging in..." : "Login"}
-          </button>
-        </form>
-        <div className={styles.signupLinkContainer}>
-          <p className={styles.paragraph}>
-            Don't have an account?{" "}
-            <Link to="/signup" className={styles.signupLink}>
-              Sign Up
-            </Link>
-          </p>
         </div>
       </div>
     </div>

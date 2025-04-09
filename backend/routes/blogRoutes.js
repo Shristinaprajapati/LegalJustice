@@ -45,6 +45,21 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// Count the number of blog posts
+router.get("/count", async (req, res) => {
+  try {
+    const blogCount = await Blog.countDocuments();
+    console.log("Blog Count:", blogCount); // Log the count for debugging
+    res.status(200).json({ blogCount });
+  } catch (error) {
+    console.error("Error counting blogs:", error); // Log the error
+    res.status(500).json({ error: "Failed to count blog posts" });
+  }
+});
+
+
+
+
 // Update a blog post
 router.put("/:id", async (req, res) => {
   try {

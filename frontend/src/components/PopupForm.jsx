@@ -55,7 +55,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
       console.log("Form Data being sent:", {
         return_url: `http://localhost:3000/successful/${formData.serviceId}/${formData.clientId}`,
         website_url: "http://localhost:8080/payment-callback",
-        amount: 200 * 100,
+        amount: 1000 * 100,
         purchase_order_id: formData.serviceId,
         purchase_order_name: `Service for ${formData.clientId}`,
         customer_info: {
@@ -71,7 +71,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
       const response = await axios.post("http://localhost:8080/api/khalti-api", {
         return_url: `http://localhost:3000/successful/${formData.serviceId}/${formData.clientId}`,
         website_url: "http://localhost:8080/payment-callback",
-        amount: 2000 * 100,
+        amount: 1000 * 100,
         purchase_order_id: formData.serviceId,
         purchase_order_name: `Service for ${formData.clientId}`,
         customer_info: {
@@ -270,7 +270,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
               <div className={styles.leftSection}>
                 <h3>Complete Booking</h3>
                 <div className={styles.clientDetails}>
-                <p>Proceed with your document booking with a pre payment of Rs.2000.</p>
+                <p>Proceed with your document booking with a pre payment of Rs.1000.</p>
                   {/* <p><strong>Name:</strong> {formData.name}</p>
                   <p><strong>Email:</strong> {formData.email}</p>
                   <p><strong>Phone:</strong> {formData.phone}</p> */}
@@ -279,7 +279,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
                 {error && <p className={styles.error}>{error}</p>}
                 <div className={styles.paymentOptions}>
                   <button onClick={handlePayNow} className={styles.submitBtn} disabled={loading}>
-                    Pay Rs.2,000
+                    Pay Rs.1,000
                   </button>
                 </div>
               </div>
