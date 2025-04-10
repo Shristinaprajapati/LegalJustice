@@ -1097,7 +1097,7 @@
 .paymentAmount {
   margin: 0 0 12px 0;
   font-size: 14px;
-  color: #4caf50; /* Green for amount */
+  color: #4169E1; /* Green for amount */
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1158,7 +1158,7 @@
 
 /* Complete Button */
 .completeButton {
-  background-color: #28a745;
+  background-color: #4169E1;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -1172,7 +1172,7 @@
 }
 
 .completeButton:hover {
-  background-color: #218838; /* Darker green on hover */
+  background-color: #4169E1; /* Darker green on hover */
 }
 .paymentHeader {
   display: flex;
@@ -1196,7 +1196,7 @@
 
 .progressBar {
   height: 100%;
-  background-color: #4caf50;
+  background-color: #4169E1;
   border-radius: 5px;
   transition: width 0.3s ease;
 }
@@ -1214,8 +1214,8 @@
 
 
 .modalOverlay {
-  margin-top: 400px;
   position: fixed;
+  margin-top: 20rem;
   top: 0;
   left: 0;
   right: 0;
@@ -1229,60 +1229,165 @@
 
 .modalContent {
   background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 600px; /* Increased max-width to accommodate both sections */
-  width: 100%;
-  z-index: 1001;
-  display: flex; /* Use flexbox to create a two-column layout */
-  gap: 20px; /* Add spacing between the left and right sections */
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  width: 700px;
+  max-width: 90%;
+  max-height: 90vh;
+  overflow: auto;
+  display: flex;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .leftSection {
-  flex: 1; /* Take up 50% of the available space */
+  flex: 1;
+  padding: 32px 40px;
+  border-right: 1px solid #f0f0f0;
   display: flex;
   flex-direction: column;
-  gap: 18px; /* Add 18px spacing between elements */
+  gap: 14px;
 }
 
 .rightSection {
-  flex: 1; /* Take up 50% of the available space */
+  width: 300px;
+  padding: 32px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center the QR code */
-  gap: 18px; /* Add 18px spacing between elements */
+  gap: 24px;
 }
 
 .clientDetails {
   display: flex;
   flex-direction: column;
-  gap: 18px; /* Add 18px spacing between client details */
+  gap: 16px;
 }
 
 .clientDetails p {
-  margin: 0; /* Remove default margin for paragraphs */
-  font-size: 18px; /* Set font size to 18px */
-  line-height: 1.5; /* Improve readability with line height */
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #2d3748;
+}
+
+.clientDetails strong {
+  color: #4a5568;
+  font-weight: 500;
+  min-width: 160px;
+  display: inline-block;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.closeIcon {
+  font-size: 20px;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+}
+
+.closeIcon:hover {
+  color: #333;
+}
+
+.leftSection h3 {
+  color: #2d3748;
+  margin: 0 0 24px 0;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.paymentOptions {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.submitBtn {
+  background-color: #4169E1;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  max-width: 300px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(65, 105, 225, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.submitBtn:hover {
+  background-color: #3a5fcd;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(65, 105, 225, 0.3);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 .qrCode {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px; /* Add 18px spacing between the QR code and text */
+  gap: 16px;
+  flex-grow: 1;
+  justify-content: center;
 }
 
 .qrCode p {
-  margin: 0; /* Remove default margin for paragraphs */
-  font-size: 18px; /* Set font size to 18px */
-  line-height: 1.5; /* Improve readability with line height */
+  margin: 0;
+  color: #4a5568;
+  font-size: 16px;
 }
 
-.closeIcon {
-  align-self: flex-end; /* Position the close icon to the top-right */
-  cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
+.error {
+  background-color: #fff5f5;
+  border-left: 3px solid #e53e3e;
+  padding: 12px 16px;
+  border-radius: 4px;
+  color: #e53e3e;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Loading spinner animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.loadingSpinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .modalContent {
+    flex-direction: column;
+  }
+  
+  .leftSection {
+    border-right: none;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .rightSection {
+    width: auto;
+    padding: 24px;
+  }
 }
 
 .submitBtn {

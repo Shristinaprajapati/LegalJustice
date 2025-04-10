@@ -343,6 +343,7 @@ const ScrollableFrame = () => {
         Our team of experienced attorneys is here to provide personalized legal solutions tailored to your specific situation.
       </p>
       <button
+      onClick={() => (window.location.href = "/service")}
         style={{
           backgroundColor: "#ffffff",
           color:"linear-gradient(135deg, #002b66 0%, #003d8f 100%)",
@@ -479,20 +480,22 @@ const ScrollableFrame = () => {
   </div>
 
   <button
-    style={{
-      backgroundColor: "#004aad",
-      color: "#fff",
-      fontSize: "16px",
-      fontWeight: "600",
-      padding: "14px 28px",
-      border: "none",
-      borderRadius: "6px",
-      cursor: "pointer",
-      transition: "background-color 0.3s ease",
-    }}
-  >
-    Contact Us
-  </button>
+  onClick={() => (window.location.href = "/contact")}
+  style={{
+    backgroundColor: "#004aad",
+    color: "#fff",
+    fontSize: "16px",
+    fontWeight: "600",
+    padding: "14px 28px",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    transition: "background-color 0.3s ease",
+  }}
+>
+  Contact Us
+</button>
+
 </section>
 <ChatbaseWidget />
 

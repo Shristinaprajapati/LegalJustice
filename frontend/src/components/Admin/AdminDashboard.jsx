@@ -174,7 +174,7 @@ const AdminDashboard = () => {
             </div>
             <div className={styles.statDetails}>
               <h3>Total Blogs</h3>
-              <p>15</p>
+              <p>2</p>
               {/* <span className={styles.trendPositive}>↑ 3% Since last month</span> */}
             </div>
           </div>

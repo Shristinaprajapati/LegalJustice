@@ -222,6 +222,8 @@ const SignUp = () => {
                 </p>
               </div>
 
+
+              <div className={styles.confirm}>
               <div className={styles.formGroup}>
                 <label htmlFor="confirmPassword">Confirm Password</label>
                 <div className={styles.inputContainer}>
@@ -248,6 +250,7 @@ const SignUp = () => {
                     />
                   </button>
                 </div>
+              </div>
               </div>
 
               <button

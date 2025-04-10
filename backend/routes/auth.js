@@ -67,7 +67,7 @@ router.post("/", async (req, res) => {
       token,
       message: "Logged in successfully.",
       user: { id: user._id, email: user.email, role }, // Include role here
-      redirectTo: role === "admin" ? "http://localhost:3000/admin/AdminDashboard" : undefined, // Redirect admin to dashboard
+      redirectTo: role === "admin" ? "/admin/AdminDashboard" : undefined, // Redirect admin to dashboard
     });
   } catch (error) {
     console.error("Error during authentication:", error.message);

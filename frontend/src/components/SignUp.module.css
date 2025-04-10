@@ -238,6 +238,9 @@
   color: #1e40af;
   text-decoration: underline;
 }
+.confirm{
+  margin-top: -2.5rem;
+}
 
 /* Responsive styles */
 @media (max-width: 1024px) {
