@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Calendar from 'react-calendar'; // Import Calendar component
-import 'react-calendar/dist/Calendar.css'; // Import Calendar styles
-import styles from './AdminCalendar.module.css'; // Optional: Custom styles
+import Calendar from 'react-calendar'; 
+import 'react-calendar/dist/Calendar.css'; 
+import styles from './AdminCalendar.module.css'; 
 import axios from 'axios';
 
 const AdminCalendar = ({ refreshCalendar }) => {
@@ -12,12 +12,12 @@ const AdminCalendar = ({ refreshCalendar }) => {
   // Fetch all bookings from the backend
   const fetchBookings = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/bookings'); // Fetch all bookings
+      const response = await axios.get('http://localhost:8080/api/bookings'); 
       const bookings = response.data.bookings || [];
 
       const formattedBookings = bookings.map((booking) => ({
         ...booking,
-        date: new Date(booking.date), // Convert booking date to a Date object
+        date: new Date(booking.date), 
       }));
 
       setConfirmedDates(formattedBookings);
@@ -28,7 +28,7 @@ const AdminCalendar = ({ refreshCalendar }) => {
 
   useEffect(() => {
     fetchBookings();
-  }, [refreshCalendar]); // Re-fetch bookings when refreshCalendar changes
+  }, [refreshCalendar]); 
 
   // Handle date selection
   const handleDateChange = (date) => {
@@ -78,7 +78,7 @@ const AdminCalendar = ({ refreshCalendar }) => {
           booking.date.toDateString() === date.toDateString()
       )
     ) {
-      return styles.highlight; // Apply the custom 'highlight' class
+      return styles.highlight; 
     }
     return null;
   };
@@ -88,7 +88,7 @@ const AdminCalendar = ({ refreshCalendar }) => {
       <Calendar
         onChange={handleDateChange}
         value={selectedDate}
-        tileClassName={tileClassName} // Apply custom styles for highlighted dates
+        tileClassName={tileClassName} 
       />
       <div className={styles.detailsContainer}>
         <h3 className={styles.dateHeader}>Bookings for {selectedDate.toDateString()}</h3>
@@ -109,8 +109,8 @@ const AdminCalendar = ({ refreshCalendar }) => {
                   <p>
                     <strong>Time Slot:</strong> {booking.timeSlot || 'N/A'}
                   </p>
-                </div>
-                {booking.status === 'Confirmed' && (
+
+                  {booking.status === 'Confirmed' && (
                   <button
                     onClick={() => handleDeleteBooking(booking._id)}
                     className={styles.statusButtonCancel}
@@ -118,6 +118,8 @@ const AdminCalendar = ({ refreshCalendar }) => {
                     Done
                   </button>
                 )}
+                </div>
+                
               </li>
             ))}
           </ul>

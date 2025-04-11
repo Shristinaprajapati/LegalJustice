@@ -1,22 +1,87 @@
 import { useRef, useState, useEffect } from 'react';
-import { BsChatDotsFill } from 'react-icons/bs'; // Chat icon
+import { BsChatDotsFill } from 'react-icons/bs'; 
+import ReactDOM from 'react-dom';
 
 const ChatbaseWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const chatRef = useRef(null);
-
-  // Retrieve email from localStorage or prompt for it if not found
+  
   const getUserEmail = () => {
-    let email = localStorage.getItem('email'); // Retrieve email from localStorage
+    let email = localStorage.getItem('email'); 
     
     if (!email) {
-      // If no email found, prompt the user for it
-      email = prompt("Enter your email to start a new chat:");
+      // Create a popup container
+      const popupContainer = document.createElement('div');
+      document.body.appendChild(popupContainer);
       
-      if (email) {
-        localStorage.setItem('userEmail', email); // Store the email in localStorage
-      }
+      // Define styles
+      const popupStyles = {
+        overlay: {
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000
+        },
+        popup: {
+          backgroundColor: 'white',
+          padding: '20px',
+          borderRadius: '8px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+          width: '320px',
+          maxWidth: '90%',
+          textAlign: 'center'
+        },
+        button: {
+          marginTop: '15px',
+          padding: '10px 20px',
+          backgroundColor: '#007bff',
+          color: 'white',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer',
+          fontSize: '16px'
+        }
+      };
+  
+      // Create Login Popup component
+      const LoginPopup = ({ onClose }) => (
+        <div style={popupStyles.overlay}>
+          <div style={popupStyles.popup}>
+            <h3 style={{ marginTop: 0 }}>Please Login First</h3>
+            <p>You need to login to start a new chat.</p>
+            <button 
+              style={popupStyles.button}
+              onClick={onClose}
+            >
+              Go to Login Page
+            </button>
+          </div>
+        </div>
+      );
+  
+      // Render the popup
+      ReactDOM.render(
+        <LoginPopup 
+          onClose={() => {
+            // Clean up
+            ReactDOM.unmountComponentAtNode(popupContainer);
+            document.body.removeChild(popupContainer);
+            // Redirect to login page
+            window.location.href = '/login';
+          }}
+        />, 
+        popupContainer
+      );
+  
+      return null; // Return null since we're redirecting to login
     }
+    
     return email;
   };
 
