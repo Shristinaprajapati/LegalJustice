@@ -1,5 +1,90 @@
 /* AdminCalendar.module.css */
 
+/* General Typography */
+h2 {
+  text-align: center;
+  font-size: 24px;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal Content */
+.modalContent {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.modalContent h3 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #333;
+  text-align: center;
+}
+
+/* Modal Input */
+.modalInput {
+  width: 100%;
+  padding: 10px 14px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.modalInput:focus {
+  border-color: #004aad;
+}
+
+/* Modal Actions */
+.modalActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.modalSave,
+.modalCancel {
+  flex: 1;
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modalSave {
+  background-color: #004aad;
+  color: white;
+}
+
+.modalCancel {
+  background-color: #bbb;
+  color: white;
+}
+
 /* Main Container */
 .calendarContainer {
   display: flex;
@@ -11,262 +96,84 @@
   font-family: 'Arial', sans-serif;
 }
 
-/* Calendar Section */
-.calendarSection {
-  flex: 1;
-  min-width: 350px;
-  max-width: 400px;
+/* Left Calendar Panel - 60% */
+.calendarPanel {
+  flex: 0 0 60%;
+  min-width: 400px;
 }
 
-/* Bookings Section */
-.detailsContainer {
-  flex: 1;
-  min-width: 350px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 12px;
-
+/* Right Side Panel - 40% */
+.rightPanel {
+  flex: 0 0 40%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
 }
 
-/* Header */
-h2 {
-  text-align: center;
-  font-size: 24px;
-  color: #2c3e50;
-  margin-bottom: 20px;
+/* Reminder Button */
+.reminderButton {
+  align-self: flex-end;
+  background-color: #004aad;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
 }
 
-/* Date Header */
-.dateHeader {
-  font-size: 20px;
-  color: #2c3e50;
-  margin-bottom: 20px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #eee;
-  font-weight: 500;
+.reminderButton:hover {
+  background-color: #003080;
 }
 
-/* Booking List Styling */
+/* Reminder/Booking Details Section */
+.detailsContainer {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Booking List */
 .bookingList {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
   margin: 0;
-  max-height: 500px;
-  overflow-y: auto;
-  padding-right: 10px;
 }
 
-/* Scrollbar styling */
-.bookingList::-webkit-scrollbar {
-  width: 6px;
-}
-
-.bookingList::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 3px;
-}
-
-.bookingList::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 3px;
-}
-
-.bookingList::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* Individual Booking Item */
 .bookingItem {
-  background-color: #fff;
-  padding: 20px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-
-}
-
-/* Hover Effect for Booking Item */
-.bookingItem:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.bookingDetails{
-  display: block;
-  height: 10rem;
-}
-/* Booking Details */
-.bookingDetails p {
-  margin: 8px 0;
-  font-size: 14px;
-  color: #555;
-  line-height: 1.5;
-}
-
-/* Styling for Strong Tags inside Booking Details */
-.bookingDetails strong {
-  font-weight: 600;
-  color: #2c3e50;
-  min-width: 80px;
-  display: inline-block;
-}
-
-/* Status Button (Done Button) */
-.statusButtonCancel {
-  background-color: #27ae60;
-  color: #fff;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 12px;
-  font-size: 14px;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  float: right;
-}
-
-/* Hover Effect for Status Button */
-.statusButtonCancel:hover {
-  background-color: #219653;
-  transform: translateY(-2px);
-}
-
-/* No Bookings Message */
-.noBookingsText {
-  font-size: 16px;
-  color: #7f8c8d;
-  text-align: center;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-}
-
-/* React Calendar Styles */
-.react-calendar {
-  width: 100%;
-  border: none;
-  border-radius: 12px;
-  overflow: hidden;
-  background-color: #fff;
-}
-
-/* Calendar Tile */
-.react-calendar__tile {
-  padding: 12px 6px;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-/* Hover Effect for Calendar Tile */
-.react-calendar__tile:hover {
-  background-color: #e3f2fd;
-  transform: scale(1.03);
-}
-
-/* Highlighted Tile */
-.highlight {
-  background-color: #e3f2fd !important;
-  color: #1976d2 !important;
-  font-weight: 600;
-}
-
-/* Active Tile */
-.react-calendar__tile--active {
-  background-color: #4169E1;
-  color: white;
-}
-
-/* Current Day Tile */
-.react-calendar__tile--now {
-  background-color: #ffeb3b;
-  color: #000;
-}
-
-/* Navigation Bar for React Calendar */
-.react-calendar__navigation {
-  background-color: #4169E1;
-  color: white;
+  margin-bottom: 16px;
   padding: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
 }
 
-/* Weekday Headers */
-.react-calendar__month-view__weekdays {
-  font-weight: 500;
-  font-size: 14px;
-  color: #2c3e50;
-  padding: 10px 0;
-  background-color: #f5f5f5;
+.bookingDetails p {
+  margin: 6px 0;
 }
 
-/* Weekdays Styling */
-.react-calendar__month-view__days__day {
-  color: #2c3e50;
-}
-
-/* Weekend Days Styling */
-.react-calendar__month-view__days__day--weekend {
-  color: #e74c3c;
-}
-
-/* Navigation Button Styling */
-.react-calendar__navigation button {
-  font-size: 16px;
-  font-weight: 500;
+.statusButtonCancel {
+  background-color: #003080;
   color: white;
-  background: none;
+  padding: 6px 12px;
   border: none;
-  cursor: pointer;
-  padding: 4px 8px;
   border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
 }
 
-/* Hover Effect for Navigation Buttons */
-.react-calendar__navigation button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+/* Misc */
+.dateHeader {
+  margin-bottom: 16px;
 }
 
-/* Disabled Navigation Button Styling */
-.react-calendar__navigation button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.noBookingsText {
+  font-style: italic;
+  color: #888;
 }
-
-/* Weekdays Cells Styling */
-.react-calendar__month-view__weekdays__weekday {
-  text-align: center;
-  padding: 8px 0;
-}
-
-/* Navigation Buttons (Previous and Next) */
-.react-calendar__navigation__arrow {
-  font-size: 18px;
-}
-
-/* Month/Year Label */
-.react-calendar__navigation__label {
-  font-size: 16px;
-  font-weight: 500;
-}
-
-/* Highlight today's date */
-.react-calendar__tile--now {
-  background-color: #fff9c4;
-  color: #000;
-}
-
-/* Active (selected) date */
-.react-calendar__tile--active {
-  background-color: #4169E1;
-  color: white;
-}
-
-/* Hover effect for active date */
-.react-calendar__tile--active:hover {
-  background-color: #4169E1;
-}
-

@@ -16,11 +16,10 @@ const AdminDashboard = () => {
   const [error, setError] = useState(null);
   const location = useLocation();
 
-  // Chart color scheme
+  
   const COLORS = ['#4CAF50', '#F44336', '#2196F3', '#FFC107'];
   const RADIAN = Math.PI / 180;
 
-  // Custom label renderer for pie chart
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -39,7 +38,7 @@ const AdminDashboard = () => {
         setLoading(true);
         setError(null);
   
-        // Fetch all data in parallel
+        
         const [usersCountRes, bookingsCountRes, usersRes, bookingsRes, documentCountRes] = await Promise.all([
           axios.get("http://localhost:8080/api/users/count"),
           axios.get("http://localhost:8080/api/bookings/count"),
@@ -49,52 +48,51 @@ const AdminDashboard = () => {
 
         ]);
   
-        // Set basic counts
+        
         setUserCount(usersCountRes.data.userCount);
         setBookingCount(bookingsCountRes.data.bookingCount);
         setDocumentCount(documentCountRes.data.documentCount);
   
-        // Calculate conversion metrics
+        
         const totalUsers = usersRes.data.length;
-        console.log("Total Users:", totalUsers);  // Log total users
+        console.log("Total Users:", totalUsers);  
   
-        // Extract signed-up users' _id and convert them to string for comparison
+       
         const signedUpUserIds = usersRes.data.map(user => user._id.toString());
-        console.log("Users who have signed up:", signedUpUserIds); // Log signed-up user ids as strings
+        console.log("Users who have signed up:", signedUpUserIds); 
   
-        // Log the structure of bookingsRes.data to check if clientId is present
-        console.log("Bookings Response Data:", bookingsRes.data);  // Log the structure of bookingsRes.data
+       
+        console.log("Bookings Response Data:", bookingsRes.data);  
   
-        // Ensure bookingsRes.data.bookings is an array before proceeding
-        const bookedUserIds = new Set(); // Use Set to ensure unique users
+        const bookedUserIds = new Set(); 
   
-        // Loop through bookings and add clientId._id to the Set if it matches a signed-up user
+      
         if (Array.isArray(bookingsRes.data.bookings)) {
           bookingsRes.data.bookings.forEach(booking => {
-            // Convert clientId._id to string for comparison
+            
             const bookingClientId = booking.clientId._id ? booking.clientId._id.toString() : '';
             
-            // Log for debugging the clientId._id and compare it with signed-up user IDs
+            
             console.log(`Comparing signedUpUserIds with booking clientId._id: ${bookingClientId}`);
   
-            // Compare the clientId._id (converted to string) with the signed-up users' IDs
+            
             if (signedUpUserIds.includes(bookingClientId)) {
-              bookedUserIds.add(bookingClientId); // Add to Set, duplicates will be ignored
+              bookedUserIds.add(bookingClientId); 
             }
           });
         }
   
-        console.log("Unique Users who have booked services:", [...bookedUserIds]); // Log unique users who have booked
+        console.log("Unique Users who have booked services:", [...bookedUserIds]); 
   
-        // Number of unique users who have made bookings
+      
         const bookingClients = bookedUserIds.size;
-        console.log("Booking Clients (Unique Users who booked services):", bookingClients);  // Log unique users who have booked
+        console.log("Booking Clients (Unique Users who booked services):", bookingClients);  
   
-        // Calculate conversion rate
+       
         const conversionRate = totalUsers > 0 ? (bookingClients / totalUsers) * 100 : 0;
-        console.log("Conversion Rate:", conversionRate); // Log conversion rate
+        console.log("Conversion Rate:", conversionRate); 
   
-        // Set conversion data for the chart
+        
         setConversionData({
           chartData: [
             { name: "Booked Services", value: bookingClients },
@@ -168,16 +166,17 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className={styles.statCard}>
+          {/* <div className={styles.statCard}>
             <div className={`${styles.iconWrapper} ${styles.completedIcon}`}>
               <FaNewspaper  className={styles.icon} />
             </div>
             <div className={styles.statDetails}>
               <h3>Total Blogs</h3>
               <p>2</p>
-              {/* <span className={styles.trendPositive}>↑ 3% Since last month</span> */}
+              
             </div>
-          </div>
+          </div> */}
+
         </div>
 
         {/* Conversion Analytics Section */}

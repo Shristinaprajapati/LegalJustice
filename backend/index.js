@@ -17,6 +17,7 @@ const blogRoutes = require("./routes/blogRoutes");
 
 const khaltiRoutes = require("./routes/khalti");  
 const content = require("./routes/contentRoutes")
+const reminderRoutes = require('./routes/reminders');
 
 
 const divorseAgreement = require("./routes/divorceAgreementRoutes");
@@ -34,6 +35,7 @@ const paymentCallbackRouter = require('./routes/paymentCallback');
 const notificationRoutes = require("./routes/notificationRoutes");
 const settingsRoutes = require('./routes/settingsRoutes');
 const testimonialRoutes = require('./routes/testimonials');
+
 
 
 // database connection
@@ -79,6 +81,8 @@ app.use("/api/post", content);
 app.use("/api/notifications", notificationRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/testimonials', testimonialRoutes);
+
+app.use('/api/reminders', reminderRoutes);
 
 // Create an HTTP server using Express app
 const server = http.createServer(app);

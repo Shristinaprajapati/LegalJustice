@@ -7,6 +7,7 @@ import { FaGavel, FaFileContract, FaBalanceScale, FaBriefcase, FaFileAlt } from 
 import dividerImage2 from "./assets/profile1.jpg";
 import Loader from "./Loader";
 import Footer from "./Footer.jsx"
+import toast, { Toaster } from 'react-hot-toast';
 
 const serviceIcons = {
   consulting: <FaGavel className={styles.serviceIcon} />, 
@@ -77,6 +78,17 @@ const Service = () => {
   return (
     <>
       <Header />
+
+      <Toaster 
+      position="top-right"
+      toastOptions={{
+        duration: 4000,
+        style: {
+          margin: '10px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+        },
+      }}
+    />
       <div className={styles.servicesContainer}>
       <div style={{ textAlign: "center", marginTop: "20px" }}>
   <div
@@ -213,7 +225,7 @@ const Service = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginTop: "auto"
+          marginTop: "auto",
         }}>
           <p
             style={{
@@ -227,25 +239,41 @@ const Service = () => {
           </p>
           
           <button
-            style={{
-              backgroundColor: "#004aad",
-              color: "#fff",
-              fontSize: "15px",
-              padding: "12px 25px",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-              fontWeight: "500",
-              transition: "all 0.3s ease",
-              ":hover": {
-                backgroundColor: "#003d8f",
-                transform: "translateY(-2px)"
-              }
-            }}
-            onClick={() => openModal(service._id, service.title, service.category)}
-          >
-            Book Now
-          </button>
+  style={{
+    backgroundColor: "#004aad",
+    color: "#fff",
+    fontSize: "15px",
+    padding: "12px 25px",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: "500",
+    transition: "all 0.3s ease",
+    ":hover": {
+      backgroundColor: "#003d8f",
+      transform: "translateY(-2px)"
+    }
+  }}
+  onClick={() => {
+    const email = localStorage.getItem("email");
+    if (!email) {
+      toast.error("Please login first to book services", {
+        position: "top-right",
+        duration: 4000,
+        style: {
+          margin: '10px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          background: '#FF3333',
+          color: '#fff',
+        },
+      });
+      return;
+    }
+    openModal(service._id, service.title, service.category);
+  }}
+>
+  Book Now
+</button>
         </div>
         
         {service.popular && (
@@ -389,25 +417,41 @@ const Service = () => {
           </p>
           
           <button
-            style={{
-              backgroundColor: "#004aad",
-              color: "#fff",
-              fontSize: "15px",
-              padding: "12px 25px",
-              border: "none",
-              borderRadius: "6px",
-              cursor: "pointer",
-              fontWeight: "500",
-              transition: "all 0.3s ease",
-              ":hover": {
-                backgroundColor: "#003d8f",
-                transform: "translateY(-2px)"
-              }
-            }}
-            onClick={() => openModal(service._id, service.title, service.category)}
-          >
-            Get Document
-          </button>
+  style={{
+    backgroundColor: "#004aad",
+    color: "#fff",
+    fontSize: "15px",
+    padding: "12px 25px",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: "500",
+    transition: "all 0.3s ease",
+    ":hover": {
+      backgroundColor: "#003d8f",
+      transform: "translateY(-2px)"
+    }
+  }}
+  onClick={() => {
+    const email = localStorage.getItem("email");
+    if (!email) {
+      toast.error("Please login first to get documents", {
+        position: "top-right",
+        duration: 4000,
+        style: {
+          margin: '10px',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+          background: '#FF3333',
+          color: '#fff',
+        },
+      });
+      return;
+    }
+    openModal(service._id, service.title, service.category);
+  }}
+>
+  Get Document
+</button>
         </div>
         
         {service.popular && (

@@ -76,10 +76,10 @@
   color: white;
 }
 
-.casesIcon { background-color: #6366f1; }
+.casesIcon { background-color: #f59e0b; }
 .usersIcon { background-color: #10b981; }
 .bookingsIcon { background-color: #3b82f6; }
-.completedIcon { background-color: #f59e0b; }
+.completedIcon { background-color: #6366f1; }
 
 .statDetails h3 {
   font-size: 1rem;

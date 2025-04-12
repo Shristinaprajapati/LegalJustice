@@ -4,13 +4,11 @@ const slugify = require("slugify");
 
 const router = express.Router();
 
-// Create a blog post
 router.post("/", async (req, res) => {
   try {
     const { title, content, author } = req.body;
     const slug = slugify(title, { lower: true, strict: true });
 
-    // Check if slug exists
     const existingBlog = await Blog.findOne({ slug });
     if (existingBlog) {
       return res.status(400).json({ error: "A blog with this title already exists" });
@@ -24,7 +22,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Get all blog posts
+
 router.get("/", async (req, res) => {
   try {
     const blogs = await Blog.find().sort({ createdAt: -1 });
@@ -45,14 +43,13 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Count the number of blog posts
+
+// Count all blog posts
 router.get("/count", async (req, res) => {
   try {
     const blogCount = await Blog.countDocuments();
-    console.log("Blog Count:", blogCount); // Log the count for debugging
     res.status(200).json({ blogCount });
   } catch (error) {
-    console.error("Error counting blogs:", error); // Log the error
     res.status(500).json({ error: "Failed to count blog posts" });
   }
 });
@@ -60,7 +57,6 @@ router.get("/count", async (req, res) => {
 
 
 
-// Update a blog post
 router.put("/:id", async (req, res) => {
   try {
     const { title, content, author } = req.body;
@@ -90,7 +86,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// Delete a blog post
+
 router.delete("/:id", async (req, res) => {
   try {
     await Blog.findByIdAndDelete(req.params.id);
@@ -100,7 +96,6 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// Update a blog post (edit route)
 router.put("/:id", async (req, res) => {
     try {
       const { title, content, author } = req.body;
@@ -134,4 +129,4 @@ router.put("/:id", async (req, res) => {
     }
   });
   
-module.exports = router; // ✅ Use CommonJS export
+module.exports = router; 
