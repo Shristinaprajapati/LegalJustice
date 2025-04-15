@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styles from './Header.module.css';
 import axios from 'axios';
 import io from 'socket.io-client';
@@ -22,7 +22,8 @@ const Header = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [activeSubTab, setActiveSubTab] = useState(null);
-
+  const location = useLocation();
+  
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -114,21 +115,74 @@ const Header = () => {
     setShowNotifications(false); // Close the dropdown
   };
 
+  // Function to check if a link is active
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
+
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>
+    <div className={styles.logo}>
         <img src="/Images/logo1.png" alt="Legal Justice Logo" />
       </div>
-      <nav className={isOpen ? styles.navOpen : ''}>
-        <ul className={styles.navLinks}>
-          <li><Link to="/" onClick={() => setIsOpen(false)}>Home</Link></li>
-          <li><Link to="/service" onClick={() => setIsOpen(false)}>Services</Link></li>
-          <li><Link to="/practice-areas" onClick={() => setIsOpen(false)}>Practice Areas</Link></li>
-          <li><Link to="/aboutus" onClick={() => setIsOpen(false)}>About</Link></li>
-          <li><Link to="/blog" onClick={() => setIsOpen(false)}>Blog</Link></li>
-          <li><Link to="/contact" onClick={() => setIsOpen(false)}>Contact</Link></li>
-        </ul>
-      </nav>
+    <nav className={isOpen ? styles.navOpen : ''}>
+      <ul className={styles.navLinks}>
+        <li>
+          <Link 
+            to="/" 
+            onClick={() => setIsOpen(false)}
+            className={isActive('/') ? styles.activeLink : ''}
+          >
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link 
+            to="/service" 
+            onClick={() => setIsOpen(false)}
+            className={isActive('/service') ? styles.activeLink : ''}
+          >
+            Services
+          </Link>
+        </li>
+        <li>
+          <Link 
+            to="/practice-areas" 
+            onClick={() => setIsOpen(false)}
+            className={isActive('/practice-areas') ? styles.activeLink : ''}
+          >
+            Practice Areas
+          </Link>
+        </li>
+        <li>
+          <Link 
+            to="/aboutus" 
+            onClick={() => setIsOpen(false)}
+            className={isActive('/aboutus') ? styles.activeLink : ''}
+          >
+            About
+          </Link>
+        </li>
+        <li>
+          <Link 
+            to="/blog" 
+            onClick={() => setIsOpen(false)}
+            className={isActive('/blog') ? styles.activeLink : ''}
+          >
+            Blog
+          </Link>
+        </li>
+        <li>
+          <Link 
+            to="/contact" 
+            onClick={() => setIsOpen(false)}
+            className={isActive('/contact') ? styles.activeLink : ''}
+          >
+            Contact
+          </Link>
+        </li>
+      </ul>
+    </nav>
 
       <div className={styles.notificationIcon} onClick={toggleNotifications}>
         <i className={`fa fa-bell ${styles.bellIcon}`} />
