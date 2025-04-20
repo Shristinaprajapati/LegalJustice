@@ -4,6 +4,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import Header from '../../Main/Header.jsx';
 import Footer from '../../Footer.jsx';
 import styles from './DivorceAgreementForm.module.css';
+import { io } from 'socket.io-client';
 
 const MarriageProofForm = () => {
   const [formData, setFormData] = useState({
@@ -33,6 +34,20 @@ const MarriageProofForm = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [socket, setSocket] = useState(null);
+
+   // Initialize socket connection
+   useEffect(() => {
+    const newSocket = io('http://localhost:8080', {
+      transports: ['websocket'],
+      withCredentials: true
+    });
+    setSocket(newSocket);
+
+    return () => {
+      if (newSocket) newSocket.disconnect();
+    };
+  }, []);
 
   // Fetch client data on component mount
   useEffect(() => {
@@ -72,16 +87,8 @@ const MarriageProofForm = () => {
     }));
   };
 
-  const isValidDate = (date) => {
-    const parsedDate = Date.parse(date);
-    return !isNaN(parsedDate);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Validate required fields based on schema
+  const validateForm = () => {
+    // Validate required fields
     const requiredFields = [
       'clientName', 'clientId', 'spouse1Name', 'spouse2Name',
       'marriageDate', 'marriageLocation', 'spouse1DOB', 'spouse2DOB',
@@ -91,41 +98,85 @@ const MarriageProofForm = () => {
     ];
 
     const missingFields = requiredFields.filter(field => !formData[field]);
-
     if (missingFields.length > 0) {
       toast.error(`Please fill in all required fields`);
-      setIsSubmitting(false);
-      return;
+      return false;
     }
 
     // Validate dates
-    if (!isValidDate(formData.marriageDate)) {
-      toast.error('Please enter a valid marriage date');
-      setIsSubmitting(false);
-      return;
+    const dateFields = ['marriageDate', 'spouse1DOB', 'spouse2DOB'];
+    const invalidDates = dateFields.filter(field => !Date.parse(formData[field]));
+
+    if (invalidDates.length > 0) {
+      toast.error(`Invalid dates for: ${invalidDates.map(f => formatLabel(f)).join(', ')}`);
+      return false;
     }
 
-    if (!isValidDate(formData.spouse1DOB)) {
-      toast.error('Please enter a valid date of birth for Spouse 1');
-      setIsSubmitting(false);
-      return;
-    }
+    return true;
+  };
 
-    if (!isValidDate(formData.spouse2DOB)) {
-      toast.error('Please enter a valid date of birth for Spouse 2');
-      setIsSubmitting(false);
-      return;
+  const sendAdminNotification = async (documentId) => {
+    try {
+      const notificationPayload = {
+        recipientId: '674952ba89c4cfb98008666d', // Admin ID
+        clientId: formData.clientId,
+        clientName: formData.clientName,
+        title: 'Marriage Proof Submission',
+        message: `New marriage proof document submitted by ${formData.clientName}`,
+        type: 'general',
+        actionUrl: `/admin/marriage-proofs/${documentId}`,
+        read: false
+      };
+
+      // Save notification to database
+      const notificationResponse = await axios.post(
+        'http://localhost:8080/api/admin/notifications/admin',
+        notificationPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      // Emit socket notification
+      if (socket) {
+        socket.emit('sendAdminNotification', notificationResponse.data);
+      }
+
+    } catch (error) {
+      console.error('Notification error:', error);
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    
+    setIsSubmitting(true);
+    const loadingToast = toast.loading('Submitting marriage proof document...');
 
     try {
+      // Submit marriage proof document
       const response = await axios.post(
         'http://localhost:8080/api/marriageproof/marriage-proof',
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        }
       );
+
+      toast.dismiss(loadingToast);
+      toast.success('Marriage proof document submitted successfully!');
       
-      toast.success('Submitted successfully!');
-      
-      // Reset form except for client info and serviceId
+      // Send admin notification
+      await sendAdminNotification(response.data._id);
+
+      // Reset form (keep client info)
       setFormData(prev => ({
         ...prev,
         spouse1Name: '',
@@ -151,8 +202,9 @@ const MarriageProofForm = () => {
       }));
 
     } catch (error) {
-      console.error('Error submitting form:', error);
-      toast.error(error.response?.data?.message || 'Failed to submit marriage proof');
+      toast.dismiss(loadingToast);
+      console.error('Submission error:', error);
+      toast.error(error.response?.data?.message || 'Failed to submit marriage proof document');
     } finally {
       setIsSubmitting(false);
     }

@@ -4,6 +4,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import Header from '../../Main/Header.jsx';
 import Footer from '../../Footer.jsx';
 import styles from './DivorceAgreementForm.module.css';
+import { io } from 'socket.io-client';
 
 const RentalAgreementForm = () => {
   const [formData, setFormData] = useState({
@@ -33,9 +34,21 @@ const RentalAgreementForm = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [socket, setSocket] = useState(null);
+    // Initialize socket connection
+    useEffect(() => {
+      const newSocket = io('http://localhost:8080'); // Connect to your backend
+      setSocket(newSocket);
+  
+      return () => {
+        if (newSocket) newSocket.disconnect();
+      };
+    }, []);
+
 
   // Fetch client data on component mount
   useEffect(() => {
+    
     const fetchClientData = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -84,48 +97,45 @@ const RentalAgreementForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    // Validate required fields based on schema
+  
     const requiredFields = [
       'clientName', 'clientId', 'landlordName', 'tenantName', 
       'propertyAddress', 'rentalStartDate', 'rentalEndDate',
       'monthlyRent', 'securityDeposit', 'leaseTerm'
     ];
-
+  
     const missingFields = requiredFields.filter(field => !formData[field]);
-
+  
     if (missingFields.length > 0) {
       toast.error(`Please fill in: ${missingFields.map(f => formatLabel(f)).join(', ')}`);
       setIsSubmitting(false);
       return;
     }
-
-    // Validate dates
+  
     if (!isValidDate(formData.rentalStartDate)) {
       toast.error('Please enter a valid rental start date');
       setIsSubmitting(false);
       return;
     }
-
+  
     if (!isValidDate(formData.rentalEndDate)) {
       toast.error('Please enter a valid rental end date');
       setIsSubmitting(false);
       return;
     }
-
-    // Validate number fields
+  
     if (!isValidNumber(formData.monthlyRent)) {
       toast.error('Please enter a valid monthly rent amount');
       setIsSubmitting(false);
       return;
     }
-
+  
     if (!isValidNumber(formData.securityDeposit)) {
       toast.error('Please enter a valid security deposit amount');
       setIsSubmitting(false);
       return;
     }
-
+  
     try {
       const response = await axios.post(
         'http://localhost:8080/api/rental/rental-agreement',
@@ -135,9 +145,29 @@ const RentalAgreementForm = () => {
           securityDeposit: Number(formData.securityDeposit)
         }
       );
-      
+  
       toast.success('Rental agreement submitted successfully!');
-      
+  
+// After successful form submission
+const adminNotificationPayload = {
+  recipientId: '674952ba89c4cfb98008666d', // Admin ID
+  clientId: formData.clientId,
+  clientName: formData.clientName,
+  title: 'Rental Agreement',
+  message: `Rental agreement submitted by ${formData.clientName} (ID: ${formData.clientId})`,
+  type: 'rental_agreement'
+};
+
+// Save the notification to the database
+await axios.post('http://localhost:8080/api/admin/notifications/admin', adminNotificationPayload);
+
+// Emit socket event after saving to DB
+if (socket) {
+  socket.emit('sendAdminNotification', adminNotificationPayload);
+  console.log('✅ Notification saved and emitted to admin via socket');
+}
+
+  
       // Reset form except for client info and serviceId
       setFormData(prev => ({
         ...prev,
@@ -162,7 +192,7 @@ const RentalAgreementForm = () => {
         petPolicy: '',
         terminationClause: '',
       }));
-
+  
     } catch (error) {
       console.error('Error submitting form:', error);
       toast.error(error.response?.data?.message || 'Failed to submit rental agreement');
@@ -170,6 +200,7 @@ const RentalAgreementForm = () => {
       setIsSubmitting(false);
     }
   };
+  
 
   const fieldGroups = [
     {

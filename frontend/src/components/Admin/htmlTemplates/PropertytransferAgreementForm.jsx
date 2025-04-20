@@ -4,6 +4,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import Header from '../../Main/Header.jsx';
 import Footer from '../../Footer.jsx';
 import styles from './DivorceAgreementForm.module.css';
+import { io } from 'socket.io-client';
 
 const PropertyTransferAgreementForm = () => {
   const [formData, setFormData] = useState({
@@ -26,6 +27,20 @@ const PropertyTransferAgreementForm = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [socket, setSocket] = useState(null);
+
+  // Initialize socket connection
+  useEffect(() => {
+    const newSocket = io('http://localhost:8080', {
+      transports: ['websocket'],
+      withCredentials: true
+    });
+    setSocket(newSocket);
+
+    return () => {
+      if (newSocket) newSocket.disconnect();
+    };
+  }, []);
 
   // Fetch client data on component mount
   useEffect(() => {
@@ -65,29 +80,18 @@ const PropertyTransferAgreementForm = () => {
     }));
   };
 
-  const isValidDate = (date) => {
-    if (!date) return true; // Optional dates can be empty
-    const parsedDate = Date.parse(date);
-    return !isNaN(parsedDate);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Validate required fields based on schema
+  const validateForm = () => {
+    // Validate required fields
     const requiredFields = [
       'clientName', 'clientId', 'serviceId',
-      'transferorName', 'transfereeName', 
+      'transferorName', 'transfereeName',
       'propertyAddress', 'propertyDescription'
     ];
 
     const missingFields = requiredFields.filter(field => !formData[field]);
-
     if (missingFields.length > 0) {
-      toast.error(`Please fill in all required fields: ${missingFields.map(f => formatLabel(f)).join(', ')}`);
-      setIsSubmitting(false);
-      return;
+      toast.error(`Missing required fields: ${missingFields.map(f => formatLabel(f)).join(', ')}`);
+      return false;
     }
 
     // Validate dates
@@ -97,26 +101,77 @@ const PropertyTransferAgreementForm = () => {
       'notarySignatureDate'
     ];
 
-    const invalidDates = dateFields.filter(field => !isValidDate(formData[field]));
-
+    const invalidDates = dateFields.filter(field => formData[field] && !Date.parse(formData[field]));
     if (invalidDates.length > 0) {
-      toast.error(`Invalid date format in: ${invalidDates.map(f => formatLabel(f)).join(', ')}`);
-      setIsSubmitting(false);
-      return;
+      toast.error(`Invalid dates: ${invalidDates.map(f => formatLabel(f)).join(', ')}`);
+      return false;
     }
 
+    return true;
+  };
+
+  const sendAdminNotification = async (agreementId) => {
     try {
-      const loadingToast = toast.loading('Submitting property transfer agreement...');
-      
+      const notificationPayload = {
+        recipientId: '674952ba89c4cfb98008666d', // Admin ID
+        clientId: formData.clientId,
+        clientName: formData.clientName,
+        title: 'Property Transfer Agreement',
+        message: `New property transfer agreement submitted by ${formData.clientName}`,
+        type: 'general',
+        actionUrl: `/admin/property-transfers/${agreementId}`,
+        read: false
+      };
+
+      // Save notification to database
+      const notificationResponse = await axios.post(
+        'http://localhost:8080/api/admin/notifications/admin',
+        notificationPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      // Emit socket notification
+      if (socket) {
+        socket.emit('sendAdminNotification', notificationResponse.data);
+      }
+
+    } catch (error) {
+      console.error('Notification error:', error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    
+    setIsSubmitting(true);
+    const loadingToast = toast.loading('Submitting property transfer agreement...');
+
+    try {
+      // Submit property transfer agreement
       const response = await axios.post(
         'http://localhost:8080/api/propertytransfer/property-transfer-agreement',
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        }
       );
-      
+
       toast.dismiss(loadingToast);
       toast.success('Property transfer agreement submitted successfully!');
       
-      // Reset form except for client info and serviceId
+      // Send admin notification
+      await sendAdminNotification(response.data._id);
+
+      // Reset form (keep client info)
       setFormData(prev => ({
         ...prev,
         transferorName: '',
@@ -135,7 +190,8 @@ const PropertyTransferAgreementForm = () => {
       }));
 
     } catch (error) {
-      console.error('Error submitting form:', error);
+      toast.dismiss(loadingToast);
+      console.error('Submission error:', error);
       const errorMessage = error.response?.data?.message || 
                          error.response?.data?.error || 
                          'Failed to submit agreement. Please try again.';

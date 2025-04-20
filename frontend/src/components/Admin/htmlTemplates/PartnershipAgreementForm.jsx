@@ -4,6 +4,7 @@ import axios from 'axios';
 import Header from '../../Main/Header.jsx';
 import Footer from '../../Footer.jsx';
 import styles from './DivorceAgreementForm.module.css';
+import { io } from 'socket.io-client';
 
 const PartnershipAgreementForm = () => {
   const [formData, setFormData] = useState({
@@ -30,6 +31,17 @@ const PartnershipAgreementForm = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [socket, setSocket] = useState(null);
+
+  // Initialize socket connection
+  useEffect(() => {
+    const newSocket = io('http://localhost:8080'); // Connect to your backend
+    setSocket(newSocket);
+
+    return () => {
+      if (newSocket) newSocket.disconnect();
+    };
+  }, []);
 
   // Fetch client data on component mount
   useEffect(() => {
@@ -72,21 +84,21 @@ const PartnershipAgreementForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
+  
     // Validate required fields
     const requiredFields = [
       'clientName', 'clientId', 'partner1Name', 'partner2Name',
       'businessName', 'businessPurpose', 'businessAddress'
     ];
-
+  
     const missingFields = requiredFields.filter(field => !formData[field]);
-
+  
     if (missingFields.length > 0) {
       toast.error(`Please fill in: ${missingFields.map(f => formatLabel(f)).join(', ')}`);
       setIsSubmitting(false);
       return;
     }
-
+  
     try {
       const response = await axios.post(
         'http://localhost:8080/api/partnership-agreement',
@@ -94,6 +106,42 @@ const PartnershipAgreementForm = () => {
       );
       
       toast.success('Submitted successfully!');
+      
+      // After successful form submission
+      const adminNotificationPayload = {
+        recipientId: '674952ba89c4cfb98008666d', // Admin ID - must be valid ObjectId
+        clientId: formData.clientId, // Must be valid ObjectId
+        clientName: formData.clientName,
+        title: 'Partnership Agreement',
+        message: `Partnership agreement submitted by ${formData.clientName} (ID: ${formData.clientId})`,
+        type: 'general', // Changed from 'partnership_agreement' to match your enum
+        read: false,
+        actionUrl: `/admin/partnership-agreements/${response.data._id}` // Optional but useful
+      };
+  
+      try {
+        // Save the notification to the database with auth header
+        const notificationResponse = await axios.post(
+          'http://localhost:8080/api/admin/notifications/admin', 
+          adminNotificationPayload,
+          {
+            headers: { 
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        console.log('Notification saved:', notificationResponse.data);
+  
+        // Emit socket event after saving to DB
+        if (socket) {
+          socket.emit('sendAdminNotification', notificationResponse.data);
+          console.log('✅ Notification emitted to admin via socket');
+        }
+      } catch (notificationError) {
+        console.error('Failed to save notification:', notificationError.response?.data || notificationError.message);
+        // Don't show error to user as this is a background process
+      }
       
       // Reset form except for client info and serviceId
       setFormData(prev => ({
@@ -118,7 +166,7 @@ const PartnershipAgreementForm = () => {
         witnessSignatureDate: "",
         notarySignatureDate: "",
       }));
-
+  
     } catch (error) {
       console.error('Error submitting agreement:', error);
       toast.error(error.response?.data?.message || 'Failed to submit agreement');

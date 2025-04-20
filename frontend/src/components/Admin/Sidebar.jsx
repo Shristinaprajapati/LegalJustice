@@ -88,11 +88,7 @@ const Sidebar = () => {
             </button>
             {showTemplatesDropdown && (
               <ul className={styles.dropdownMenu}>
-                <li>
-                  <Link to="/divorsetemplate" className={getLinkClass('/divorsetemplate')}>
-                    Divorce Agreements
-                  </Link>
-                </li>
+              
                 <li>
                   <Link to="/partnershiptemplate" className={getLinkClass('/partnershiptemplate')}>
                     Partnership Template
@@ -116,6 +112,12 @@ const Sidebar = () => {
                 <li>
                   <Link to="/employmenttemplate" className={getLinkClass('/employmenttemplate')}>
                     Employment Contract
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/divorsetemplate" className={getLinkClass('/divorsetemplate')}>
+                    Divorce Agreements
                   </Link>
                 </li>
               </ul>

@@ -35,6 +35,7 @@ const paymentCallbackRouter = require('./routes/paymentCallback');
 const notificationRoutes = require("./routes/notificationRoutes");
 const settingsRoutes = require('./routes/settingsRoutes');
 const testimonialRoutes = require('./routes/testimonials');
+const adminNotificationRoutes = require('./routes/adminNotificationRoutes');
 
 
 
@@ -83,6 +84,8 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/testimonials', testimonialRoutes);
 
 app.use('/api/reminders', reminderRoutes);
+app.use('/api/admin/notifications', adminNotificationRoutes);
+
 
 // Create an HTTP server using Express app
 const server = http.createServer(app);
@@ -205,6 +208,51 @@ io.on('connection', (socket) => {
       console.error('Error handling document notification:', error);
     }
   });
+
+
+  socket.on('sendAdminNotification', async (notificationData) => {
+    try {
+      const { adminId, clientName, clientId, title, message, type } = notificationData;
+      
+      // Save to database using AdminNotification model
+      const newNotification = new AdminNotification({
+        recipientId: adminId,
+        clientId: clientId,
+        clientName: clientName,
+        title: title || 'New Rental Agreement',
+        message: message,
+        type: type || 'rental_agreement',
+        read: false,
+        actionUrl: `/admin/rental-agreements/${clientId}` // Example action URL
+      });
+  
+      await newNotification.save();
+  
+      // Prepare the normalized response
+      const notificationResponse = {
+        _id: newNotification._id,
+        recipientId: newNotification.recipientId,
+        clientId: newNotification.clientId,
+        clientName: newNotification.clientName,
+        title: newNotification.title,
+        message: newNotification.message,
+        type: newNotification.type,
+        read: newNotification.read,
+        createdAt: newNotification.createdAt,
+        actionUrl: newNotification.actionUrl
+      };
+  
+      // Emit to specific admin if connected
+      if (clients[adminId]) {
+        io.to(clients[adminId]).emit('adminNotification', notificationResponse);
+      }
+  
+    } catch (error) {
+      console.error('Error handling admin notification:', error);
+      // Consider adding error logging here
+    }
+  });
+
 
 });
 

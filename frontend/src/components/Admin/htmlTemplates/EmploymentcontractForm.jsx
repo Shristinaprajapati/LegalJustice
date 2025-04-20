@@ -4,6 +4,7 @@ import { toast, Toaster } from 'react-hot-toast';
 import Header from '../../Main/Header.jsx';
 import Footer from '../../Footer.jsx';
 import styles from './DivorceAgreementForm.module.css';
+import { io } from 'socket.io-client';
 
 const EmploymentContractForm = () => {
   const [formData, setFormData] = useState({
@@ -32,6 +33,7 @@ const EmploymentContractForm = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [socket, setSocket] = useState(null);
 
   // Fetch client data on component mount
   useEffect(() => {
@@ -77,11 +79,7 @@ const EmploymentContractForm = () => {
     return !isNaN(parsedDate);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Validate required fields based on schema
+  const validateForm = () => {
     const requiredFields = [
       'clientName', 'clientId', 'serviceId',
       'employerName', 'employeeName', 'jobTitle',
@@ -90,14 +88,11 @@ const EmploymentContractForm = () => {
     ];
 
     const missingFields = requiredFields.filter(field => !formData[field]);
-
     if (missingFields.length > 0) {
-      toast.error(`Please fill in all required fields: ${missingFields.map(f => formatLabel(f)).join(', ')}`);
-      setIsSubmitting(false);
-      return;
+      toast.error(`Please fill in: ${missingFields.map(f => formatLabel(f)).join(', ')}`);
+      return false;
     }
 
-    // Validate dates
     const dateFields = [
       'startDate', 'endDate',
       'employerSignatureDate', 'employeeSignatureDate',
@@ -105,25 +100,77 @@ const EmploymentContractForm = () => {
     ];
 
     const invalidDates = dateFields.filter(field => !isValidDate(formData[field]));
-
     if (invalidDates.length > 0) {
-      toast.error(`Invalid date format in: ${invalidDates.map(f => formatLabel(f)).join(', ')}`);
-      setIsSubmitting(false);
-      return;
+      toast.error(`Invalid dates: ${invalidDates.map(f => formatLabel(f)).join(', ')}`);
+      return false;
     }
 
+    return true;
+  };
+
+
+  const sendAdminNotification = async (contractId) => {
     try {
-      const loadingToast = toast.loading('Submitting employment contract...');
-      
+      const notificationPayload = {
+        recipientId: '674952ba89c4cfb98008666d', // Admin ID
+        clientId: formData.clientId,
+        clientName: formData.clientName,
+        title: 'Employment Contract Submission',
+        message: `New employment contract submitted by ${formData.clientName} (ID: ${formData.clientId})`,
+        type: 'general',
+        actionUrl: `/admin/employment-contracts/${contractId}`,
+        read: false
+      };
+
+      // Save notification to database
+      const notificationResponse = await axios.post(
+        'http://localhost:8080/api/admin/notifications/admin',
+        notificationPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      // Emit socket notification
+      if (socket) {
+        socket.emit('sendAdminNotification', notificationResponse.data);
+      }
+
+    } catch (error) {
+      console.error('Notification error:', error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    
+    setIsSubmitting(true);
+    const loadingToast = toast.loading('Submitting employment contract...');
+
+    try {
+      // Submit employment contract
       const response = await axios.post(
         'http://localhost:8080/api/employment/employment-contract',
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        }
       );
-      
+
       toast.dismiss(loadingToast);
       toast.success('Employment contract submitted successfully!');
       
-      // Reset form except for client info and serviceId
+      // Send admin notification
+      await sendAdminNotification(response.data._id);
+
+      // Reset form (keep client info)
       setFormData(prev => ({
         ...prev,
         employerName: '',
@@ -148,7 +195,8 @@ const EmploymentContractForm = () => {
       }));
 
     } catch (error) {
-      console.error('Error submitting form:', error);
+      toast.dismiss(loadingToast);
+      console.error('Submission error:', error);
       const errorMessage = error.response?.data?.message || 
                          error.response?.data?.error || 
                          'Failed to submit contract. Please try again.';

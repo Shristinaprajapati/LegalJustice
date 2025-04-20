@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import Sidebar from "./Sidebar";
-import { FaDollarSign, FaUsers, FaTasks, FaBalanceScale, FaQuoteLeft, FaChartPie, FaFile, FaNewspaper  } from "react-icons/fa";
+import { FaDollarSign, FaUsers, FaTasks, FaBalanceScale, FaQuoteLeft, FaChartPie, FaFile, FaNewspaper, FaBell } from "react-icons/fa";
 import axios from "axios";
 import styles from "./AdminDashboard.module.css";
 import { Link, useLocation } from 'react-router-dom';
 import { Icon } from '@iconify/react';
+import { io } from 'socket.io-client';
+import NotificationBell from "./NotificationBell";
 
 const AdminDashboard = () => {
   const [userCount, setUserCount] = useState(null);
@@ -15,10 +17,35 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const location = useLocation();
-
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
   
   const COLORS = ['#4CAF50', '#F44336', '#2196F3', '#FFC107'];
   const RADIAN = Math.PI / 180;
+
+
+
+  // In your AdminDashboard component
+useEffect(() => {
+  const socket = io('http://localhost:8080');
+  
+  // Register as admin
+  socket.emit('register', '674952ba89c4cfb98008666d');  // Your admin ID
+
+  // Listen for admin-specific notifications
+  socket.on('adminNotification', (notification) => {
+    setNotifications(prev => [...prev, {
+      id: Date.now(),  // Temporary ID
+      title: notification.title,
+      message: notification.message,
+      type: notification.type,
+      timestamp: notification.timestamp
+    }]);
+  });
+
+  return () => socket.disconnect();
+}, []);
+
 
   const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -126,7 +153,39 @@ const AdminDashboard = () => {
       <Sidebar />
       
       <div className={styles.mainContent}>
+      <div className={styles.headerSection}>
         <h1 className={styles.dashboardTitle}>Admin Dashboard</h1>
+        <div className={styles.notificationWrapper}>
+          <NotificationBell/>
+            {/* <button 
+              className={styles.notificationButton}
+              onClick={() => setShowNotifications(!showNotifications)}
+            >
+              <FaBell className={styles.notificationIcon} />
+              {notifications.length > 0 && (
+                <span className={styles.notificationBadge}>{notifications.length}</span>
+              )}
+            </button>
+            {showNotifications && (
+              <div className={styles.notificationDropdown}>
+                {notifications.length > 0 ? (
+                  notifications.map((notification, index) => (
+                    <div key={index} className={styles.notificationItem}>
+                      <p>{notification.message}</p>
+                      <small>{notification.time}</small>
+                    </div>
+                  ))
+                ) : (
+                  <div className={styles.notificationItem}>
+                    <p>No new notifications</p>
+                  </div>
+                )}
+              </div>
+            )} */}
+          </div>
+          </div>
+        
+    
         
         {error && <div className={styles.errorAlert}>{error}</div>}
 
@@ -177,6 +236,44 @@ const AdminDashboard = () => {
             </div>
           </div> */}
 
+        </div>
+
+
+               {/* Quick Actions Section */}
+               <div className={styles.quickActions}>
+          {/* <h2 className={styles.sectionTitle}>Quick Actions</h2> */}
+          
+          <div className={styles.actionCards}>
+            <Link to="/admin/post" className={styles.actionCard}>
+              <div className={`${styles.actionIcon} ${styles.postIcon}`}>
+                <Icon icon="mdi:post" />
+              </div>
+              <div className={styles.actionContent}>
+                <h3>Privacy Policy</h3>
+                <p>Manage privacy content</p>
+              </div>
+            </Link>
+
+            <Link to="/testimonial" className={styles.actionCard}>
+              <div className={`${styles.actionIcon} ${styles.testimonialIcon}`}>
+                <FaQuoteLeft />
+              </div>
+              <div className={styles.actionContent}>
+                <h3>Testimonials</h3>
+                <p>Manage client testimonials</p>
+              </div>
+            </Link>
+
+            <Link to="/list" className={styles.actionCard}>
+              <div className={`${styles.actionIcon} ${styles.clientsIcon}`}>
+                <FaUsers />
+              </div>
+              <div className={styles.actionContent}>
+                <h3>Client Details</h3>
+                <p>View all client information</p>
+              </div>
+            </Link>
+          </div>
         </div>
 
         {/* Conversion Analytics Section */}
@@ -243,42 +340,7 @@ const AdminDashboard = () => {
           )}
         </div>
 
-        {/* Quick Actions Section */}
-        <div className={styles.quickActions}>
-          <h2 className={styles.sectionTitle}>Quick Actions</h2>
-          
-          <div className={styles.actionCards}>
-            <Link to="/admin/post" className={styles.actionCard}>
-              <div className={`${styles.actionIcon} ${styles.postIcon}`}>
-                <Icon icon="mdi:post" />
-              </div>
-              <div className={styles.actionContent}>
-                <h3>Privacy Policy</h3>
-                <p>Manage privacy content</p>
-              </div>
-            </Link>
-
-            <Link to="/testimonial" className={styles.actionCard}>
-              <div className={`${styles.actionIcon} ${styles.testimonialIcon}`}>
-                <FaQuoteLeft />
-              </div>
-              <div className={styles.actionContent}>
-                <h3>Testimonials</h3>
-                <p>Manage client testimonials</p>
-              </div>
-            </Link>
-
-            <Link to="/list" className={styles.actionCard}>
-              <div className={`${styles.actionIcon} ${styles.clientsIcon}`}>
-                <FaUsers />
-              </div>
-              <div className={styles.actionContent}>
-                <h3>Client Details</h3>
-                <p>View all client information</p>
-              </div>
-            </Link>
-          </div>
-        </div>
+ 
       </div>
     </div>
   );

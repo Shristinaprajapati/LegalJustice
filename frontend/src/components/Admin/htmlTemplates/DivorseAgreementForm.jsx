@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast, Toaster } from 'react-hot-toast';
+import { io } from 'socket.io-client';
 import Header from '../../Main/Header.jsx';
 import Footer from '../../Footer.jsx';
 import styles from './DivorceAgreementForm.module.css';
@@ -46,7 +47,22 @@ const DivorceAgreementForm = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [socket, setSocket] = useState(null);
 
+  // Initialize socket connection
+  useEffect(() => {
+    const newSocket = io('http://localhost:8080', {
+      transports: ['websocket'],
+      withCredentials: true
+    });
+    setSocket(newSocket);
+
+    return () => {
+      if (newSocket) newSocket.disconnect();
+    };
+  }, []);
+
+  // Fetch client data on component mount
   useEffect(() => {
     const fetchClientData = async () => {
       try {
@@ -78,56 +94,136 @@ const DivorceAgreementForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData(prev => ({
+      ...prev,
       [name]: value,
     }));
   };
 
-  const isValidDate = (date) => {
-    const parsedDate = Date.parse(date);
-    return !isNaN(parsedDate);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    // Validate required fields based on schema
+  const validateForm = () => {
     const requiredFields = [
       'clientName', 'clientId', 'spouse1', 'spouse2', 
       'spouse1Address', 'spouse2Address', 'marriageDate', 
       'marriageLocation', 'jurisdiction'
     ];
 
-    for (const field of requiredFields) {
-      if (!formData[field]) {
-        toast.error(`Please fill in ${formatLabel(field)}`);
-        setIsSubmitting(false);
-        return;
-      }
+    const missingFields = requiredFields.filter(field => !formData[field]);
+    if (missingFields.length > 0) {
+      toast.error(`Please fill in: ${missingFields.map(f => formatLabel(f)).join(', ')}`);
+      return false;
     }
 
-    // Validate date fields if they exist
     const dateFields = ['marriageDate', 'child1DOB', 'child2DOB', 'alimonyStartDate'];
     for (const field of dateFields) {
-      if (formData[field] && !isValidDate(formData[field])) {
+      if (formData[field] && !Date.parse(formData[field])) {
         toast.error(`Please enter a valid date for ${formatLabel(field)}`);
-        setIsSubmitting(false);
-        return;
+        return false;
       }
     }
 
+    return true;
+  };
+
+  const sendAdminNotification = async (agreementId) => {
     try {
+      const notificationPayload = {
+        recipientId: '674952ba89c4cfb98008666d', // Admin ID
+        clientId: formData.clientId,
+        clientName: formData.clientName,
+        title: 'Divorce Agreement Submission',
+        message: `New divorce agreement submitted by ${formData.clientName} (ID: ${formData.clientId})`,
+        type: 'general',
+        actionUrl: `/admin/divorce-agreements/${agreementId}`,
+        read: false
+      };
+
+      // Save notification to database
+      const notificationResponse = await axios.post(
+        'http://localhost:8080/api/admin/notifications/admin',
+        notificationPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      // Emit socket notification
+      if (socket) {
+        socket.emit('sendAdminNotification', notificationResponse.data);
+      }
+
+    } catch (error) {
+      console.error('Notification error:', error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    
+    setIsSubmitting(true);
+
+    try {
+      // Submit divorce agreement
       const response = await axios.post(
         'http://localhost:8080/api/divorse-agreement',
-        formData
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json'
+          }
+        }
       );
+
       toast.success('Divorce agreement submitted successfully!');
-      console.log('Success:', response.data.message);
+      
+      // Send admin notification
+      await sendAdminNotification(response.data._id);
+
+      // Reset form (keep client info)
+      setFormData(prev => ({
+        ...prev,
+        spouse1: '',
+        spouse2: '',
+        children: '',
+        propertyDivision: '',
+        alimony: '',
+        spouse1Address: '',
+        spouse2Address: '',
+        marriageDate: '',
+        marriageLocation: '',
+        child1Name: '',
+        child1DOB: '',
+        child2Name: '',
+        child2DOB: '',
+        custodyArrangement: '',
+        visitationSchedule: '',
+        childSupport: '',
+        realPropertyDivision: '',
+        vehicleDivision: '',
+        bankAccountDivision: '',
+        retirementAccountDivision: '',
+        personalPropertyDivision: '',
+        alimonyAmount: '',
+        alimonyDuration: '',
+        alimonyStartDate: '',
+        spouse1Name: '',
+        spouse1Debts: '',
+        spouse2Name: '',
+        spouse2Debts: '',
+        jurisdiction: '',
+        spouse1SignatureDate: '',
+        spouse2SignatureDate: '',
+        witnessSignatureDate: '',
+        notarySignatureDate: '',
+      }));
+
     } catch (error) {
-      toast.error('Error submitting form. Please try again.');
-      console.error('Error submitting form:', error.response?.data || error.message);
+      console.error('Submission error:', error.response?.data || error.message);
+      toast.error(error.response?.data?.message || 'Failed to submit agreement');
     } finally {
       setIsSubmitting(false);
     }
@@ -137,79 +233,72 @@ const DivorceAgreementForm = () => {
     {
       title: 'Client Information',
       fields: [
-        { name: 'clientName', editable: true, required: true },
-        { name: 'clientId', editable: false, required: true }
-      ],
-      optional: false
+        { name: 'clientName', type: 'text', editable: false, required: true },
+        { name: 'clientId', type: 'text', editable: false, required: true }
+      ]
     },
     {
       title: 'Spouse Information',
       fields: [
-        { name: 'spouse1', editable: true, required: true },
-        { name: 'spouse1Name', editable: true, required: false },
-        { name: 'spouse1Address', editable: true, required: true },
-        { name: 'spouse2', editable: true, required: true },
-        { name: 'spouse2Name', editable: true, required: false },
-        { name: 'spouse2Address', editable: true, required: true }
-      ],
-      optional: false
+        { name: 'spouse1', type: 'text', editable: true, required: true },
+        { name: 'spouse1Name', type: 'text', editable: true, required: false },
+        { name: 'spouse1Address', type: 'text', editable: true, required: true },
+        { name: 'spouse2', type: 'text', editable: true, required: true },
+        { name: 'spouse2Name', type: 'text', editable: true, required: false },
+        { name: 'spouse2Address', type: 'text', editable: true, required: true }
+      ]
     },
     {
       title: 'Marriage Details',
       fields: [
-        { name: 'marriageDate', editable: true, required: true },
-        { name: 'marriageLocation', editable: true, required: true },
-        { name: 'jurisdiction', editable: true, required: true }
-      ],
-      optional: false
+        { name: 'marriageDate', type: 'date', editable: true, required: true },
+        { name: 'marriageLocation', type: 'text', editable: true, required: true },
+        { name: 'jurisdiction', type: 'text', editable: true, required: true }
+      ]
     },
     {
-      title: 'Children Information',
+      title: 'Children Information (Optional)',
       fields: [
-        { name: 'children', editable: true, required: false },
-        { name: 'child1Name', editable: true, required: false },
-        { name: 'child1DOB', editable: true, required: false },
-        { name: 'child2Name', editable: true, required: false },
-        { name: 'child2DOB', editable: true, required: false },
-        { name: 'custodyArrangement', editable: true, required: false },
-        { name: 'visitationSchedule', editable: true, required: false },
-        { name: 'childSupport', editable: true, required: false }
-      ],
-      optional: true
+        { name: 'children', type: 'text', editable: true, required: false },
+        { name: 'child1Name', type: 'text', editable: true, required: false },
+        { name: 'child1DOB', type: 'date', editable: true, required: false },
+        { name: 'child2Name', type: 'text', editable: true, required: false },
+        { name: 'child2DOB', type: 'date', editable: true, required: false },
+        { name: 'custodyArrangement', type: 'text', editable: true, required: false },
+        { name: 'visitationSchedule', type: 'text', editable: true, required: false },
+        { name: 'childSupport', type: 'text', editable: true, required: false }
+      ]
     },
     {
-      title: 'Property Division',
+      title: 'Property Division (Optional)',
       fields: [
-        { name: 'propertyDivision', editable: true, required: false },
-        { name: 'realPropertyDivision', editable: true, required: false },
-        { name: 'vehicleDivision', editable: true, required: false },
-        { name: 'bankAccountDivision', editable: true, required: false },
-        { name: 'retirementAccountDivision', editable: true, required: false },
-        { name: 'personalPropertyDivision', editable: true, required: false }
-      ],
-      optional: true
+        { name: 'propertyDivision', type: 'text', editable: true, required: false },
+        { name: 'realPropertyDivision', type: 'text', editable: true, required: false },
+        { name: 'vehicleDivision', type: 'text', editable: true, required: false },
+        { name: 'bankAccountDivision', type: 'text', editable: true, required: false },
+        { name: 'retirementAccountDivision', type: 'text', editable: true, required: false },
+        { name: 'personalPropertyDivision', type: 'text', editable: true, required: false }
+      ]
     },
     {
-      title: 'Financial Arrangements',
+      title: 'Financial Arrangements (Optional)',
       fields: [
-        { name: 'alimony', editable: true, required: false },
-        { name: 'alimonyAmount', editable: true, required: false },
-        { name: 'alimonyDuration', editable: true, required: false },
-        { name: 'alimonyStartDate', editable: true, required: false },
-        { name: 'spouse1Debts', editable: true, required: false },
-        { name: 'spouse2Debts', editable: true, required: false }
-      ],
-      optional: true
+        { name: 'alimony', type: 'text', editable: true, required: false },
+        { name: 'alimonyAmount', type: 'text', editable: true, required: false },
+        { name: 'alimonyDuration', type: 'text', editable: true, required: false },
+        { name: 'alimonyStartDate', type: 'date', editable: true, required: false },
+        { name: 'spouse1Debts', type: 'text', editable: true, required: false },
+        { name: 'spouse2Debts', type: 'text', editable: true, required: false }
+      ]
     },
     {
-      title: 'Signatures',
+      title: 'Signatures (Optional)',
       fields: [
-        { name: 'spouse1SignatureDate', editable: true, required: false },
-        { name: 'spouse2SignatureDate', editable: true, required: false },
-        { name: 'witnessSignatureDate', editable: true, required: false },
-        { name: 'notarySignatureDate', editable: true, required: false }
-      ],
-      optional: true
+        { name: 'spouse1SignatureDate', type: 'date', editable: true, required: false },
+        { name: 'spouse2SignatureDate', type: 'date', editable: true, required: false },
+        { name: 'witnessSignatureDate', type: 'date', editable: true, required: false },
+        { name: 'notarySignatureDate', type: 'date', editable: true, required: false }
+      ]
     }
   ];
 
@@ -237,7 +326,9 @@ const DivorceAgreementForm = () => {
               <div key={groupIndex} className={styles.fieldGroup}>
                 <h2 className={styles.groupTitle}>
                   {group.title}
-                  {group.optional && <span className={styles.optionalTag}> (Optional)</span>}
+                  {group.title.includes('(Optional)') && (
+                    <span className={styles.optionalTag}> (Optional)</span>
+                  )}
                 </h2>
                 <div className={styles.groupFields}>
                   {group.fields.map((field) => (
@@ -247,10 +338,10 @@ const DivorceAgreementForm = () => {
                         {field.required && <span className={styles.required}> *</span>}
                       </label>
                       <input
-                        type={field.name.includes('DOB') || field.name.includes('Date') ? 'date' : 'text'}
+                        type={field.type || (field.name.includes('Date') || field.name.includes('DOB') ? 'date' : 'text')}
                         name={field.name}
                         value={formData[field.name]}
-                        onChange={field.editable ? handleChange : undefined}
+                        onChange={handleChange}
                         className={styles.input}
                         required={field.required}
                         readOnly={!field.editable}
@@ -266,10 +357,16 @@ const DivorceAgreementForm = () => {
               <button 
                 type="submit" 
                 className={styles.submitButton}
-                style={{ backgroundColor: '#003d8f' }}
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Submitting...' : 'Submit Agreement'}
+                {isSubmitting ? (
+                  <>
+                    <span className={styles.spinner}></span>
+                    Submitting...
+                  </>
+                ) : (
+                  'Submit Agreement'
+                )}
               </button>
             </div>
           </form>
