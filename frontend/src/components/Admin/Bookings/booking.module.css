@@ -11,7 +11,7 @@
   margin-left: 250px;
   padding: 20px;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
   border-radius: 8px;
 }
 
@@ -20,7 +20,6 @@
   display: flex;
   justify-content: flex-start;
   margin-bottom: 30px;
-  border-bottom: 2px solid #ddd;
 }
 
 .tab {
@@ -43,10 +42,15 @@
   background-color: #4169E1;
   color: #fff;
 }
+.activeTab:hover {
+  color: #4169E1;;
+}
 
 /* Category Section */
 .bookingSection {
-  margin-top: 20px;
+  margin-top: -20px;
+  margin-bottom: 40px;
+
 }
 
 .categoryTitle {
@@ -56,6 +60,7 @@
   color: #333;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  text-align: left;
 }
 
 /* Booking Table */
@@ -64,6 +69,7 @@
   border-collapse: collapse;
   margin-bottom: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  
 }
 
 .bookingTable th,
@@ -107,7 +113,7 @@
 }
 
 .pending {
-  background-color: #ffc107;
+  background-color: #F39C12;
   color: white;
 }
 

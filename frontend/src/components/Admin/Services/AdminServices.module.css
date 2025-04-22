@@ -118,13 +118,13 @@ body {
 }
 
 .serviceDescription {
-  color: #718096;
+  color: #3d444d;
   font-size: 0.9rem;
 }
 
 .servicePrice {
   font-weight: 600;
-  color: #2f855a;
+  color: #343434;
 }
 
 /* Table Inputs */
@@ -173,7 +173,7 @@ body {
 }
 
 .deleteButton {
-  background-color: #f56565;
+  background-color: #df3838;
   color: white;
   border: none;
 }
@@ -183,13 +183,13 @@ body {
 }
 
 .saveButton {
-  background-color: #48bb78;
+  background-color: #4CAF50;
   color: white;
   border: none;
 }
 
 .saveButton:hover {
-  background-color: #38a169;
+  background-color: #4CAF50;
 }
 
 .actionIcon {
@@ -355,7 +355,7 @@ body {
 }
 
 .primaryButton:hover {
-  background-color: #52b555;
+  background-color: #4CAF50;
 }
 
 .buttonIcon {

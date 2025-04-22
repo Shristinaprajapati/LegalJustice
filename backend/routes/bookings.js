@@ -54,6 +54,7 @@ router.get('/', async (req, res) => {
 
 
 // Fetch all bookings with all details (client, service, etc.)
+// Fetch all bookings with all details (client, service, etc.)
 router.get('/all', async (req, res) => {
   try {
     // Fetch all bookings with populated client and service details
@@ -79,16 +80,21 @@ router.get('/all', async (req, res) => {
         title: booking.serviceId.title,
       } : null;
 
-      return {
+      // Create the response object with optional createdAt
+      const responseObj = {
         _id: booking._id,
         serviceId: service, // May be null
         clientId: client, // May be null
         category: booking.category, // Include category here
         status: booking.status,
-        createdAt: booking.createdAt,
-        updatedAt: booking.updatedAt,
+        // Only include createdAt if it exists
+        ...(booking.createdAt && { createdAt: booking.createdAt }),
+        // Only include updatedAt if it exists
+        ...(booking.updatedAt && { updatedAt: booking.updatedAt }),
         __v: booking.__v,
       };
+
+      return responseObj;
     });
 
     res.status(200).json({ bookings: bookingsWithDetails });
