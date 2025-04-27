@@ -34,6 +34,30 @@ router.get('/', async (req, res) => {
   });
   
 
+
+  // Delete a notification
+router.delete('/:id', async (req, res) => {
+  try {
+      const notification = await AdminNotification.findByIdAndDelete(req.params.id);
+      
+      if (!notification) {
+          return res.status(404).json({ success: false, message: 'Notification not found' });
+      }
+
+      res.status(200).json({ 
+          success: true, 
+          message: 'Notification deleted successfully' 
+      });
+  } catch (error) {
+      console.error('Error deleting notification:', error);
+      res.status(500).json({ 
+          success: false, 
+          message: 'Failed to delete notification' 
+      });
+  }
+});
+
+
 // PATCH /api/admin/notifications/:id/read
 router.patch('/:id/read', adminAuth, async (req, res) => {
   try {

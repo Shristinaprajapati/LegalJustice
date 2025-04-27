@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaBell } from 'react-icons/fa';
+import { FaBell, FaTimes } from 'react-icons/fa';
 import styles from './AdminDashboard.module.css';
 import { io } from 'socket.io-client';
 import axios from 'axios';
@@ -82,6 +82,25 @@ const NotificationBell = () => {
     }
   };
 
+  const deleteNotification = async (id, e) => {
+    e.stopPropagation(); // Prevent triggering the markAsRead function
+    try {
+      await axios.delete(`http://localhost:8080/api/admin/notifications/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setNotifications((prev) => prev.filter((notif) => notif._id !== id));
+      
+      // Update unread count if the deleted notification was unread
+      const deletedNotif = notifications.find(n => n._id === id);
+      if (deletedNotif && !deletedNotif.read) {
+        setUnreadCount((prev) => Math.max(prev - 1, 0));
+      }
+    } catch (err) {
+      console.error('Error deleting notification:', err);
+    }
+  };
+
   // Close dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -131,9 +150,17 @@ const NotificationBell = () => {
                   <p>{notification.message}</p>
                   <small>{notification.timestamp}</small>
                 </div>
-                {!notification.read && (
-                  <div className={styles.unreadIndicator}></div>
-                )}
+                <div className={styles.notificationActions}>
+                  {!notification.read && (
+                    <div className={styles.unreadIndicator}></div>
+                  )}
+                  <button 
+                    className={styles.clearButton}
+                    onClick={(e) => deleteNotification(notification._id, e)}
+                  >
+                    <FaTimes />
+                  </button>
+                </div>
               </div>
             ))
           ) : (

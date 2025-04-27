@@ -329,7 +329,7 @@
 
 .notificationIcon {
   font-size: 1.6rem;
-  color: #444; /* Changed from blue to neutral */
+  color: #444;
 }
 
 .notificationBadge {
@@ -356,7 +356,7 @@
   width: 360px;
   max-height: 480px;
   overflow-y: auto;
-  background: #fff; /* Plain white */
+  background: #fff;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -382,7 +382,7 @@
 .notificationHeader h4 {
   font-size: 1rem;
   font-weight: 600;
-  color: #444; /* Neutral text */
+  color: #444;
   margin: 0;
 }
 
@@ -403,10 +403,12 @@
 }
 
 .notificationItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   padding: 14px 16px;
   border-bottom: 1px solid #eee;
   cursor: pointer;
-  position: relative;
   transition: background-color 0.2s ease;
 }
 
@@ -419,36 +421,65 @@
 }
 
 .notificationItem.unread {
-  background-color: #f0f4f8; /* Light bluish-gray */
+  background-color: #f0f4f8;
+}
+
+.notificationContent {
+  flex: 1;
+  min-width: 0;
+  padding-right: 12px; /* Add space between content and actions */
+  overflow: hidden; /* Changed from text truncation */
 }
 
 .notificationContent h5 {
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
   color: #333;
   font-size: 0.95rem;
   font-weight: 600;
+  white-space: normal; /* Allow title to wrap */
 }
 
 .notificationContent p {
-  margin: 0 0 4px 0;
+  margin: 0 0 6px 0;
   font-size: 0.875rem;
   color: #555;
+  white-space: normal; /* Allow message to wrap */
+  word-break: break-word; /* Break long words if needed */
 }
 
 .notificationContent small {
   color: #888;
   font-size: 0.75rem;
+  display: block; /* Ensure timestamp stays on its own line */
+}
+
+.notificationActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  padding: 2px;
+  transition: color 0.2s;
+  flex-shrink: 0;
+}
+
+.clearButton:hover {
+  color: #ff4444;
 }
 
 .unreadIndicator {
-  position: absolute;
-  top: 20px;
-  right: 20px;
   width: 10px;
   height: 10px;
   background-color: #f44336;
   border-radius: 50%;
-  box-shadow: 0 0 0 2px white;
+  flex-shrink: 0;
 }
 
 .noNotifications {
@@ -457,5 +488,3 @@
   color: #999;
   font-size: 0.9rem;
 }
-
-
