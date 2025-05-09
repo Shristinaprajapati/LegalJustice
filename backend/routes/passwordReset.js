@@ -26,9 +26,9 @@ router.post("/", async (req, res) => {
 		);
 
 		const emailContent = `
-			<p>Your OTP for resetting your password is:</p>
-			<h3>${otp}</h3>
-			<p>This OTP will expire in 10 minutes.</p>
+			Your OTP for resetting your password is:
+			${otp}
+			This OTP will expire in 10 minutes.
 		`;
 
 		await sendEmail(user.email, "Password Reset OTP", emailContent);

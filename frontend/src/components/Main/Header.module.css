@@ -1413,3 +1413,20 @@
   font-size: 14px;
   margin-top: 18px; /* Add 18px spacing above the error message */
 }
+
+/* Add these styles to your Header.module.css */
+
+.section {
+  height: 95vh;
+  overflow-y: auto; /* Keep scrolling enabled */
+  position: fixed;
+  background: white;
+  width: 350px;
+  /* Hide scrollbar for Firefox */
+  scrollbar-width: none;
+  
+  /* Hide scrollbar for IE/Edge */
+  -ms-overflow-style: none;
+}
+
+
