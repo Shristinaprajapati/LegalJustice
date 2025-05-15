@@ -354,26 +354,35 @@ const Header = () => {
      <p className={styles.noBookings}>No bookings found.</p>
    ) : (
      <div className={styles.bookingList}>
-       {bookings.map((booking) => (
-         <div key={booking._id} className={styles.bookingCard}>
-           <h3 className={styles.serviceTitle}>
-             {booking.service?.title || "Consulting Appointment"}
-           </h3>
-           {booking.date && (
-             <p className={styles.bookingDate}>
-               <Icon icon="mdi:calendar-month-outline" /> {new Date(booking.date).toDateString()}
-             </p>
-           )}
-           {booking.timeSlot && (
-             <p className={styles.bookingTime}>
-               <Icon icon="mdi:clock-outline" /> {booking.timeSlot}
-             </p>
-           )}
-           <p className={`${styles.bookingStatus} ${styles[booking.status.toLowerCase()]}`}>
-             {booking.status}
-           </p>
-         </div>
-       ))}
+      {bookings.map((booking) => (
+  <div key={booking._id} className={styles.bookingCard}>
+    <div className={styles.bookingHeader}>
+      <h3 className={styles.serviceTitle}>
+        {booking.service?.title || "Consulting Appointment"}
+      </h3>
+      {booking.status && (
+        <p className={`${styles.bookingStatus} ${styles[booking.status.toLowerCase()]}`}>
+          {booking.status}
+        </p>
+      )}
+    </div>
+
+    {booking.date && (
+      <p className={styles.bookingDate}>
+        <Icon icon="mdi:calendar-month-outline" />
+        {new Date(booking.date).toDateString()}
+      </p>
+    )}
+
+    {booking.timeSlot && (
+      <p className={styles.bookingTime}>
+        <Icon icon="mdi:clock-outline" />
+        {booking.timeSlot}
+      </p>
+    )}
+  </div>
+))}
+
      </div>
    )}
  </div>

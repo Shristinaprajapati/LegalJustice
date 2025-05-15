@@ -58,7 +58,7 @@ const Settings = () => {
                 <h1 className={styles.title}>Settings</h1>
                 
                 <div className={styles.companyHeader}>
-                    <h2 className={styles.companyName}>Legal Justice</h2>
+                  
                     <div className={styles.divider}></div>
                 </div>
 

@@ -6,9 +6,11 @@ import AdminCalendar from './AdminCalendar';
 import BookingPopup from './bookingpopup';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:8080'); // Connect to your socket.io server
+const socket = io('http://localhost:8080');
 
 const Booking = () => {
+  const [allBookings, setAllBookings] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [bookings, setBookings] = useState({});
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [loading, setLoading] = useState(true);
@@ -24,6 +26,7 @@ const Booking = () => {
       try {
         const response = await axios.get('http://localhost:8080/api/bookings');
         if (Array.isArray(response.data.bookings)) {
+          setAllBookings(response.data.bookings);
           const categorizedBookings = response.data.bookings.reduce((acc, booking) => {
             const category = booking.category || 'Uncategorized';
             if (!acc[category]) acc[category] = [];
@@ -58,15 +61,19 @@ const Booking = () => {
       const response = await axios.patch(`http://localhost:8080/api/bookings/${bookingId}`, { status: newStatus });
   
       if (response.status === 200) {
+        setAllBookings(prev => prev.map(booking => 
+          booking._id === bookingId ? { ...booking, status: newStatus } : booking
+        ));
+        
         setBookings((prevBookings) => ({
           ...prevBookings,
           [category]: prevBookings[category].map((booking) =>
             booking._id === bookingId ? { ...booking, status: newStatus } : booking
           ),
         }));
+        
         setRefreshCalendar((prev) => !prev);
 
-        // Find the updated booking to get client details
         const updatedBooking = bookings[category].find(booking => booking._id === bookingId);
         
         if (updatedBooking && updatedBooking.clientId) {
@@ -111,6 +118,7 @@ const Booking = () => {
     try {
       const response = await axios.delete(`http://localhost:8080/api/bookings/${_id}`);
       if (response.status === 200) {
+        setAllBookings(prev => prev.filter(booking => booking._id !== _id));
         setBookings((prevBookings) => ({
           ...prevBookings,
           [category]: prevBookings[category].filter((booking) => booking._id !== _id),
@@ -125,15 +133,41 @@ const Booking = () => {
   };
 
   const formatDate = (date) => {
+    if (!date) return 'N/A';
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(date).toLocaleDateString(undefined, options);
   };
 
-  const handleTabClick = (category) => setSelectedCategory(category);
+  const handleTabClick = (category) => {
+    setSelectedCategory(category);
+    setSearchQuery('');
+  };
 
   const handleDotsClick = (bookingId) => {
     setActiveBookingId((prevId) => (prevId === bookingId ? null : bookingId));
   };
+
+  const getFilteredBookings = () => {
+    if (!searchQuery || (selectedCategory !== 'Consulting' && selectedCategory !== 'documentation')) {
+      return bookings;
+    }
+
+    const query = searchQuery.toLowerCase();
+    const filtered = allBookings.filter(booking => {
+      const clientName = booking.clientId?.name?.toLowerCase() || '';
+      const serviceTitle = booking.serviceId?.title?.toLowerCase() || '';
+      return clientName.includes(query) || serviceTitle.includes(query);
+    });
+
+    return filtered.reduce((acc, booking) => {
+      const category = booking.category || 'Uncategorized';
+      if (!acc[category]) acc[category] = [];
+      acc[category].push(booking);
+      return acc;
+    }, {});
+  };
+
+  const filteredBookings = getFilteredBookings();
 
   if (loading) return <div>Loading bookings...</div>;
 
@@ -142,27 +176,40 @@ const Booking = () => {
       <Sidebar />
 
       <div className={styles.content}>
-
         <h2 className={styles.pageTitle}>Booking Management</h2>
 
         {error && <div className={styles.errorMessage}>{error}</div>}
 
-        <div className={styles.tabs}>
-          <div
-            className={`${styles.tab} ${selectedCategory === 'All' ? styles.activeTab : ''}`}
-            onClick={() => handleTabClick('All')}
-          >
-            All
-          </div>
-          {Object.keys(bookings).map((category) => (
+        <div className={styles.tabContainer}>
+          <div className={styles.tabs}>
             <div
-              key={category}
-              className={`${styles.tab} ${selectedCategory === category ? styles.activeTab : ''}`}
-              onClick={() => handleTabClick(category)}
+              className={`${styles.tab} ${selectedCategory === 'All' ? styles.activeTab : ''}`}
+              onClick={() => handleTabClick('All')}
             >
-              {category}
+              All
             </div>
-          ))}
+            {Object.keys(bookings).map((category) => (
+              <div
+                key={category}
+                className={`${styles.tab} ${selectedCategory === category ? styles.activeTab : ''}`}
+                onClick={() => handleTabClick(category)}
+              >
+                {category}
+              </div>
+            ))}
+          </div>
+
+          {(selectedCategory === 'consulting' || selectedCategory === 'documentation') && (
+            <div className={styles.searchBar}>
+              <input
+                type="text"
+                placeholder="Search by client name or service..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={styles.searchInput}
+              />
+            </div>
+          )}
         </div>
 
         <div className={styles.calendarSection}>
@@ -198,7 +245,11 @@ const Booking = () => {
                       {bookings[category].length > 0 ? (
                         bookings[category].map((booking) => (
                           <tr key={booking._id}>
-                            <td>{category === 'Documentation' ? formatDate(booking.createdAt) : formatDate(booking.date)}</td>
+                            <td>
+                              {['documentation', 'Documentation'].includes(category.toLowerCase()) 
+                                ? formatDate(booking.createdAt) 
+                                : formatDate(booking.date)}
+                            </td>
                             {category === 'Consulting' && <td>{booking.timeSlot}</td>}
                             <td>{booking.clientId?.name || 'N/A'}</td>
                             <td>{booking.clientId?.email || 'N/A'}</td>
@@ -274,72 +325,140 @@ const Booking = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {bookings[selectedCategory].length > 0 ? (
-                      bookings[selectedCategory].map((booking) => (
-                        <tr key={booking._id}>
-                          <td>{selectedCategory === 'Documentation' ? formatDate(booking.createdAt) : formatDate(booking.date)}</td>
-                          {selectedCategory === 'Consulting' && <td>{booking.timeSlot}</td>}
-                          <td>{booking.clientId?.name || 'N/A'}</td>
-                          <td>{booking.clientId?.email || 'N/A'}</td>
-                          <td>{booking.serviceId?.title || 'N/A'}</td>
-                          <td>
-                            <span
-                              className={`${styles.status} ${
-                                booking.status === 'Confirmed' ? styles.confirmed : styles.pending
-                              }`}
-                            >
-                              {booking.status}
-                            </span>
-                          </td>
-                          <td>
-                            {booking.status === 'Pending' ? (
-                              <button
-                                onClick={() => handleStatusChange(booking._id, 'Confirmed', selectedCategory)}
-                                className={styles.statusButton}
+                    {(selectedCategory === 'Consulting' || selectedCategory === 'documentation') && filteredBookings[selectedCategory] ? (
+                      filteredBookings[selectedCategory].length > 0 ? (
+                        filteredBookings[selectedCategory].map((booking) => (
+                          <tr key={booking._id}>
+                            <td>
+                              {['documentation', 'Documentation'].includes(selectedCategory.toLowerCase()) 
+                                ? formatDate(booking.createdAt) 
+                                : formatDate(booking.date)}
+                            </td>
+                            {selectedCategory === 'Consulting' && <td>{booking.timeSlot}</td>}
+                            <td>{booking.clientId?.name || 'N/A'}</td>
+                            <td>{booking.clientId?.email || 'N/A'}</td>
+                            <td>{booking.serviceId?.title || 'N/A'}</td>
+                            <td>
+                              <span
+                                className={`${styles.status} ${
+                                  booking.status === 'Confirmed' ? styles.confirmed : styles.pending
+                                }`}
                               >
-                                Confirm
-                              </button>
-                            ) : (
-                              <button
-                                onClick={() => handleStatusChange(booking._id, 'Pending', selectedCategory)}
-                                className={styles.statusButtonCancel}
-                              >
-                                Cancel
-                              </button>
-                            )}
-                            <div className={styles.actionsMenu}>
-                              <button
-                                className={styles.dotsButton}
-                                onClick={() => handleDotsClick(booking._id)}
-                              >
-                                ...
-                              </button>
-                              {activeBookingId === booking._id && (
-                                <div className={styles.dotsMenu}>
-                                  <button
-                                    className={styles.deleteButton}
-                                    onClick={() => handleDeleteBooking(booking._id, selectedCategory)}
-                                  >
-                                    Delete
-                                  </button>
-                                </div>
+                                {booking.status}
+                              </span>
+                            </td>
+                            <td>
+                              {booking.status === 'Pending' ? (
+                                <button
+                                  onClick={() => handleStatusChange(booking._id, 'Confirmed', selectedCategory)}
+                                  className={styles.statusButton}
+                                >
+                                  Confirm
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() => handleStatusChange(booking._id, 'Pending', selectedCategory)}
+                                  className={styles.statusButtonCancel}
+                                >
+                                  Cancel
+                                </button>
                               )}
-                            </div>
-                          </td>
+                              <div className={styles.actionsMenu}>
+                                <button
+                                  className={styles.dotsButton}
+                                  onClick={() => handleDotsClick(booking._id)}
+                                >
+                                  ...
+                                </button>
+                                {activeBookingId === booking._id && (
+                                  <div className={styles.dotsMenu}>
+                                    <button
+                                      className={styles.deleteButton}
+                                      onClick={() => handleDeleteBooking(booking._id, selectedCategory)}
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="7">No bookings available</td>
                         </tr>
-                      ))
+                      )
                     ) : (
-                      <tr>
-                        <td colSpan="7">No bookings available</td>
-                      </tr>
+                      bookings[selectedCategory] && bookings[selectedCategory].length > 0 ? (
+                        bookings[selectedCategory].map((booking) => (
+                          <tr key={booking._id}>
+                            <td>
+                              {['documentation', 'Documentation'].includes(selectedCategory.toLowerCase()) 
+                                ? formatDate(booking.createdAt) 
+                                : formatDate(booking.date)}
+                            </td>
+                            {selectedCategory === 'Consulting' && <td>{booking.timeSlot}</td>}
+                            <td>{booking.clientId?.name || 'N/A'}</td>
+                            <td>{booking.clientId?.email || 'N/A'}</td>
+                            <td>{booking.serviceId?.title || 'N/A'}</td>
+                            <td>
+                              <span
+                                className={`${styles.status} ${
+                                  booking.status === 'Confirmed' ? styles.confirmed : styles.pending
+                                }`}
+                              >
+                                {booking.status}
+                              </span>
+                            </td>
+                            <td>
+                              {booking.status === 'Pending' ? (
+                                <button
+                                  onClick={() => handleStatusChange(booking._id, 'Confirmed', selectedCategory)}
+                                  className={styles.statusButton}
+                                >
+                                  Confirm
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() => handleStatusChange(booking._id, 'Pending', selectedCategory)}
+                                  className={styles.statusButtonCancel}
+                                >
+                                  Cancel
+                                </button>
+                              )}
+                              <div className={styles.actionsMenu}>
+                                <button
+                                  className={styles.dotsButton}
+                                  onClick={() => handleDotsClick(booking._id)}
+                                >
+                                  ...
+                                </button>
+                                {activeBookingId === booking._id && (
+                                  <div className={styles.dotsMenu}>
+                                    <button
+                                      className={styles.deleteButton}
+                                      onClick={() => handleDeleteBooking(booking._id, selectedCategory)}
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="7">No bookings available</td>
+                        </tr>
+                      )
                     )}
                   </tbody>
                 </table>
               </div>
             )}
         </div>
-
-    
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ const Footer = () => {
         <nav className={styles.footerNav}>
           <a href='http://localhost:3000/privacypolicy'>Privacy Policy</a>
           <a href='http://localhost:3000/terms&condition'>Terms of Service</a>
-          <a href='#'>Contact Us</a>
+          <a href='http://localhost:3000/contact'>Contact Us</a>
         </nav>
       </div>
     </footer>

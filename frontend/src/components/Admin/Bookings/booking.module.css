@@ -262,3 +262,65 @@
     font-size: 12px;
   }
 }
+
+
+/* Add these styles to your booking.module.css */
+
+.tabContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 0;
+}
+
+.searchBar {
+  margin-left: auto; /* This pushes the search bar to the right */
+}
+
+.searchInput {
+  width: 250px;
+  padding: 8px 15px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.tab {
+  padding: 8px 15px;
+  cursor: pointer;
+  background-color: #f1f1f1;
+  border-radius: 50px;
+  color: #555;
+  font-size: 14px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  white-space: nowrap;
+}
+
+.tab:hover {
+  background-color: #ddd;
+}
+
+.activeTab {
+  background-color: #4169E1;
+  color: #fff;
+}
+
+.activeTab:hover {
+  color: #fff;
+}

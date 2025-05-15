@@ -909,47 +909,75 @@
 
 .sectionTitle {
   font-size: 20px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16px;
-  text-align: center;
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 8px;
+  font-weight: 600;
+  color: #1e3a8a;
+  margin-bottom: 20px;
+  text-align: left;
+  border-bottom: 1px solid #d1d5db;
+  padding-bottom: 10px;
+  padding-left: 12px;
+  align-items: left;
 }
 
 .bookingList {
   margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
   max-height: 600px;
   overflow-y: auto;
-  padding-right: 5px;
+  padding: 0 12px;
 }
 
 .bookingList::-webkit-scrollbar {
-  width: 0px; /* Makes scrollbar invisible */
+  width: 0px;
 }
 
 .bookingCard {
-  background: white;
-  padding: 16px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s ease-in-out;
-  border: 1px solid #e0e0e0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  transition: background 0.2s ease-in-out;
+  background: transparent;
 }
 
-.bookingCard:hover {
-  transform: scale(1);
+
+.bookingHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: left;
+  margin-bottom: 8px;
 }
 
 .serviceTitle {
   font-size: 16px;
   font-weight: 600;
-  color: #222;
-  margin-bottom: 18px;
+  color: #111827;
+  margin: 0;
+  text-align: left;
+}
+
+.bookingStatus {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 5px;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.bookingStatus.pending {
+  background-color: #fff8e1;
+  color: #b45309;
+}
+
+.bookingStatus.confirmed {
+  background-color: #ecfdf5;
+  color: #047857;
+}
+
+.bookingStatus.cancelled {
+  background-color: #fef2f2;
+  color: #b91c1c;
 }
 
 .bookingDate,
@@ -957,41 +985,27 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  font-size: 13.5px;
+  color: #4b5563;
+  margin-bottom: 6px;
+  padding-left: 2px;
+  
+}
+
+.loading,
+.error,
+.noBookings {
+  text-align: center;
+  color: #6b7280;
   font-size: 14px;
-  color: #555;
-  margin-bottom: 18px;
+  margin-top: 20px;
 }
 
-.bookingStatus {
-  font-size: 14px;
-  font-weight: 600;
-  padding: 6px 12px;
-  border-radius: 5px;
-  width: fit-content;
-  text-transform: capitalize;
-  margin-bottom: 5px;
-
-}
-
-.bookingStatus.pending {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.bookingStatus.confirmed {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.bookingStatus.cancelled {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-/* Responsive adjustments */
 @media (max-width: 768px) {
-  .bookingCard {
-    padding: 12px;
+  .bookingHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
   }
 
   .serviceTitle {
@@ -1000,7 +1014,11 @@
 
   .bookingDate,
   .bookingTime {
-    font-size: 13px;
+    font-size: 12.5px;
+  }
+
+  .bookingStatus {
+    font-size: 12px;
   }
 }
 

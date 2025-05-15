@@ -159,11 +159,11 @@ const BookingSuccess = () => {
       color: "#666",
       marginBottom: "30px",
       marginTop: "30px",
-      textAlign: "center",    // For centering the text
-      display: "flex",        // Enables flexbox properties
-      flexDirection: "column", // Stacks items vertically
-      alignItems: "center",   // Centers horizontally (cross-axis for column)
-      justifyContent: "center" // Centers vertically (main-axis for column)
+      textAlign: "center",    
+      display: "flex",        
+      flexDirection: "column", 
+      alignItems: "center",   
+      justifyContent: "center" 
     },
     image: {
       width: "100px",
