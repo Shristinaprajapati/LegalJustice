@@ -13,6 +13,7 @@
   flex-wrap: wrap;
   gap: 60px;
   align-items: flex-start;
+  justify-content: center;
 }
 
 /* Contact Info Section */
@@ -30,7 +31,7 @@
 .sectionTag {
   display: inline-block;
   color: #4a6cf7;
-  font-family: 'Manrope', sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 16px;
   font-weight: 600;
   text-transform: uppercase;
@@ -40,7 +41,7 @@
 
 .mainHeading {
   color: black;
-  font-family: 'Satoshi', sans-serif;
+  font-family: "Satoshi", sans-serif;
   font-size: 40px;
   line-height: 1.6;
   margin: 0;
@@ -51,7 +52,7 @@
 
 .introText {
   color: rgb(78, 78, 78);
-  font-family: 'Manrope', sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 16px;
   line-height: 1.6;
   margin: 0;
@@ -85,7 +86,7 @@
 
 .formTitle {
   color: #1e293b;
-  font-family: 'Manrope', sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 28px;
   font-weight: 700;
   margin: 0 0 10px 0;
@@ -93,7 +94,7 @@
 
 .formSubtitle {
   color: #64748b;
-  font-family: 'Manrope', sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 16px;
   margin: 0;
 }
@@ -107,7 +108,6 @@
 
 .formRow {
   display: flex;
-  flex-direction: column; /* corrected */
   gap: 20px;
   flex-wrap: wrap;
 }
@@ -120,7 +120,7 @@
 .inputLabel {
   display: block;
   color: #334155;
-  font-family: 'Manrope', sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 8px;
@@ -132,7 +132,7 @@
   padding: 12px 16px;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  font-family: 'Manrope', sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 16px;
   color: #334155;
   background-color: #f8fafc;
@@ -150,7 +150,6 @@
   min-height: 150px;
   resize: vertical;
 }
-
 
 /* Terms Checkbox */
 .termsAgreement {
@@ -180,7 +179,7 @@
 
 .termsText {
   color: #64748b;
-  font-family: 'Manrope', sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 14px;
   cursor: pointer;
 }
@@ -192,28 +191,39 @@
   border: none;
   border-radius: 8px;
   padding: 14px 24px;
-  font-family: 'Manrope', sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .submitButton:hover {
-  background-color: #3a5bd9;
+  background: linear-gradient(135deg, #003d8f 0%, #002b66 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 43, 102, 0.2);
+}
+
+.submitButton:active {
+  transform: translateY(0);
 }
 
 .submitButton:disabled {
-  background-color: #94a3b8;
+  background: linear-gradient(135deg, #6b8cb8 0%, #6b8cb8 100%);
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 /* Status Messages */
 .statusMessage {
   padding: 12px 16px;
   border-radius: 8px;
-  font-family: 'Manrope', sans-serif;
+  font-family: "Manrope", sans-serif;
   font-size: 14px;
   margin-top: 10px;
 }
@@ -228,46 +238,11 @@
   color: #b91c1c;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .contactContainer {
-    padding: 60px 20px;
-    gap: 40px;
-  }
-
-  .mainHeading {
-    font-size: 36px;
-  }
-
-  .contactFormSection {
-    padding: 30px;
-  }
-}
-
-@media (max-width: 480px) {
-  .contactContainer {
-    padding: 40px 16px;
-  }
-
-  .mainHeading {
-    font-size: 32px;
-  }
-
-  .formTitle {
-    font-size: 24px;
-  }
-
-  .formRow {
-    flex-direction: column;
-    gap: 16px;
-  }
-}
-
 .spinner {
   display: inline-block;
   width: 1rem;
   height: 1rem;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
   border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
@@ -275,5 +250,260 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .contactContainer {
+    padding: 70px 20px;
+    gap: 50px;
+  }
+}
+
+/* Tablet Breakpoint - Vertical Layout */
+/* Updated to include iPad Pro size (1024 x 1366) */
+@media (max-width: 1366px) {
+  .contactContainer {
+    padding: 60px 20px;
+    gap: 40px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contactInfo {
+    max-width: 100%;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .contactHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .mainHeading {
+    text-align: center;
+    font-size: 36px;
+  }
+
+  .introText {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .accentLine {
+    margin: 25px auto 0;
+  }
+
+  .contactFormSection {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+/* Mobile Landscape Breakpoint */
+@media (max-width: 768px) {
+  .contactContainer {
+    padding: 50px 20px;
+    gap: 30px;
+  }
+
+  .contactFormSection {
+    padding: 30px;
+  }
+
+  .mainHeading {
+    font-size: 32px;
+    line-height: 1.4;
+  }
+
+  .formTitle {
+    font-size: 24px;
+  }
+
+  .formSubtitle {
+    font-size: 15px;
+  }
+
+  .sectionTag {
+    font-size: 14px;
+  }
+
+  .introText {
+    font-size: 15px;
+  }
+}
+
+/* Mobile Portrait Breakpoint */
+@media (max-width: 576px) {
+  .contactContainer {
+    padding: 40px 16px;
+    gap: 25px;
+  }
+
+  .contactFormSection {
+    padding: 25px 20px;
+    border-radius: 10px;
+  }
+
+  .mainHeading {
+    font-size: 28px;
+    line-height: 1.3;
+  }
+
+  .formTitle {
+    font-size: 22px;
+  }
+
+  .formRow {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .formGroup {
+    min-width: 100%;
+  }
+
+  .inputLabel {
+    font-size: 15px;
+  }
+
+  .formInput,
+  .formTextarea {
+    padding: 10px 14px;
+    font-size: 15px;
+  }
+
+  .formTextarea {
+    min-height: 120px;
+  }
+
+  .submitButton {
+    width: 100%;
+    padding: 12px 20px;
+  }
+
+  .accentLine {
+    margin-top: 20px;
+  }
+}
+
+/* Small Mobile Breakpoint */
+@media (max-width: 375px) {
+  .contactContainer {
+    padding: 30px 12px;
+  }
+
+  .contactFormSection {
+    padding: 20px 15px;
+  }
+
+  .mainHeading {
+    font-size: 26px;
+  }
+
+  .formTitle {
+    font-size: 20px;
+  }
+
+  .formSubtitle {
+    font-size: 14px;
+  }
+
+  .contactForm {
+    gap: 20px;
+  }
+
+  .formInput,
+  .formTextarea {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .submitButton {
+    font-size: 15px;
+    padding: 12px 16px;
+  }
+}
+
+/* Special 1024x1366 (iPad Pro Portrait) Adjustments */
+@media (min-width: 1024px) and (max-width: 1366px) and (orientation: portrait) {
+  .contactContainer {
+    padding: 80px 60px;
+    gap: 60px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .contactInfo {
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .mainHeading {
+    font-size: 42px;
+    text-align: center;
+  }
+
+  .introText {
+    font-size: 18px;
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .accentLine {
+    margin: 30px auto 0;
+  }
+
+  .contactFormSection {
+    max-width: 800px;
+    width: 100%;
+    padding: 60px;
+  }
+
+  .formTitle {
+    font-size: 32px;
+    margin-bottom: 15px;
+  }
+
+  .formSubtitle {
+    font-size: 18px;
+  }
+
+  .contactForm {
+    gap: 28px;
+  }
+
+  .formRow {
+    gap: 25px;
+  }
+
+  .formInput,
+  .formTextarea {
+    padding: 16px 20px;
+    font-size: 17px;
+  }
+
+  .formTextarea {
+    min-height: 180px;
+  }
+
+  .submitButton {
+    padding: 18px 32px;
+    font-size: 18px;
+    margin-top: 15px;
+  }
+
+  .termsText {
+    font-size: 15px;
+  }
 }

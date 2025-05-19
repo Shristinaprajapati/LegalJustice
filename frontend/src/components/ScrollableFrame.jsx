@@ -101,7 +101,7 @@ const ScrollableFrame = () => {
       </h2>
       <img
         className={styles.partnerimg}
-        src="/Images/office.jpg"
+        src="/Images/left.jpg"
         alt="Legal consultation"
       />
     </div>

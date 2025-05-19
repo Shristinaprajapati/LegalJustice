@@ -44,27 +44,38 @@ p, .paragraph {
 .manageCasesSection {
   margin-top: 80px;
   display: flex;
-  align-items: left;
+  align-items: center;
   justify-content: space-between;
   background-color: #fcfcff;
-  color: #ffffff;
   padding: 90px 80px;
   border-radius: 8px;
   gap: 40px;
 }
 
 .manageCasesSection .content {
-  margin-top: 80px;
   flex: 1;
   max-width: 40%;
-  margin-left: 20px;
   text-align: left;
 }
 
-.manageCasesSection .talkToUsBtn {
+.heading {
+  color: #000; /* Added color for better visibility */
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.paragraph {
+  color: #333; /* Added color for better visibility */
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.secondaryButton {
   padding: 12px 24px;
   background-color: transparent;
-  border: 2px solid  #003366;
+  border: 2px solid #003366;
   border-radius: 50px;
   color: #007BFF;
   font-size: 1rem;
@@ -72,7 +83,7 @@ p, .paragraph {
   transition: 0.3s ease-in-out;
 }
 
-.manageCasesSection .talkToUsBtn:hover {
+.secondaryButton:hover {
   background-color: #007BFF;
   color: #ffffff;
 }
@@ -89,6 +100,67 @@ p, .paragraph {
   max-width: 80%;
   height: auto;
   object-fit: cover;
+}
+
+/* Tablet View (768px - 1024px) */
+@media (max-width: 1024px) {
+  .manageCasesSection {
+    padding: 70px 60px;
+    gap: 30px;
+  }
+  
+  .manageCasesSection .image img {
+    max-width: 90%; /* Slightly larger image on tablet */
+  }
+}
+
+/* Small Tablet View (600px - 768px) */
+@media (max-width: 768px) {
+  .manageCasesSection {
+    flex-direction: column;
+    padding: 60px 40px;
+    gap: 40px;
+    text-align: center;
+  }
+  
+  .manageCasesSection .content {
+    max-width: 100%;
+    text-align: center;
+    margin-left: 0;
+  }
+  
+  .heading {
+    font-size: 2rem;
+  }
+  
+  .manageCasesSection .image {
+    max-width: 100%;
+    order: -1; /* Move image above text on mobile */
+  }
+  
+  .manageCasesSection .image img {
+    max-width: 70%; /* Maintain larger image size */
+  }
+}
+
+/* Mobile View (up to 600px) */
+@media (max-width: 600px) {
+  .manageCasesSection {
+    padding: 50px 30px;
+    margin-top: 60px;
+  }
+  
+  .heading {
+    font-size: 1.8rem;
+  }
+  
+  .paragraph {
+    font-size: 1rem;
+  }
+  
+  .manageCasesSection .image img {
+    max-width: 100%; /* Full width image on small mobile */
+  }
 }
 
 
