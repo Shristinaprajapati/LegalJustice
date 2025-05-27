@@ -37,4 +37,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedMessage = await Contact.findByIdAndDelete(id);
+
+    if (!deletedMessage) {
+      return res.status(404).send({ message: "Message not found." });
+    }
+
+    res.status(200).send({ message: "Message deleted successfully." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Error deleting message." });
+  }
+});
+
 module.exports = router;
