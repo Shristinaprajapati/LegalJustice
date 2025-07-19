@@ -30,14 +30,16 @@ const Header = () => {
       setIsLoggedIn(true);
   
       axios
-        .get('http://localhost:8080/api/auth/me', {
+        .get(`${process.env.REACT_APP_BASE_URL}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           const user = response.data;
           setUserData({ name: user.name, email: user.email, clientId: user.clientId });
   
-          socket.current = io('ws://localhost:8080');
+          // socket.current = io('ws://localhost:8080');
+          socket.current = io(`${process.env.REACT_APP_BASE_URL.replace(/^http/, 'ws')}`);
+
   
           socket.current.emit('register', user.clientId);
   
@@ -51,7 +53,7 @@ const Header = () => {
           });
   
           axios
-            .get(`http://localhost:8080/api/notifications/${user.clientId}`)
+            .get(`${process.env.REACT_APP_BASE_URL}/api/notifications/${user.clientId}`)
             .then((response) => {
               const notificationsFromDb = response.data.notifications;
               setNotifications((prevNotifications) => {
@@ -68,7 +70,7 @@ const Header = () => {
             });
   
           axios
-            .get(`http://localhost:8080/api/bookings/client/${user.clientId}`)
+            .get(`${process.env.REACT_APP_BASE_URL}/api/bookings/client/${user.clientId}`)
             .then((response) => {
               setBookings(response.data.bookings);
             })

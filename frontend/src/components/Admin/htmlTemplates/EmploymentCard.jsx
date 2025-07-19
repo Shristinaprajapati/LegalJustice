@@ -16,7 +16,7 @@ const EmploymentCards = () => {
   useEffect(() => {
     const fetchContracts = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/employment/employment-contract");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/employment/employment-contract`);
         setContracts(response.data);
       } catch (err) {
         setError("Failed to load contracts.");
@@ -32,7 +32,7 @@ const EmploymentCards = () => {
     const fetchContractData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/employment/employment-contract/${clientId}`
+          `${process.env.REACT_APP_BASE_URL}/api/employment/employment-contract/${clientId}`
         );
 
         if (response.data && response.data.length > 0) {

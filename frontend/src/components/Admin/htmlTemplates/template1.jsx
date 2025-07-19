@@ -12,7 +12,7 @@ const DivorceAgreementForm = () => {
   useEffect(() => {
     const fetchAgreementData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/divorseagreement/generate-divorce-agreement/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/divorseagreement/generate-divorce-agreement/${id}`);
         setHtmlContent(response.data.htmlContent);
         setLoading(false); // Stop loading when the content is received
       } catch (error) {

@@ -15,7 +15,7 @@ const AdminClients = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/users/clients");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users/clients`);
         const data = Array.isArray(response.data)
           ? response.data
           : response.data.success && Array.isArray(response.data.data)

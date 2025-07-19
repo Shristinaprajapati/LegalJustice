@@ -40,7 +40,7 @@ const BookingSuccess = () => {
   useEffect(() => {
     const fetchServicePrice = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/services/${serviceId}`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/services/${serviceId}`);
         const service = response.data;
         setServicePrice(service.price); // Set the service price from the response
       } catch (err) {
@@ -64,7 +64,7 @@ const BookingSuccess = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:8080/api/bookings", // Replace with your booking route
+        `${process.env.REACT_APP_BASE_URL}/api/bookings`, // Replace with your booking route
         bookingData,
         {
           headers: {
@@ -106,7 +106,7 @@ const BookingSuccess = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:8080/api/payments",
+        `${process.env.REACT_APP_BASE_URL}/api/payments`,
         paymentData,
         {
           headers: {

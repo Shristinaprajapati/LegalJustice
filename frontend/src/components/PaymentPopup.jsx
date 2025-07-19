@@ -21,10 +21,10 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
       setError(null);
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/khalti-api",
+          `${process.env.REACT_APP_BASE_URL}/api/khalti-api`,
           {
             return_url: `http://localhost:3000/successful/${clientDetails.serviceId}/${clientDetails.clientId}`,
-            website_url: "http://localhost:8080/payment-callback",
+            website_url: `${process.env.REACT_APP_BASE_URL}/payment-callback`,
             amount: 1000 * 100, // Ensure this is in the correct unit (paisa or NPR)
             purchase_order_id: clientDetails.serviceId,
             purchase_order_name: `Service for ${clientDetails.clientId}`,
@@ -62,7 +62,7 @@ const PaymentPopup = ({ clientDetails, onClose, onPayNow }) => {
   const checkPaymentStatus = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/payment-status/${clientDetails.serviceId}/${clientDetails.clientId}`
+        `${process.env.REACT_APP_BASE_URL}/api/payment-status/${clientDetails.serviceId}/${clientDetails.clientId}`
       );
       setIsPaid(response.data.paid);
       return response.data.paid; // Return the payment status

@@ -45,7 +45,7 @@ const BookingSuccess = () => {
     const fetchExistingPayment = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/payments?serviceId=${serviceId}&clientId=${clientId}`
+          `${process.env.REACT_APP_BASE_URL}/api/payments?serviceId=${serviceId}&clientId=${clientId}`
         );
 
         if (response.data.success && response.data.data.length > 0) {
@@ -66,7 +66,7 @@ const BookingSuccess = () => {
   const handlePaymentCompletion = async (paymentId, amountPaid) => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/payments/${paymentId}/complete`,
+        `${process.env.REACT_APP_BASE_URL}/api/payments/${paymentId}/complete`,
         {
           paid_amount: amountPaid, // Amount in rupees
           transaction_id: existingPayment.transaction_id, // Use existing transaction_id

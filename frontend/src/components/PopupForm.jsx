@@ -21,7 +21,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
       const fetchClientDetails = async () => {
         setLoading(true);
         try {
-          const response = await axios.get(`http://localhost:8080/api/users?email=${email}`);
+          const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users?email=${email}`);
           const data = response.data;
 
           setFormData((prevData) => ({
@@ -54,7 +54,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
     try {
       console.log("Form Data being sent:", {
         return_url: `http://localhost:3000/successful/${formData.serviceId}/${formData.clientId}`,
-        website_url: "http://localhost:8080/payment-callback",
+        website_url: `${process.env.REACT_APP_BASE_URL}/payment-callback`,
         amount: 1000 * 100,
         purchase_order_id: formData.serviceId,
         purchase_order_name: `Service for ${formData.clientId}`,
@@ -68,9 +68,9 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
         category: formData.category,
       });
   
-      const response = await axios.post("http://localhost:8080/api/khalti-api", {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/khalti-api`, {
         return_url: `http://localhost:3000/successful/${formData.serviceId}/${formData.clientId}`,
-        website_url: "http://localhost:8080/payment-callback",
+        website_url: `${process.env.REACT_APP_BASE_URL}/payment-callback`,
         amount: 1000 * 100,
         purchase_order_id: formData.serviceId,
         purchase_order_name: `Service for ${formData.clientId}`,
@@ -106,7 +106,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
   const checkPaymentStatus = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/payment-status/${formData.serviceId}/${formData.clientId}`
+        `${process.env.REACT_APP_BASE_URL}/api/payment-status/${formData.serviceId}/${formData.clientId}`
       );
       setIsPaid(response.data.paid);
       return response.data.paid; // Return the payment status
@@ -148,7 +148,7 @@ const PopupForm = ({ isOpen, onClose, formData, setFormData }) => {
         };
       }
 
-      const response = await axios.post("http://localhost:8080/api/bookings", bookingData);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/bookings`, bookingData);
       toast.success("Booking successful!", {
         position: "top-right",
         duration: 4000,

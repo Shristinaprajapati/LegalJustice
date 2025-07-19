@@ -73,7 +73,7 @@ const SignUp = () => {
     setLoading(true);
 
     try {
-      const url = "http://localhost:8080/api/users";
+      const url = `${process.env.REACT_APP_BASE_URL}/api/users`;
       const response = await axios.post(url, data, {
         validateStatus: (status) => status >= 200 && status < 500
       });

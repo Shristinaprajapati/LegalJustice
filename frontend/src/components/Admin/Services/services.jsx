@@ -26,7 +26,7 @@ const AdminServices = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/services');
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/services`);
         setServices(response.data);
       } catch (err) {
         setError('Failed to fetch services');
@@ -43,7 +43,7 @@ const AdminServices = () => {
 
   const handleAddService = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/api/services', newService);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/services`, newService);
       setServices([...services, response.data]);
       setNewService({ title: '', description: '', price: '', category: '', formTemplate: '' });
       setShowAddForm(false);
@@ -54,7 +54,7 @@ const AdminServices = () => {
 
   const handleDeleteService = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/services/${id}`);
+      await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/services/${id}`);
       setServices(services.filter((service) => service._id !== id));
     } catch (err) {
       setError('Failed to delete service');
@@ -72,7 +72,7 @@ const AdminServices = () => {
 
   const handleUpdateService = async () => {
     try {
-      const response = await axios.put(`http://localhost:8080/api/services/${editService._id}`, editService);
+      const response = await axios.put(`${process.env.REACT_APP_BASE_URL}/api/services/${editService._id}`, editService);
       setServices(services.map((service) => (service._id === editService._id ? response.data : service)));
       setEditService(null);
     } catch (err) {

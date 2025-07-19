@@ -282,7 +282,8 @@ const handleSaveContent = async () => {
   }
 
   try {
-    const response = await axios.post("http://localhost:8080/api/document/save", {
+    // const response = await axios.post("http://localhost:8080/api/document/save", {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/document/save`, {
       clientId,
       clientName,
       title,
@@ -312,7 +313,8 @@ const handleSaveContent = async () => {
 const fetchAndGeneratePDF = async () => {
   try {
     // Fetch agreement data from API
-    const response = await fetch(`http://localhost:8080/api/document/${clientId}`);
+    // const response = await fetch(`http://localhost:8080/api/document/${clientId}`);
+    const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/document/${clientId}`);
     const data = await response.json();
 
     if (!response.ok) {

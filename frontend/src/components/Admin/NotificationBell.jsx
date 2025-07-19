@@ -13,7 +13,7 @@ const NotificationBell = () => {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    const socket = io('http://localhost:8080');
+    const socket = io(`${process.env.REACT_APP_BASE_URL}`);
 
     // Register admin (use dynamic ID if needed)
     socket.emit('register', '674952ba89c4cfb98008666d');
@@ -37,7 +37,7 @@ const NotificationBell = () => {
     // Fetch all notifications
     const fetchNotifications = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/admin/notifications', {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/admin/notifications`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -63,7 +63,7 @@ const NotificationBell = () => {
   const markAsRead = async (id) => {
     try {
       await axios.patch(
-        `http://localhost:8080/api/admin/notifications/${id}/read`,
+        `${process.env.REACT_APP_BASE_URL}/api/admin/notifications/${id}/read`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -85,7 +85,7 @@ const NotificationBell = () => {
   const deleteNotification = async (id, e) => {
     e.stopPropagation(); // Prevent triggering the markAsRead function
     try {
-      await axios.delete(`http://localhost:8080/api/admin/notifications/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/admin/notifications/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

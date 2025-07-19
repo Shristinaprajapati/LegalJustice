@@ -16,7 +16,7 @@ const PropertyCards = () => {
   useEffect(() => {
     const fetchAgreements = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/propertytransfer/property-transfer-agreement");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/propertytransfer/property-transfer-agreement`);
         setAgreements(response.data);
       } catch (err) {
         setError("Failed to load agreements.");
@@ -32,7 +32,7 @@ const PropertyCards = () => {
     const fetchAgreementData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/propertytransfer/property-transfer-agreement/${clientId}`
+          `${process.env.REACT_APP_BASE_URL}/api/propertytransfer/property-transfer-agreement/${clientId}`
         );
 
         if (response.data && response.data.length > 0) {

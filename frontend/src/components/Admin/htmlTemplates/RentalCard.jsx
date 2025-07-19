@@ -16,7 +16,7 @@ const RentalCard = () => {
   useEffect(() => {
     const fetchRentalAgreements = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/rental/rental-agreements");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/rental/rental-agreements`);
         setRentalAgreements(response.data);
       } catch (err) {
         setError("Failed to load rental agreements.");
@@ -31,7 +31,7 @@ const RentalCard = () => {
 
     const fetchAgreementData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/rental/rental-agreements/${clientId}`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/rental/rental-agreements/${clientId}`);
         
         if (response.data && response.data.length > 0) {
           setSelectedAgreement(response.data[0]);

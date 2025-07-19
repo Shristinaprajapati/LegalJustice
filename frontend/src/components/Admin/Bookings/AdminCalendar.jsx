@@ -22,7 +22,7 @@ const AdminCalendar = ({ refreshCalendar }) => {
   // Fetch reminders from backend
   const fetchReminders = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/api/reminders');
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/reminders`);
       const remindersData = response.data || [];
       
       // Filter out past reminders
@@ -43,7 +43,7 @@ const AdminCalendar = ({ refreshCalendar }) => {
       });
 
       for (const reminder of pastReminders) {
-        await axios.delete(`http://localhost:8080/api/reminders/${reminder._id}`);
+        await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/reminders/${reminder._id}`);
       }
 
       setReminders(validReminders);
@@ -57,7 +57,7 @@ const AdminCalendar = ({ refreshCalendar }) => {
     try {
       const currentDate = new Date();
       currentDate.setHours(0, 0, 0, 0);
-      const response = await axios.get('http://localhost:8080/api/bookings');
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/bookings`);
       const allBookings = response.data.bookings || [];
       const pastBookings = allBookings.filter((booking) => {
         const bookingDate = new Date(booking.date);
@@ -65,7 +65,7 @@ const AdminCalendar = ({ refreshCalendar }) => {
         return bookingDate < currentDate;
       });
       for (const booking of pastBookings) {
-        await axios.delete(`http://localhost:8080/api/bookings/${booking._id}`);
+        await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/bookings/${booking._id}`);
       }
       return true;
     } catch (error) {
@@ -78,7 +78,7 @@ const AdminCalendar = ({ refreshCalendar }) => {
   const fetchBookings = async () => {
     try {
       await deletePastBookings();
-      const response = await axios.get('http://localhost:8080/api/bookings');
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/bookings`);
       const bookings = response.data.bookings || [];
       const currentDate = new Date();
       currentDate.setHours(0, 0, 0, 0);
@@ -130,7 +130,7 @@ const AdminCalendar = ({ refreshCalendar }) => {
   // Handle booking deletion
   const handleDeleteBooking = async (_id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/api/bookings/${_id}`);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/bookings/${_id}`);
       if (response.status === 200) {
         const updatedBookings = confirmedDates.filter((booking) => booking._id !== _id);
         setConfirmedDates(updatedBookings);
@@ -152,7 +152,7 @@ const AdminCalendar = ({ refreshCalendar }) => {
   // Handle reminder deletion
   const handleDeleteReminder = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/api/reminders/${id}`);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/reminders/${id}`);
       if (response.status === 200) {
         setReminders(prev => prev.filter(r => r._id !== id));
         setReminderForSelectedDate([]);
@@ -180,7 +180,7 @@ const AdminCalendar = ({ refreshCalendar }) => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8080/api/reminders', {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/reminders`, {
         title: reminderTitle,
         date: new Date(reminderDate),
       });

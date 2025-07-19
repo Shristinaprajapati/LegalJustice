@@ -19,7 +19,7 @@ const ClientForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/api/documents", formData);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/documents`, formData);
       // Assuming backend returns the generated HTML document
       console.log(response.data.document);
       alert('Document generated successfully!');

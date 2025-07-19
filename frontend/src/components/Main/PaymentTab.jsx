@@ -21,7 +21,7 @@ const PaymentTab = ({ clientId }) => {
     const fetchPayments = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:8080/api/payments/${clientId}`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/payments/${clientId}`);
         console.log("Backend response:", response.data);
         const paymentsFromDb = response.data.data || [];
         if (paymentsFromDb.length === 0) {
@@ -41,7 +41,7 @@ const PaymentTab = ({ clientId }) => {
         paymentsFromDb.forEach(async (payment) => {
           if (payment.serviceId) {
             try {
-              const serviceResponse = await axios.get(`http://localhost:8080/api/services/${payment.serviceId}`);
+              const serviceResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/services/${payment.serviceId}`);
               setServiceDetails((prevDetails) => ({
                 ...prevDetails,
                 [payment._id]: serviceResponse.data,
@@ -100,7 +100,7 @@ const PaymentTab = ({ clientId }) => {
 
         try {
           // Fetch client details
-          const clientResponse = await axios.get(`http://localhost:8080/api/users?email=${email}`);
+          const clientResponse = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users?email=${email}`);
           const clientData = clientResponse.data;
 
           console.log("Fetched client details:", clientData);
@@ -124,9 +124,9 @@ const PaymentTab = ({ clientId }) => {
           // Fetch the payment URL
           setIsLoadingPayment(true);
           setPaymentError(null);
-          const khaltiResponse = await axios.post("http://localhost:8080/api/khalti-api", {
+          const khaltiResponse = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/khalti-api`, {
             return_url: `http://localhost:3000/successfull/${payment.serviceId}/${payment.clientId}`,
-            website_url: "http://localhost:8080/payment-callback",
+            website_url: `${process.env.REACT_APP_BASE_URL}/payment-callback`,
             amount: remainingAmount * 100, // Convert to paisa for Khalti
             purchase_order_id: payment.serviceId,
             purchase_order_name: `Service for ${payment.clientId}`,

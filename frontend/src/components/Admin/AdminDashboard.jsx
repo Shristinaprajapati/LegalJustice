@@ -27,7 +27,7 @@ const AdminDashboard = () => {
 
   // In your AdminDashboard component
 useEffect(() => {
-  const socket = io('http://localhost:8080');
+  const socket = io(`${process.env.REACT_APP_BASE_URL}`);
   
   // Register as admin
   socket.emit('register', '674952ba89c4cfb98008666d');  // Your admin ID
@@ -67,11 +67,11 @@ useEffect(() => {
   
         
         const [usersCountRes, bookingsCountRes, usersRes, bookingsRes, documentCountRes] = await Promise.all([
-          axios.get("http://localhost:8080/api/users/count"),
-          axios.get("http://localhost:8080/api/bookings/count"),
-          axios.get("http://localhost:8080/api/users/clients"),
-          axios.get("http://localhost:8080/api/bookings/all"),
-          axios.get("http://localhost:8080/api/document/count"),
+          axios.get(`${process.env.REACT_APP_BASE_URL}/api/users/count`),
+          axios.get(`${process.env.REACT_APP_BASE_URL}/api/bookings/count`),
+          axios.get(`${process.env.REACT_APP_BASE_URL}/api/users/clients`),
+          axios.get(`${process.env.REACT_APP_BASE_URL}/api/bookings/all`),
+          axios.get(`${process.env.REACT_APP_BASE_URL}/api/document/count`),
 
         ]);
   

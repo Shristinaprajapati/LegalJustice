@@ -59,7 +59,7 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const url = "http://localhost:8080/api/auth";
+      const url = `${process.env.REACT_APP_BASE_URL}/api/auth`;
       const payload = { ...data, recaptchaValue };
 
       const response = await axios.post(url, payload, { 

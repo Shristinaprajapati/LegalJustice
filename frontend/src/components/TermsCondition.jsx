@@ -15,7 +15,7 @@ const TermsAndConditions = () => {
     const fetchTermsAndConditions = async () => {
       try {
         // Fetch terms and conditions content using the correct type
-        const response = await axios.get("http://localhost:8080/api/post/content/termsAndConditions");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/post/content/termsAndConditions`);
         setTermsAndConditions(response.data.content);
       } catch (err) {
         setError("Failed to fetch terms and conditions content.");

@@ -37,7 +37,7 @@ const RentalAgreementForm = () => {
   const [socket, setSocket] = useState(null);
     // Initialize socket connection
     useEffect(() => {
-      const newSocket = io('http://localhost:8080'); // Connect to your backend
+      const newSocket = io(`${process.env.REACT_APP_BASE_URL}`); // Connect to your backend
       setSocket(newSocket);
   
       return () => {
@@ -57,7 +57,7 @@ const RentalAgreementForm = () => {
           return;
         }
 
-        const response = await axios.get('http://localhost:8080/api/auth/me', {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -138,7 +138,7 @@ const RentalAgreementForm = () => {
   
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/rental/rental-agreement',
+        `${process.env.REACT_APP_BASE_URL}/api/rental/rental-agreement`,
         {
           ...formData,
           monthlyRent: Number(formData.monthlyRent),
@@ -159,7 +159,7 @@ const adminNotificationPayload = {
 };
 
 // Save the notification to the database
-await axios.post('http://localhost:8080/api/admin/notifications/admin', adminNotificationPayload);
+await axios.post(`${process.env.REACT_APP_BASE_URL}/api/admin/notifications/admin`, adminNotificationPayload);
 
 // Emit socket event after saving to DB
 if (socket) {

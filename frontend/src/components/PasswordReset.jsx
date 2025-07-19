@@ -24,7 +24,7 @@ const PasswordReset = () => {
 
         const verifyOtp = async () => {
             try {
-                const { data } = await axios.post("http://localhost:8080/api/password-reset/verify-otp", { userId, otp });
+                const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/password-reset/verify-otp`, { userId, otp });
                 setValidOtp(true);
                 setMsg(data.message);
             } catch (error) {
@@ -44,7 +44,7 @@ const PasswordReset = () => {
         }
 
         try {
-            const { data } = await axios.post("http://localhost:8080/api/password-reset/reset-password", { userId, password });
+            const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/password-reset/reset-password`, { userId, password });
             setMsg(data.message);
             setError("");
             navigate("/login"); // Redirect to login page after successful password reset

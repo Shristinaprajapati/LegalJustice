@@ -51,7 +51,7 @@ const DivorceAgreementForm = () => {
 
   // Initialize socket connection
   useEffect(() => {
-    const newSocket = io('http://localhost:8080', {
+    const newSocket = io(`${process.env.REACT_APP_BASE_URL}`, {
       transports: ['websocket'],
       withCredentials: true
     });
@@ -72,7 +72,7 @@ const DivorceAgreementForm = () => {
           return;
         }
 
-        const response = await axios.get('http://localhost:8080/api/auth/me', {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -139,7 +139,8 @@ const DivorceAgreementForm = () => {
 
       // Save notification to database
       const notificationResponse = await axios.post(
-        'http://localhost:8080/api/admin/notifications/admin',
+        // 'http://localhost:8080/api/admin/notifications/admin',
+         `${process.env.REACT_APP_BASE_URL}/api/admin/notifications/admin`,
         notificationPayload,
         {
           headers: {
@@ -168,7 +169,7 @@ const DivorceAgreementForm = () => {
     try {
       // Submit divorce agreement
       const response = await axios.post(
-        'http://localhost:8080/api/divorse-agreement',
+        `${process.env.REACT_APP_BASE_URL}/api/divorse-agreement`,
         formData,
         {
           headers: {

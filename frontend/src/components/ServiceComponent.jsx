@@ -31,7 +31,7 @@ const Service = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/services");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/services`);
         setServices(response.data);
         // Check if we need to show arrows (more than 3 services)
         if (response.data.filter(s => s.category === "consulting").length > 3) {

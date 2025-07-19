@@ -31,7 +31,7 @@ const PropertyTransferAgreementForm = () => {
 
   // Initialize socket connection
   useEffect(() => {
-    const newSocket = io('http://localhost:8080', {
+    const newSocket = io(`${process.env.REACT_APP_BASE_URL}`, {
       transports: ['websocket'],
       withCredentials: true
     });
@@ -52,7 +52,7 @@ const PropertyTransferAgreementForm = () => {
           return;
         }
 
-        const response = await axios.get('http://localhost:8080/api/auth/me', {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -125,7 +125,7 @@ const PropertyTransferAgreementForm = () => {
 
       // Save notification to database
       const notificationResponse = await axios.post(
-        'http://localhost:8080/api/admin/notifications/admin',
+        `${process.env.REACT_APP_BASE_URL}/api/admin/notifications/admin`,
         notificationPayload,
         {
           headers: {
@@ -155,7 +155,7 @@ const PropertyTransferAgreementForm = () => {
     try {
       // Submit property transfer agreement
       const response = await axios.post(
-        'http://localhost:8080/api/propertytransfer/property-transfer-agreement',
+        `${process.env.REACT_APP_BASE_URL}/api/propertytransfer/property-transfer-agreement`,
         formData,
         {
           headers: {

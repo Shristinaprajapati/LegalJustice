@@ -159,7 +159,7 @@ const handleSaveContent = async () => {
   }
 
   try {
-    const response = await axios.post("http://localhost:8080/api/document/save", {
+    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/document/save`, {
       clientId,
       clientName,
       title,

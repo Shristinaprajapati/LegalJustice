@@ -18,7 +18,7 @@ const ForgotPassword = () => {
 		e.preventDefault();
 		setLoading(true);
 		try {
-			const { data } = await axios.post(`http://localhost:8080/api/password-reset`, { email });
+			const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/password-reset`, { email });
 			setMsg(data.message);
 			setError("");
 			setShowOtpPopup(true);
@@ -49,7 +49,7 @@ const ForgotPassword = () => {
 		}
 
 		try {
-			const { data } = await axios.post(`http://localhost:8080/api/password-reset/verify-otp`, { userId, otp });
+			const { data } = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/password-reset/verify-otp`, { userId, otp });
 			setMsg(data.message);
 			setError("");
 			setShowOtpPopup(false);

@@ -15,7 +15,7 @@ const DivorceAgreementForm = () => {
     setLoading(true);
   
     try {
-      const response = await axios.post('http://localhost:8080/api/divorseagreement/generate-divorce-agreement', {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/divorseagreement/generate-divorce-agreement`, {
         spouse1,
         spouse2,
         children,

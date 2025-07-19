@@ -22,7 +22,7 @@ const Sidebar = () => {
         const divorceTemplateHtml = ReactDOMServer.renderToStaticMarkup(<DivorceAgreementTemplate />);
         const realEstateTemplateHtml = ReactDOMServer.renderToStaticMarkup(<RealEstateAgreementTemplate />);
 
-        await axios.post('http://localhost:8080/api/store-template', {
+        await axios.post(`${process.env.REACT_APP_BASE_URL}/api/store-template`, {
           name: 'Divorce Agreement Template',
           content: divorceTemplateHtml,
           category: 'Family Law',

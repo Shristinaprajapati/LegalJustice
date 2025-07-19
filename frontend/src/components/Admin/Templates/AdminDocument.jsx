@@ -38,7 +38,7 @@ const AdminDocument = () => {
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/document/");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/document/`);
         // Add category to each document based on title
         const categorizedDocuments = response.data.agreements.map(doc => ({
           ...doc,
@@ -83,7 +83,7 @@ const AdminDocument = () => {
     console.log("Client ID:", doc.clientId);
     
     try {
-      const response = await axios.get(`http://localhost:8080/api/users/client?clientId=${doc.clientId}`);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/users/client?clientId=${doc.clientId}`);
       
       if (response.status === 200 && response.data.email) {
         const email = response.data.email;

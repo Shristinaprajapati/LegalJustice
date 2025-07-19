@@ -6,7 +6,7 @@ import AdminCalendar from './AdminCalendar';
 import BookingPopup from './bookingpopup';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:8080');
+const socket = io(`${process.env.REACT_APP_BASE_URL}`);
 
 const Booking = () => {
   const [allBookings, setAllBookings] = useState([]);
@@ -24,7 +24,7 @@ const Booking = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/bookings');
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/bookings`);
         if (Array.isArray(response.data.bookings)) {
           setAllBookings(response.data.bookings);
           const categorizedBookings = response.data.bookings.reduce((acc, booking) => {
@@ -58,7 +58,7 @@ const Booking = () => {
   const handleStatusChange = async (_id, newStatus, category, bypassPopup = false) => {
     try {
       const bookingId = _id._id || _id;
-      const response = await axios.patch(`http://localhost:8080/api/bookings/${bookingId}`, { status: newStatus });
+      const response = await axios.patch(`${process.env.REACT_APP_BASE_URL}/api/bookings/${bookingId}`, { status: newStatus });
   
       if (response.status === 200) {
         setAllBookings(prev => prev.map(booking => 
@@ -116,7 +116,7 @@ const Booking = () => {
 
   const handleDeleteBooking = async (_id, category) => {
     try {
-      const response = await axios.delete(`http://localhost:8080/api/bookings/${_id}`);
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/api/bookings/${_id}`);
       if (response.status === 200) {
         setAllBookings(prev => prev.filter(booking => booking._id !== _id));
         setBookings((prevBookings) => ({

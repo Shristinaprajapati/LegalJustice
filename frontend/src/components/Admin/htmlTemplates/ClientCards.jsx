@@ -16,7 +16,8 @@ const ClientCards = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/divorse-agreement/");
+        // const response = await axios.get("http://localhost:8080/api/divorse-agreement/");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/divorse-agreement/`);
         setClients(response.data.data);
       } catch (err) {
         setError("Failed to load clients.");
@@ -31,7 +32,7 @@ const ClientCards = () => {
   
     const fetchAgreementData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/divorse-agreement/${clientId}`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/divorse-agreement/${clientId}`);    
         if (response.data.data && response.data.data.length > 0) {
           setSelectedClient(response.data.data[0]);
           setShowDocument(true);

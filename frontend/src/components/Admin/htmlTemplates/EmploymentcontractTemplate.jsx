@@ -166,7 +166,7 @@ const EmploymentContract = ({
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/document/save",
+        `${process.env.REACT_APP_BASE_URL}/api/document/save`,
         {
           clientId,
           clientName,
@@ -180,7 +180,7 @@ const EmploymentContract = ({
         }
       );
 
-      // Check if the request was successful
+      
       if (response.status === 201) {
         alert("Document saved successfully!");
       } else if (response.status === 200) {

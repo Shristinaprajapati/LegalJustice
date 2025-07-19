@@ -13,7 +13,7 @@ const Payments = () => {
   useEffect(() => {
     const fetchPayments = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/payments");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/payments`);
         if (response.data.success) {
           setPayments(response.data.data);
         } else {

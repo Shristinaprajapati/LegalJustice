@@ -8,7 +8,7 @@ const BookingPopup = ({ show, onConfirm, onCancel, bookingData }) => {
   useEffect(() => {
     // Connect to the socket only once when the component mounts
     if (!socket.current) {
-      socket.current = io('http://localhost:8080');
+      socket.current = io(`${process.env.REACT_APP_BASE_URL}`);
     }
 
     // Listen for notification event

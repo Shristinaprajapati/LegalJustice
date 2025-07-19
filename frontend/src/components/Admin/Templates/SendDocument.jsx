@@ -12,7 +12,7 @@ const SendDocumentPopup = ({ email, onClose, clientId }) => {
 
   useEffect(() => {
     // Initialize socket connection
-    socket.current = io('http://localhost:8080');
+    socket.current = io(`${process.env.REACT_APP_BASE_URL}`);
 
     // Cleanup on unmount
     return () => {
@@ -42,7 +42,7 @@ const SendDocumentPopup = ({ email, onClose, clientId }) => {
 
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:8080/sendemail/mail", formData, {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/sendemail/mail`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

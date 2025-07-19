@@ -34,7 +34,7 @@ const EditDocument = () => {
       };
 
       const response = await axios.post(
-        "http://localhost:8080/api/document/save", 
+        `${process.env.REACT_APP_BASE_URL}/api/document/save`, 
         JSON.stringify(updatedDocument), 
         {
           headers: {

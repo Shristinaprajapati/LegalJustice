@@ -16,7 +16,7 @@ const PartnershipCard = () => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/partnership-agreement/");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/partnership-agreement/`);
         if (Array.isArray(response.data)) {
           setClients(response.data);
         } else {
@@ -35,7 +35,7 @@ const PartnershipCard = () => {
 
     const fetchAgreementData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/partnership-agreement/${clientId}`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/partnership-agreement/${clientId}`);
         
         if (response.data && response.data.length > 0) {
           setSelectedClient(response.data[0]);

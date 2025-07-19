@@ -15,7 +15,7 @@ const PrivacyPolicy = () => {
     const fetchPrivacyPolicy = async () => {
       try {
         // Fetch privacy policy content using the correct type
-        const response = await axios.get("http://localhost:8080/api/post/content/privacyPolicy");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/post/content/privacyPolicy`);
         setPrivacyPolicy(response.data.content);
       } catch (err) {
         setError("Failed to fetch privacy policy content.");

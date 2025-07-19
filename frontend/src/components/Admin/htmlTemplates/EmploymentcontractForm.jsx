@@ -45,7 +45,7 @@ const EmploymentContractForm = () => {
           return;
         }
 
-        const response = await axios.get('http://localhost:8080/api/auth/me', {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -124,7 +124,7 @@ const EmploymentContractForm = () => {
 
       // Save notification to database
       const notificationResponse = await axios.post(
-        'http://localhost:8080/api/admin/notifications/admin',
+        `${process.env.REACT_APP_BASE_URL}/api/admin/notifications/admin`,
         notificationPayload,
         {
           headers: {
@@ -154,7 +154,7 @@ const EmploymentContractForm = () => {
     try {
       // Submit employment contract
       const response = await axios.post(
-        'http://localhost:8080/api/employment/employment-contract',
+        `${process.env.REACT_APP_BASE_URL}/api/employment/employment-contract`,
         formData,
         {
           headers: {

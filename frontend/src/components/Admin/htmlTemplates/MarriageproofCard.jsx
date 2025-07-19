@@ -16,7 +16,7 @@ const MarriageProofCard = () => {
   useEffect(() => {
     const fetchMarriageProofs = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/marriageproof/marriage-proofs");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/marriageproof/marriage-proofs`);
         setMarriageProofs(response.data);
       } catch (err) {
         setError("Failed to load marriage proof documents.");
@@ -31,7 +31,7 @@ const MarriageProofCard = () => {
 
     const fetchProofData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/marriageproof/marriage-proofs/${clientId}`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/marriageproof/marriage-proofs/${clientId}`);
         
         if (response.data && response.data.length > 0) {
           setSelectedProof(response.data[0]);

@@ -35,7 +35,7 @@ const PartnershipAgreementForm = () => {
 
   // Initialize socket connection
   useEffect(() => {
-    const newSocket = io('http://localhost:8080'); // Connect to your backend
+    const newSocket = io(`${process.env.REACT_APP_BASE_URL}`); 
     setSocket(newSocket);
 
     return () => {
@@ -53,7 +53,7 @@ const PartnershipAgreementForm = () => {
           return;
         }
 
-        const response = await axios.get('http://localhost:8080/api/auth/me', {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -101,7 +101,7 @@ const PartnershipAgreementForm = () => {
   
     try {
       const response = await axios.post(
-        'http://localhost:8080/api/partnership-agreement',
+        `${process.env.REACT_APP_BASE_URL}/api/partnership-agreement`,
         formData
       );
       
@@ -122,7 +122,7 @@ const PartnershipAgreementForm = () => {
       try {
         // Save the notification to the database with auth header
         const notificationResponse = await axios.post(
-          'http://localhost:8080/api/admin/notifications/admin', 
+          `${process.env.REACT_APP_BASE_URL}/api/admin/notifications/admin`, 
           adminNotificationPayload,
           {
             headers: { 
